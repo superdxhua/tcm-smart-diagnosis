@@ -167,13 +167,13 @@ const LoginPage = () => {
     }
   }
 
-  // 桌面端横屏布局：使用 Tailwind lg: 断点 (>= 1024px)
+  // 桌面端横屏布局：使用自定义 CSS 类 (>= 1024px)
   return (
-    // 外层容器 - 桌面端使用深色背景，移动端使用浅色背景
-    <View className="min-h-screen lg:bg-gradient-to-br lg:from-slate-900 lg:via-blue-900 lg:to-slate-900 from-blue-50 to-indigo-100">
+    // 外层容器 - 添加 login-page-container 类用于桌面端样式
+    <View className="min-h-screen from-blue-50 to-indigo-100 login-page-container">
       <ScrollView scrollY className="min-h-screen">
-        {/* 桌面端背景装饰 */}
-        <View className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none">
+        {/* 桌面端背景装饰 - 添加 login-desktop-decor 类 */}
+        <View className="hidden login-desktop-decor absolute inset-0 overflow-hidden pointer-events-none">
           <View className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-blue-500/20 to-transparent"></View>
           <View className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-gradient-to-tr from-indigo-500/20 to-transparent"></View>
           <View className="absolute top-20 right-40 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></View>
@@ -181,57 +181,57 @@ const LoginPage = () => {
         </View>
 
         {/* 主容器：桌面端 flex 行布局，移动端块布局 */}
-        <View className="relative z-10 lg:flex lg:min-h-screen p-4">
-          {/* 桌面端：左侧品牌介绍 */}
-          <View className="hidden lg:flex lg:w-1/2 xl:w-5/12 flex-col justify-center px-12 xl:px-20">
+        <View className="relative z-10 p-4" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          {/* 桌面端：左侧品牌介绍 - 添加 login-brand-section 类 */}
+          <View className="hidden login-brand-section">
             <View className="mb-8">
-              <Text className="text-5xl xl:text-6xl font-bold text-white mb-4">中医智能</Text>
-              <Text className="text-5xl xl:text-6xl font-bold text-blue-400 mb-6">好帮手</Text>
+              <Text className="login-brand-title">中医智能</Text>
+              <Text className="login-brand-title" style={{ color: '#60a5fa', marginTop: '1.5rem' }}>好帮手</Text>
             </View>
-            <Text className="text-xl xl:text-2xl text-blue-200 mb-8">传承千年中医智慧，结合现代人工智能</Text>
-            <View className="space-y-4">
-              <View className="flex items-center text-white/80">
-                <Text className="text-2xl mr-4">📚</Text>
-                <Text className="text-lg">基于张仲景经方和历代名医医案</Text>
+            <Text className="login-brand-subtitle">传承千年中医智慧，结合现代人工智能</Text>
+            <View className="space-y-4" style={{ marginTop: '2rem' }}>
+              <View className="login-feature-item">
+                <Text className="login-feature-icon">📚</Text>
+                <Text>基于张仲景经方和历代名医医案</Text>
               </View>
-              <View className="flex items-center text-white/80">
-                <Text className="text-2xl mr-4">🤖</Text>
-                <Text className="text-lg">AI 智能辨证论治</Text>
+              <View className="login-feature-item">
+                <Text className="login-feature-icon">🤖</Text>
+                <Text>AI 智能辨证论治</Text>
               </View>
-              <View className="flex items-center text-white/80">
-                <Text className="text-2xl mr-4">💊</Text>
-                <Text className="text-lg">个性化健康方案</Text>
+              <View className="login-feature-item">
+                <Text className="login-feature-icon">💊</Text>
+                <Text>个性化健康方案</Text>
               </View>
             </View>
-            <View className="mt-12 pt-8 border-t border-white/10">
-              <Text className="text-blue-300/60 text-sm">专业 · 便捷 · 可靠</Text>
+            <View style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <Text style={{ color: 'rgba(147, 197, 253, 0.6)', fontSize: '0.875rem' }}>专业 · 便捷 · 可靠</Text>
             </View>
           </View>
 
-          {/* 右侧登录表单 */}
-          <View className="w-full lg:w-1/2 xl:w-7/12 lg:flex lg:items-center lg:justify-center p-4 lg:p-8">
-            <View className="w-full max-w-md">
-              {/* 移动端标题 */}
-              <View className="lg:hidden mb-6 text-center">
+          {/* 右侧登录表单 - 添加 login-form-section 类 */}
+          <View className="w-full login-form-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+            <View className="w-full" style={{ maxWidth: '28rem' }}>
+              {/* 移动端标题 - 添加 login-mobile-title 类 */}
+              <View className="login-mobile-title mb-6 text-center">
                 <Text className="text-3xl font-bold text-gray-800">中医智能好帮手</Text>
               </View>
 
-              {/* 登录卡片 */}
-              <View className="bg-white rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
-                {/* 头部 */}
-                <View className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 lg:p-8 text-center">
-                  <Text className="font-bold text-2xl lg:text-3xl text-white">欢迎登录</Text>
-                  <Text className="text-blue-100 text-base lg:text-lg mt-2">登录后开始您的健康之旅</Text>
+              {/* 登录卡片 - 添加 login-card 类 */}
+              <View className="bg-white rounded-2xl shadow-2xl overflow-hidden login-card">
+                {/* 头部 - 添加 login-card-header 类 */}
+                <View className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-center login-card-header">
+                  <Text className="font-bold text-2xl text-white login-card-title">欢迎登录</Text>
+                  <Text className="text-blue-100 text-base mt-2 login-card-subtitle">登录后开始您的健康之旅</Text>
                 </View>
 
-                {/* 表单 */}
-                <View className="p-4 lg:p-8 space-y-4 lg:space-y-6">
+                {/* 表单 - 添加 login-form 类 */}
+                <View className="p-6 space-y-4 login-form">
                   {/* 用户名 */}
                   <View>
-                    <Text className="block font-medium text-gray-700 mb-2 text-sm lg:text-base">用户名</Text>
-                    <View className="bg-gray-50 rounded-xl px-4 py-3 lg:py-4">
+                    <Text className="block font-medium text-gray-700 mb-2 login-label">用户名</Text>
+                    <View className="bg-gray-50 rounded-xl px-4 py-3">
                       <Input
-                        className="bg-transparent text-base"
+                        className="bg-transparent text-base login-input"
                         placeholder="请输入用户名"
                         value={username}
                         onInput={(e) => setUsername(e.detail.value)}
@@ -241,11 +241,11 @@ const LoginPage = () => {
 
                   {/* 密码 */}
                   <View>
-                    <Text className="block font-medium text-gray-700 mb-2 text-sm lg:text-base">密码</Text>
+                    <Text className="block font-medium text-gray-700 mb-2 login-label">密码</Text>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ flex: 1 }} className="bg-gray-50 rounded-xl px-4 py-3 lg:py-4">
+                      <View style={{ flex: 1 }} className="bg-gray-50 rounded-xl px-4 py-3">
                         <Input
-                          className="bg-transparent text-base"
+                          className="bg-transparent text-base login-input"
                           placeholder="请输入密码"
                           password={!showPassword}
                           value={password}
@@ -253,10 +253,10 @@ const LoginPage = () => {
                         />
                       </View>
                       <View
-                        className={`ml-2 lg:ml-3 px-3 py-3 lg:px-4 lg:py-4 bg-gray-100 rounded-xl cursor-pointer ${showPassword ? 'bg-blue-100' : ''}`}
+                        className={`ml-2 px-3 py-3 bg-gray-100 rounded-xl cursor-pointer ${showPassword ? 'bg-blue-100' : ''}`}
                         onClick={() => setShowPassword(!showPassword)}
                       >
-                        <Text className={`text-lg lg:text-xl ${showPassword ? 'text-blue-600' : 'text-gray-500'}`}>
+                        <Text className={`text-lg ${showPassword ? 'text-blue-600' : 'text-gray-500'}`}>
                           {showPassword ? '👁' : '🙈'}
                         </Text>
                       </View>
@@ -268,7 +268,7 @@ const LoginPage = () => {
                     <View className={`w-5 h-5 rounded border-2 flex items-center justify-center mr-2 ${rememberMe ? 'bg-blue-600 border-blue-600' : 'border-gray-300'}`}>
                       {rememberMe && <Text className="text-white text-sm">✓</Text>}
                     </View>
-                    <Text className="text-gray-700 text-sm lg:text-base">记住密码</Text>
+                    <Text className="text-gray-700 text-base">记住密码</Text>
                   </View>
 
                   {/* 错误信息 */}
@@ -278,54 +278,54 @@ const LoginPage = () => {
                     </View>
                   )}
 
-                  {/* 登录按钮 */}
+                  {/* 登录按钮 - 添加 login-button 类 */}
                   <View
-                    className="bg-blue-600 rounded-xl lg:rounded-2xl p-4 lg:p-5 cursor-pointer"
+                    className="bg-blue-600 rounded-xl p-4 cursor-pointer login-button"
                     onClick={handleLogin}
                   >
-                    <Text className="text-white font-medium text-center text-base lg:text-lg">
+                    <Text className="text-white font-medium text-center text-base">
                       {loading ? '登录中...' : '账号密码登录'}
                     </Text>
                   </View>
 
                   {/* 分割线 */}
-                  <View className="flex items-center my-3 lg:my-4">
+                  <View className="flex items-center my-4">
                     <View className="flex-1 h-px bg-gray-200"></View>
-                    <Text className="px-3 lg:px-4 text-gray-400 text-sm">或</Text>
+                    <Text className="px-4 text-gray-400 text-sm">或</Text>
                     <View className="flex-1 h-px bg-gray-200"></View>
                   </View>
 
-                  {/* 微信登录 */}
+                  {/* 微信登录 - 添加 login-wechat-button 类 */}
                   <View
-                    className="bg-green-500 rounded-xl lg:rounded-2xl p-4 lg:p-5 cursor-pointer"
+                    className="bg-green-500 rounded-xl p-4 cursor-pointer login-wechat-button"
                     onClick={handleWechatLogin}
                   >
-                    <Text className="text-white font-medium text-center text-base lg:text-lg">
+                    <Text className="text-white font-medium text-center text-base">
                       📱 微信一键登录
                     </Text>
                   </View>
-                  <Text className="text-center text-gray-500 text-xs lg:text-sm">
+                  <Text className="text-center text-gray-500 text-sm">
                     点击上方按钮，快速登录
                   </Text>
 
-                  {/* 注册提示 */}
-                  <View className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl lg:rounded-2xl p-4">
+                  {/* 注册提示 - 添加 login-register-card 类 */}
+                  <View className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 login-register-card">
                     <View className="flex items-center mb-2">
-                      <Text className="font-semibold text-blue-900 text-base lg:text-lg">🎁 新用户注册享福利</Text>
+                      <Text className="font-semibold text-blue-900 text-base login-register-title">🎁 新用户注册享福利</Text>
                     </View>
-                    <Text className="text-gray-600 mb-3 text-sm lg:text-base">注册即可获得 3 天免费使用期限</Text>
+                    <Text className="text-gray-600 mb-3 text-base login-register-text">注册即可获得 3 天免费使用期限</Text>
                     <View
-                      className="bg-blue-600 rounded-lg lg:rounded-xl px-4 py-2 lg:py-3 cursor-pointer text-center"
+                      className="bg-blue-600 rounded-lg px-4 py-2 cursor-pointer text-center login-register-button"
                       onClick={() => setShowDisclaimer(true)}
                     >
-                      <Text className="text-white font-medium text-sm lg:text-base">新用户注册</Text>
+                      <Text className="text-white font-medium text-base">新用户注册</Text>
                     </View>
                   </View>
                 </View>
 
-                {/* 底部 */}
-                <View className="bg-gray-50 p-3 lg:p-4 text-center">
-                  <Text className="text-gray-500 text-xs lg:text-sm">如未授权使用，请联系管理员</Text>
+                {/* 底部 - 添加 login-footer 类 */}
+                <View className="bg-gray-50 p-3 text-center login-footer">
+                  <Text className="text-gray-500 text-sm">如未授权使用，请联系管理员</Text>
                 </View>
               </View>
             </View>

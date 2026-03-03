@@ -486,3 +486,200 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* ========================================
+   桌面端登录页面横屏布局（>= 1024px）
+   强制生效，覆盖 Tailwind 类
+   ======================================== */
+@media (min-width: 1024px) {
+  /* 登录页面外层容器 - 深色渐变背景 */
+  .login-page-container {
+    display: flex !important;
+    flex-direction: row !important;
+    min-height: 100vh !important;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+  }
+
+  /* 左侧品牌区域 */
+  .login-brand-section {
+    display: flex !important;
+    width: 40% !important;
+    min-width: 40% !important;
+    max-width: 40% !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 3rem 4rem !important;
+    background: transparent !important;
+  }
+
+  /* 左侧品牌文字 */
+  .login-brand-title {
+    font-size: 3.5rem !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    line-height: 1.2 !important;
+  }
+
+  .login-brand-subtitle {
+    font-size: 1.5rem !important;
+    color: #93c5fd !important;
+    margin-top: 1.5rem !important;
+  }
+
+  /* 右侧登录表单区域 */
+  .login-form-section {
+    display: flex !important;
+    width: 60% !important;
+    min-width: 60% !important;
+    max-width: 60% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2rem !important;
+    background: transparent !important;
+  }
+
+  /* 登录卡片 */
+  .login-card {
+    width: 100% !important;
+    max-width: 600px !important;
+    background: #fff !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+  }
+
+  /* 登录卡片头部 */
+  .login-card-header {
+    padding: 2.5rem !important;
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%) !important;
+    text-align: center !important;
+  }
+
+  .login-card-title {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+  }
+
+  .login-card-subtitle {
+    font-size: 1.125rem !important;
+    color: #bfdbfe !important;
+    margin-top: 0.5rem !important;
+  }
+
+  /* 登录表单区域 */
+  .login-form {
+    padding: 2rem 3rem !important;
+  }
+
+  /* 表单标签 */
+  .login-label {
+    display: block !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 1.125rem !important;
+  }
+
+  /* 输入框 */
+  .login-input {
+    width: 100% !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 1.125rem !important;
+    background: #f9fafb !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  /* 登录按钮 */
+  .login-button {
+    width: 100% !important;
+    padding: 1.25rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 500 !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    border-radius: 1rem !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+  }
+
+  .login-button:hover {
+    background: #1d4ed8 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3) !important;
+  }
+
+  /* 微信登录按钮 */
+  .login-wechat-button {
+    width: 100% !important;
+    padding: 1.25rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 500 !important;
+    background: #22c55e !important;
+    color: #fff !important;
+    border-radius: 1rem !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  /* 注册提示卡片 */
+  .login-register-card {
+    padding: 1.5rem !important;
+    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%) !important;
+    border-radius: 1rem !important;
+  }
+
+  .login-register-title {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #1e3a8a !important;
+  }
+
+  .login-register-text {
+    font-size: 1.125rem !important;
+    color: #4b5563 !important;
+  }
+
+  .login-register-button {
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    border-radius: 0.5rem !important;
+  }
+
+  /* 隐藏移动端标题 */
+  .login-mobile-title {
+    display: none !important;
+  }
+
+  /* 显示桌面端背景装饰 */
+  .login-desktop-decor {
+    display: block !important;
+  }
+
+  /* 桌面端品牌介绍项目 */
+  .login-feature-item {
+    display: flex !important;
+    align-items: center !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 1.125rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .login-feature-icon {
+    font-size: 1.5rem !important;
+    margin-right: 1rem !important;
+  }
+
+  /* 底部提示文字 */
+  .login-footer {
+    padding: 1rem !important;
+    text-align: center !important;
+    background: #f9fafb !important;
+    font-size: 0.875rem !important;
+    color: #6b7280 !important;
+  }
+}
