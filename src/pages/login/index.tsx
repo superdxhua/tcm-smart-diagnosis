@@ -12,7 +12,6 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showDisclaimer, setShowDisclaimer] = useState(false)
-  const { isMobile, isDesktop } = useDevice()
 
   // 页面加载时检查是否有保存的账号密码
   useEffect(() => {
@@ -183,16 +182,16 @@ const LoginPage = () => {
   }
 
   // 使用纯 CSS 控制布局，不依赖 JavaScript 设备检测
-  // 桌面端（>= 1024px）使用横屏布局，移动端使用竖屏布局
-
-  // 外层容器根据屏幕宽度显示不同背景
-  const containerClass = "min-h-screen from-blue-50 to-indigo-100 lg:from-slate-900 lg:via-blue-900 lg:to-slate-900"
+  // 桌面端（>= 768px）使用横屏布局，移动端使用竖屏布局
+  // 使用自定义 CSS 类 + Tailwind 类作为后备
 
   return (
-    <View className={containerClass}>
+    // 使用自定义 CSS 类 login-page-wrapper 来控制布局
+    // 同时保留 Tailwind 类作为后备支持
+    <View className="login-page-wrapper min-h-screen from-blue-50 to-indigo-100 md:from-slate-900 md:via-blue-900 md:to-slate-900">
       <ScrollView scrollY className="min-h-screen">
-        {/* 桌面端背景装饰 */}
-        <View className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none">
+        {/* 桌面端背景装饰 - 使用 md: 断点 (768px) */}
+        <View className="hidden md:block absolute inset-0 overflow-hidden pointer-events-none">
           <View className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-blue-500/20 to-transparent"></View>
           <View className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-gradient-to-tr from-indigo-500/20 to-transparent"></View>
           <View className="absolute top-20 right-40 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></View>
@@ -200,9 +199,9 @@ const LoginPage = () => {
         </View>
 
         {/* 主容器：桌面端 flex 行布局，移动端块布局 */}
-        <View className="relative z-10 p-4 lg:flex lg:min-h-screen">
+        <View className="relative z-10 p-4 md:flex md:min-h-screen">
           {/* 左侧品牌介绍 - 桌面端显示，移动端隐藏 */}
-          <View className="hidden lg:flex lg:w-1/2 xl:w-5/12 flex-col justify-center px-12 xl:px-20">
+          <View className="hidden md:flex md:w-1/2 xl:w-5/12 flex-col justify-center px-12 xl:px-20">
             <View className="mb-8">
               <Text className="text-5xl xl:text-6xl font-bold text-white mb-4">中医智能</Text>
               <Text className="text-5xl xl:text-6xl font-bold text-blue-400 mb-6">好帮手</Text>
@@ -228,27 +227,27 @@ const LoginPage = () => {
           </View>
 
           {/* 右侧登录表单 */}
-          <View className="w-full lg:w-1/2 xl:w-7/12 flex items-center justify-center p-8">
+          <View className="w-full md:w-1/2 xl:w-7/12 flex items-center justify-center p-8">
             <View className="w-full max-w-md">
               {/* 移动端标题 - 桌面端隐藏 */}
-              <View className="lg:hidden mb-8 text-center">
+              <View className="md:hidden mb-8 text-center">
                 <Text className="text-3xl font-bold text-gray-800">中医智能好帮手</Text>
               </View>
 
               {/* 登录卡片 */}
               <View className="bg-white rounded-2xl shadow-2xl overflow-hidden">
                 {/* 头部 */}
-                <View className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 lg:p-8 text-center">
-                  <Text className="font-bold text-2xl lg:text-3xl text-white">欢迎登录</Text>
-                  <Text className="text-blue-100 text-base lg:text-lg mt-2">登录后开始您的健康之旅</Text>
+                <View className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 md:p-8 text-center">
+                  <Text className="font-bold text-2xl md:text-3xl text-white">欢迎登录</Text>
+                  <Text className="text-blue-100 text-base md:text-lg mt-2">登录后开始您的健康之旅</Text>
                 </View>
 
                 {/* 表单 */}
-                <View className="p-6 lg:p-8 space-y-4 lg:space-y-6">
+                <View className="p-6 md:p-8 space-y-4 md:space-y-6">
                   {/* 用户名 */}
                   <View>
                     <Text className="block font-medium text-gray-700 mb-2">用户名</Text>
-                    <View className="bg-gray-50 rounded-xl px-4 py-3 lg:py-4">
+                    <View className="bg-gray-50 rounded-xl px-4 py-3 md:py-4">
                       <Input className="bg-transparent text-base" placeholder="请输入用户名" value={username} onInput={(e) => setUsername(e.detail.value)} />
                     </View>
                   </View>
@@ -257,11 +256,11 @@ const LoginPage = () => {
                   <View>
                     <Text className="block font-medium text-gray-700 mb-2">密码</Text>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ flex: 1 }} className="bg-gray-50 rounded-xl px-4 py-3 lg:py-4">
+                      <View style={{ flex: 1 }} className="bg-gray-50 rounded-xl px-4 py-3 md:py-4">
                         <Input className="bg-transparent text-base" placeholder="请输入密码" password={!showPassword} value={password} onInput={(e) => setPassword(e.detail.value)} />
                       </View>
-                      <View className={`ml-2 lg:ml-3 px-3 lg:px-4 py-3 lg:py-4 bg-gray-100 rounded-xl cursor-pointer ${showPassword ? 'bg-blue-100' : ''}`} onClick={() => setShowPassword(!showPassword)}>
-                        <Text className={`text-lg lg:text-xl ${showPassword ? 'text-blue-600' : 'text-gray-500'}`}>{showPassword ? '👁' : '🙈'}</Text>
+                      <View className={`ml-2 md:ml-3 px-3 md:px-4 py-3 md:py-4 bg-gray-100 rounded-xl cursor-pointer ${showPassword ? 'bg-blue-100' : ''}`} onClick={() => setShowPassword(!showPassword)}>
+                        <Text className={`text-lg md:text-xl ${showPassword ? 'text-blue-600' : 'text-gray-500'}`}>{showPassword ? '👁' : '🙈'}</Text>
                       </View>
                     </View>
                   </View>
@@ -283,7 +282,7 @@ const LoginPage = () => {
 
                   {/* 登录按钮 */}
                   <View className="bg-blue-600 rounded-xl p-4 cursor-pointer" onClick={handleLogin}>
-                    <Text className="text-white font-medium text-center text-base lg:text-lg">{loading ? '登录中...' : '账号密码登录'}</Text>
+                    <Text className="text-white font-medium text-center text-base md:text-lg">{loading ? '登录中...' : '账号密码登录'}</Text>
                   </View>
 
                   {/* 分割线 */}
@@ -295,14 +294,14 @@ const LoginPage = () => {
 
                   {/* 微信登录 */}
                   <View className="bg-green-500 rounded-xl p-4 cursor-pointer" onClick={handleWechatLogin}>
-                    <Text className="text-white font-medium text-center text-base lg:text-lg">📱 微信一键登录</Text>
+                    <Text className="text-white font-medium text-center text-base md:text-lg">📱 微信一键登录</Text>
                   </View>
                   <Text className="text-center text-gray-500 text-sm">点击上方按钮，快速登录</Text>
 
                   {/* 注册提示 */}
                   <View className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
                     <View className="flex items-center mb-2">
-                      <Text className="font-semibold text-blue-900 text-base lg:text-lg">🎁 新用户注册享福利</Text>
+                      <Text className="font-semibold text-blue-900 text-base md:text-lg">🎁 新用户注册享福利</Text>
                     </View>
                     <Text className="text-gray-600 mb-3 text-base">注册即可获得 3 天免费使用期限</Text>
                     <View className="bg-blue-600 rounded-lg px-4 py-2 cursor-pointer text-center" onClick={() => setShowDisclaimer(true)}>
@@ -312,7 +311,7 @@ const LoginPage = () => {
                 </View>
 
                 {/* 底部 */}
-                <View className="bg-gray-50 p-3 lg:p-4 text-center">
+                <View className="bg-gray-50 p-3 md:p-4 text-center">
                   <Text className="text-gray-500 text-sm">如未授权使用，请联系管理员</Text>
                 </View>
               </View>
