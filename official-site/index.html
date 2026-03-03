@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>天源堂海王星药店 - 中医健康管理辅助平台</title>
+    <meta name="description" content="天源堂海王星药店致力于为专业中医医师和药店用户提供专业的健康管理辅助工具。平台整合了传统中医经典与现代人工智能技术。">
+    <meta name="keywords" content="中医, 健康管理, 中医辅助, 天源堂海王星药店">
+    <meta name="author" content="天源堂海王星药店">
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            background: #f5f5f5;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .official-page {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+        }
+        
+        /* 顶部 Banner */
+        .official-hero {
+            background: linear-gradient(135deg, #1890ff 0%, #52c41a 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .official-hero-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0;
+            display: block;
+        }
+        
+        /* 平台介绍 */
+        .official-section {
+            padding: 40px 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .official-section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .official-section-content {
+            line-height: 1.8;
+            color: #666;
+        }
+        
+        .official-text {
+            display: block;
+            margin-bottom: 12px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        /* 核心功能 */
+        .official-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .official-feature-icon {
+            width: 50px;
+            height: 50px;
+            background: #1890ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .official-feature-icon-text {
+            font-size: 24px;
+            display: block;
+        }
+        
+        .official-feature-content {
+            flex: 1;
+        }
+        
+        .official-feature-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .official-feature-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            display: block;
+        }
+        
+        /* 免责声明 */
+        .official-section-warning {
+            background: #fffbe6;
+            border-left: 4px solid #faad14;
+            padding: 30px 20px;
+        }
+        
+        .warning-title {
+            color: #faad14 !important;
+        }
+        
+        .warning-text {
+            color: #d48806 !important;
+        }
+        
+        .official-warning-items {
+            margin-top: 16px;
+            padding-left: 20px;
+        }
+        
+        .official-warning-item {
+            display: block;
+            margin-bottom: 8px;
+            color: #d48806;
+            line-height: 1.8;
+        }
+        
+        /* 联系方式 */
+        .official-contact {
+            display: flex;
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+        
+        .official-contact-label {
+            color: #999;
+            min-width: 120px;
+            flex-shrink: 0;
+            display: block;
+        }
+        
+        .official-contact-value {
+            color: #333;
+            display: block;
+        }
+        
+        /* 操作按钮 */
+        .official-actions {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .official-action-button {
+            width: 100%;
+            max-width: 400px;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .official-action-button.primary {
+            background: #1890ff;
+            color: #fff;
+            border: 2px solid #1890ff;
+        }
+        
+        .official-action-button.primary:hover {
+            background: #40a9ff;
+            border-color: #40a9ff;
+        }
+        
+        .official-action-button {
+            background: #fff;
+            color: #1890ff;
+            border: 2px solid #1890ff;
+        }
+        
+        .official-action-button:hover {
+            background: #e6f7ff;
+            border-color: #40a9ff;
+        }
+        
+        .official-action-button-text {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+        }
+        
+        /* 底部版权 */
+        .official-footer {
+            background: #262626;
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .official-footer-text {
+            display: block;
+            margin-bottom: 8px;
+            color: #8c8c8c;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .official-spacer {
+            height: 40px;
+            display: block;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .official-hero-title {
+                font-size: 28px;
+            }
+            
+            .official-section-title {
+                font-size: 20px;
+            }
+            
+            .official-feature {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .official-feature-icon {
+                margin-right: 0;
+                margin-bottom: 12px;
+            }
+            
+            .official-action-button {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="official-page">
+        <!-- 顶部 Banner -->
+        <div class="official-hero">
+            <h1 class="official-hero-title">天源堂海王星药店</h1>
+        </div>
+
+        <!-- 平台介绍 -->
+        <section class="official-section">
+            <h2 class="official-section-title">平台介绍</h2>
+            <div class="official-section-content">
+                <p class="official-text">
+                    天源堂海王星药店致力于为专业中医医师和药店用户提供专业的健康管理辅助工具。平台整合了传统中医经典与现代人工智能技术，提供经方知识库查询、历史医案参考、AI健康咨询等功能，助力中医诊疗数字化转型。
+                </p>
+            </div>
+        </section>
+
+        <!-- 核心功能 -->
+        <section class="official-section">
+            <h2 class="official-section-title">核心功能</h2>
+
+            <!-- 功能 1 -->
+            <div class="official-feature">
+                <div class="official-feature-icon">
+                    <span class="official-feature-icon-text">📚</span>
+                </div>
+                <div class="official-feature-content">
+                    <h3 class="official-feature-title">经方知识库查询</h3>
+                    <p class="official-feature-desc">
+                        收录《伤寒论》《金匮要略》等经典经方，支持快速查询和配伍分析
+                    </p>
+                </div>
+            </div>
+
+            <!-- 功能 2 -->
+            <div class="official-feature">
+                <div class="official-feature-icon">
+                    <span class="official-feature-icon-text">📖</span>
+                </div>
+                <div class="official-feature-content">
+                    <h3 class="official-feature-title">历史医案参考</h3>
+                    <p class="official-feature-desc">
+                        丰富的历史医案库，为临床诊疗提供参考借鉴
+                    </p>
+                </div>
+            </div>
+
+            <!-- 功能 3 -->
+            <div class="official-feature">
+                <div class="official-feature-icon">
+                    <span class="official-feature-icon-text">🤖</span>
+                </div>
+                <div class="official-feature-content">
+                    <h3 class="official-feature-title">AI健康咨询</h3>
+                    <p class="official-feature-desc">
+                        根据症状提供健康建议，仅供参考，不涉及医疗诊断
+                    </p>
+                </div>
+            </div>
+
+            <!-- 功能 4 -->
+            <div class="official-feature">
+                <div class="official-feature-icon">
+                    <span class="official-feature-icon-text">👤</span>
+                </div>
+                <div class="official-feature-content">
+                    <h3 class="official-feature-title">用户档案管理</h3>
+                    <p class="official-feature-desc">
+                        完整的用户健康档案系统，支持病历、处方记录管理
+                    </p>
+                </div>
+            </div>
+
+            <!-- 功能 5 -->
+            <div class="official-feature">
+                <div class="official-feature-icon">
+                    <span class="official-feature-icon-text">💊</span>
+                </div>
+                <div class="official-feature-content">
+                    <h3 class="official-feature-title">处方辅助管理</h3>
+                    <p class="official-feature-desc">
+                        含配伍禁忌检测和毒性药物风控，需医师审核确认
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 免责声明 -->
+        <section class="official-section official-section-warning">
+            <h2 class="official-section-title warning-title">⚠️ 免责声明与风险提示</h2>
+            <div class="official-section-content">
+                <p class="official-text warning-text">
+                    本药店开发此网站旨在为专业中医医师和药店用户提供健康管理辅助工具。所有AI分析结果和方案建议仅作为参考依据，不直接提供医疗诊断和治疗方案，需由具有执业资格的专业医师审核确认后方可使用。
+                </p>
+
+                <p class="official-text warning-text">
+                    网站已包含完整免责声明和风险提示，明确标注"仅供参考，需医师审核"，严格遵守国家医疗相关法律法规，保护用户隐私，不涉及非法医疗行为。
+                </p>
+
+                <div class="official-warning-items">
+                    <span class="official-warning-item">• 所有AI分析结果仅供参考</span>
+                    <span class="official-warning-item">• 需专业医师审核确认</span>
+                    <span class="official-warning-item">• 不提供医疗诊断和治疗方案</span>
+                    <span class="official-warning-item">• 严格遵守医疗相关法律法规</span>
+                    <span class="official-warning-item">• 保护用户隐私数据安全</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 服务说明 -->
+        <section class="official-section">
+            <h2 class="official-section-title">服务说明</h2>
+            <div class="official-section-content">
+                <p class="official-text">
+                    本网站为天源堂海王星药店开发的专业健康管理辅助平台，仅面向具有执业资格的专业中医医师和授权药店用户提供服务。网站内容仅供学习交流和参考使用，不替代专业医疗诊断。
+                </p>
+            </div>
+        </section>
+
+        <!-- 联系方式 -->
+        <section class="official-section">
+            <h2 class="official-section-title">联系方式</h2>
+            <div class="official-contact">
+                <span class="official-contact-label">药店名称：</span>
+                <span class="official-contact-value">天源堂海王星药店</span>
+            </div>
+            <div class="official-contact">
+                <span class="official-contact-label">网站类型：</span>
+                <span class="official-contact-value">综合门户 / 网站应用服务</span>
+            </div>
+            <div class="official-contact">
+                <span class="official-contact-label">服务对象：</span>
+                <span class="official-contact-value">专业中医医师、药店用户</span>
+            </div>
+        </section>
+
+        <!-- 操作按钮 -->
+        <div class="official-actions">
+            <a href="https://www.zhongyihskhealth.com" class="official-action-button primary">
+                <span class="official-action-button-text">进入应用</span>
+            </a>
+            <a href="https://www.zhongyihskhealth.com/pages/login/index" class="official-action-button">
+                <span class="official-action-button-text">用户登录</span>
+            </a>
+        </div>
+
+        <!-- 底部版权 -->
+        <footer class="official-footer">
+            <p class="official-footer-text">
+                © 2026 天源堂海王星药店 版权所有
+            </p>
+            <p class="official-footer-text">
+                网站备案号：ICP备XXXXXXXX号
+            </p>
+            <p class="official-footer-text">
+                技术支持：基于AI大模型的中医健康管理平台
+            </p>
+        </footer>
+
+        <div class="official-spacer"></div>
+    </div>
+</body>
+</html>

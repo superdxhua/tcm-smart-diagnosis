@@ -1,0 +1,36 @@
+# Dockerfile for Android Build
+FROM openjdk:17-jdk-slim
+
+# 安装 Android SDK 所需工具
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# 设置 ANDROID_HOME
+ENV ANDROID_HOME=/opt/android-sdk
+ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0
+
+# 下载并安装 Android Command Line Tools
+RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
+    wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O /tmp/tools.zip && \
+    unzip /tmp/tools.zip -d ${ANDROID_HOME}/cmdline-tools && \
+    rm /tmp/tools.zip && \
+    mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+
+# 接受许可证
+RUN yes | sdkmanager --licenses || true
+
+# 安装必要的 SDK 组件
+RUN sdkmanager \
+    "platform-tools" \
+    "platforms;android-34" \
+    "build-tools;34.0.0"
+
+# 安装 Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g pnpm
+
+WORKDIR /workspace

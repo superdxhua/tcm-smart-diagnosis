@@ -1,0 +1,268 @@
+{
+  "formula_relations": [
+    {
+      "formula_name": "小建中汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": null,
+      "complication_id": "POST_OP_QI_XU",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "术后气血大虚，虚劳里急，腹痛喜温，面色苍白，心悸气短",
+      "dosage_adjustment": "常规剂量，可加黄芪30g补气",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "桂枝加附子汤",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": null,
+      "complication_id": "POST_OP_YANG_LUO",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "术后阳气外脱，大汗淋漓，四肢厥冷，脉微欲绝",
+      "dosage_adjustment": "附子先煎30分钟，用量从小剂量开始",
+      "duration": "7-14天"
+    },
+    {
+      "formula_name": "半夏泻心汤",
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "pathogenesis_id": null,
+      "complication_id": "POST_OP_BLOATED",
+      "symptom_id": null,
+      "priority": 9,
+      "indication": "术后腹胀肠鸣，心下痞满，恶心呕吐，寒热错杂",
+      "dosage_adjustment": "根据寒热比例调整黄连、干姜用量",
+      "duration": "7-10天"
+    },
+    {
+      "formula_name": "肾气丸",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": null,
+      "complication_id": "CHEMO_MARROW_SUPPRESSION",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "化疗后骨髓抑制，少阴虚劳，腰膝酸软，夜尿频，头晕乏力",
+      "dosage_adjustment": "常规剂量，可加当归、黄芪补血",
+      "duration": "21-28天"
+    },
+    {
+      "formula_name": "炙甘草汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": null,
+      "complication_id": "CHEMO_MARROW_SUPPRESSION",
+      "symptom_id": null,
+      "priority": 9,
+      "indication": "化疗后骨髓抑制，气血两虚，心悸气短，脉结代",
+      "dosage_adjustment": "阿胶烊化，生地黄用量宜大",
+      "duration": "21-28天"
+    },
+    {
+      "formula_name": "小柴胡汤",
+      "constitution_id": "SHAOYANG_QI_YU",
+      "pathogenesis_id": null,
+      "complication_id": "CHEMO_GI_REACTION",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "化疗后消化道反应，少阳枢机不利，口苦咽干，默默不欲饮食，恶心呕吐",
+      "dosage_adjustment": "可加竹茹、生姜加强止呕",
+      "duration": "7-14天"
+    },
+    {
+      "formula_name": "黄连阿胶汤",
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "pathogenesis_id": null,
+      "complication_id": "CHEMO_STOMATITIS",
+      "symptom_id": null,
+      "priority": 9,
+      "indication": "化疗后口腔溃疡，少阴热化，心烦失眠，舌红少苔",
+      "dosage_adjustment": "黄连、黄芩清热，阿胶、鸡子黄滋阴",
+      "duration": "7-14天"
+    },
+    {
+      "formula_name": "竹叶石膏汤",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": null,
+      "complication_id": "CHEMO_STOMATITIS",
+      "symptom_id": null,
+      "priority": 8,
+      "indication": "化疗后口腔溃疡，津伤胃燥，口干咽燥，心烦",
+      "dosage_adjustment": "竹叶、石膏清胃热，麦冬、人参益气生津",
+      "duration": "7-14天"
+    },
+    {
+      "formula_name": "桃花汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": null,
+      "complication_id": "CHEMO_DIARRHEA",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "化疗后腹泻，太阴下利滑脱，便溏不止，腹痛喜温",
+      "dosage_adjustment": "赤石脂温涩固肠，干姜温中散寒",
+      "duration": "5-7天"
+    },
+    {
+      "formula_name": "猪苓汤",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": null,
+      "complication_id": "RADIATION_DRYNESS",
+      "symptom_id": null,
+      "priority": 9,
+      "indication": "放疗后阴虚火旺，津液耗伤，小便不利，口干咽燥",
+      "dosage_adjustment": "猪苓、茯苓、泽泻利水，阿胶滋阴，滑石清热",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "麦门冬汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": null,
+      "complication_id": "RADIATION_COUGH",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "放疗后局部灼热干咳，肺阴亏虚，燥邪伤肺，咳逆上气",
+      "dosage_adjustment": "麦冬用量宜大，可加沙参、玉竹",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "柴胡桂枝干姜汤",
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "pathogenesis_id": null,
+      "complication_id": "TARGETED_RASH",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "靶向药皮疹腹泻，少阳失和，表里不和，寒热错杂",
+      "dosage_adjustment": "柴胡和解少阳，桂枝调和营卫，干姜温中",
+      "duration": "持续使用"
+    },
+    {
+      "formula_name": "真武汤",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": "PHLEGM_DAMPNESS",
+      "complication_id": "TARGETED_THYROIDITIS",
+      "symptom_id": null,
+      "priority": 10,
+      "indication": "靶向药甲状腺炎，少阴阳虚，水湿内停，畏寒浮肿",
+      "dosage_adjustment": "附子先煎，用量从小剂量开始",
+      "duration": "持续使用"
+    },
+    {
+      "formula_name": "桂枝茯苓丸",
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "pathogenesis_id": "BLOOD_STASIS",
+      "complication_id": null,
+      "symptom_id": "CANCER_PAIN",
+      "priority": 9,
+      "indication": "肿瘤瘀血内阻，癥积疼痛，刺痛固定，舌紫暗",
+      "dosage_adjustment": "可加三棱、莪术加强活血",
+      "duration": "21-28天"
+    },
+    {
+      "formula_name": "芍药甘草汤",
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "pathogenesis_id": null,
+      "complication_id": null,
+      "symptom_id": "CANCER_PAIN",
+      "priority": 10,
+      "indication": "癌性疼痛，肝急筋急，腹痛拘急",
+      "dosage_adjustment": "芍药15-30g，甘草9-15g，可加乌头、细辛",
+      "duration": "持续使用"
+    },
+    {
+      "formula_name": "四逆散",
+      "constitution_id": "SHAOYANG_QI_YU",
+      "pathogenesis_id": "QI_STAGNATION",
+      "complication_id": null,
+      "symptom_id": "CANCER_PAIN",
+      "priority": 8,
+      "indication": "肿瘤气滞不行，胀痛，情绪波动加重，胸胁胀满",
+      "dosage_adjustment": "可加香附、川楝子疏肝理气",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "旋覆代赭汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": null,
+      "complication_id": null,
+      "symptom_id": "INTRACTABLE_HICCUPS",
+      "priority": 10,
+      "indication": "顽固性呃逆，胃气虚逆，心下痞硬，噫气不除",
+      "dosage_adjustment": "旋覆花包煎，代赭石先煎",
+      "duration": "5-7天"
+    },
+    {
+      "formula_name": "柴胡加龙骨牡蛎汤",
+      "constitution_id": "SHAOYANG_QI_YU",
+      "pathogenesis_id": null,
+      "complication_id": null,
+      "symptom_id": "INSOMNIA_ANXIETY",
+      "priority": 10,
+      "indication": "失眠焦虑，少阳枢机不利，胸满烦惊，心烦不得眠",
+      "dosage_adjustment": "可加酸枣仁、远志安神",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "酸枣仁汤",
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "pathogenesis_id": null,
+      "complication_id": null,
+      "symptom_id": "INSOMNIA_ANXIETY",
+      "priority": 9,
+      "indication": "失眠焦虑，肝血不足，虚烦不眠，心悸盗汗",
+      "dosage_adjustment": "酸枣仁用量宜大，可加茯苓、知母",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "理中汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": "PHLEGM_DAMPNESS",
+      "complication_id": "CHEMO_MARROW_SUPPRESSION",
+      "symptom_id": null,
+      "priority": 9,
+      "indication": "化疗后骨髓抑制，太阴脾虚，气血两虚，便溏乏力",
+      "dosage_adjustment": "可加当归、黄芪补血",
+      "duration": "21-28天"
+    },
+    {
+      "formula_name": "薯蓣丸",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": null,
+      "complication_id": "POST_OP_QI_XU",
+      "symptom_id": null,
+      "priority": 8,
+      "indication": "术后气血大虚，体虚易感，正气不足，易感冒",
+      "dosage_adjustment": "常规剂量，可加玉屏风散固表",
+      "duration": "28-42天"
+    },
+    {
+      "formula_name": "当归建中汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": null,
+      "complication_id": "POST_OP_QI_XU",
+      "symptom_id": null,
+      "priority": 9,
+      "indication": "术后气血大虚，虚劳里急，腹痛喜温，面色萎黄",
+      "dosage_adjustment": "可加黄芪30g补气",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "苓桂术甘汤",
+      "constitution_id": "TAIYIN_PI_XU",
+      "pathogenesis_id": "PHLEGM_DAMPNESS",
+      "complication_id": null,
+      "symptom_id": "ASCITES",
+      "priority": 8,
+      "indication": "肿瘤痰饮凝聚，胸胁满闷，眩晕，心下逆满",
+      "dosage_adjustment": "可加泽泻、猪苓利水",
+      "duration": "14-21天"
+    },
+    {
+      "formula_name": "牡蛎泽泻散",
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "pathogenesis_id": "PHLEGM_DAMPNESS",
+      "complication_id": null,
+      "symptom_id": "ASCITES",
+      "priority": 9,
+      "indication": "肿瘤水湿内停，腹水胸水，小便不利，浮肿",
+      "dosage_adjustment": "常规剂量，短期使用",
+      "duration": "7-14天"
+    }
+  ]
+}

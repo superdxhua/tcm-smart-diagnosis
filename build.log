@@ -1,0 +1,218 @@
+
+> coze-mini-program@1.0.0 build:web
+> npx weapp-tailwindcss patch || true && cross-env NODE_OPTIONS="--openssl-legacy-provider --max-old-space-size=4096" taro build --type h5 --output-path dist-web
+
+ℹ 未找到当前子包的 Tailwind CSS 目标记录，正在生成。
+ℹ weapp-tw patch 绑定 Tailwind CSS -> node_modules/tailwindcss (v4.2.1)
+ℹ 记录 weapp-tw patch 目标 -> ./node_modules/.cache/weapp-tailwindcss/bae5e8e6be69a13e4973a83fd023d729/tailwindcss-target.json
+✔ Tailwind CSS 运行时补丁已完成。
+👽 Taro v4.1.9
+
+[Config] 加载环境变量文件: /workspace/projects/.env.production
+[Config] PROJECT_DOMAIN: https://api.zhongyihskhealth.com
+[Config] NODE_ENV: production
+ℹ tailwindcss-patcher 绑定 Tailwind CSS -> node_modules/@tailwindcss/postcss (v4.2.1)
+✔ 当前使用 Tailwind CSS 版本为: 4.2.1
+ℹ 检测到 Tailwind CSS 目标记录与当前解析结果不一致，正在自动重新 patch 并刷新缓存。
+(node:14137) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+vite v4.5.14 building for production...
+transforming...
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+✓ 377 modules transformed.
+✓ built in 17.28s
+[taro:vite-h5-api] /workspace/projects/src/network.ts: Unexpected token (27:4)
+
+  25 |       data: option.data,
+  26 |       "https://api.zhongyihskhealth.com"
+> 27 |     });
+     |     ^
+  28 |     const isGet = (option.method || "GET").toUpperCase() === "GET";
+  29 |     return Taro.request({
+  30 |       ...option,
+file: /workspace/projects/src/network.ts:27:4
+/workspace/projects/node_modules/@babel/parser/lib/index.js:365
+    const error = new SyntaxError();
+                  ^
+
+SyntaxError: /workspace/projects/src/network.ts: Unexpected token (27:4)
+
+  25 |       data: option.data,
+  26 |       "https://api.zhongyihskhealth.com"
+> 27 |     });
+     |     ^
+  28 |     const isGet = (option.method || "GET").toUpperCase() === "GET";
+  29 |     return Taro.request({
+  30 |       ...option,
+    at toParseError (/workspace/projects/node_modules/@babel/parser/src/parse-error.ts:95:45)
+    at JSXParserMixin.raise (/workspace/projects/node_modules/@babel/parser/src/tokenizer/index.ts:1504:19)
+    at JSXParserMixin.unexpected (/workspace/projects/node_modules/@babel/parser/src/tokenizer/index.ts:1544:16)
+    at JSXParserMixin.parseObjPropValue (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:2395:21)
+    at JSXParserMixin.parsePropertyDefinition (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:2228:17)
+    at JSXParserMixin.parseObjectLike (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:2095:21)
+    at JSXParserMixin.parseExprAtom (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:1181:21)
+    at JSXParserMixin.parseExprAtom (/workspace/projects/node_modules/@babel/parser/src/plugins/jsx/index.ts:583:22)
+    at JSXParserMixin.parseExprSubscripts (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:742:23)
+    at JSXParserMixin.parseUpdate (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:721:21)
+    at JSXParserMixin.parseMaybeUnary (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:683:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:417:14)
+    at JSXParserMixin.parseExprOps (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:429:23)
+    at JSXParserMixin.parseMaybeConditional (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:384:23)
+    at JSXParserMixin.parseMaybeAssign (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:301:21)
+    at callback (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:257:12)
+    at JSXParserMixin.allowInAnd (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:3194:12)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:256:17)
+    at JSXParserMixin.parseMaybeAssignAllowInOrVoidPattern (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:3308:17)
+    at JSXParserMixin.parseExprListItem (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:2790:18)
+    at JSXParserMixin.parseCallExpressionArguments (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:1042:14)
+    at JSXParserMixin.parseCoverCallAndAsyncArrowHead (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:922:29)
+    at JSXParserMixin.parseSubscript (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:804:19)
+    at JSXParserMixin.parseSubscripts (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:763:19)
+    at JSXParserMixin.parseExprSubscripts (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:748:17)
+    at JSXParserMixin.parseUpdate (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:721:21)
+    at JSXParserMixin.parseMaybeUnary (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:683:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:417:14)
+    at JSXParserMixin.parseExprOps (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:429:23)
+    at JSXParserMixin.parseMaybeConditional (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:384:23)
+    at JSXParserMixin.parseMaybeAssign (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:301:21)
+    at JSXParserMixin.parseExpressionBase (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:226:23)
+    at callback (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:217:39)
+    at JSXParserMixin.allowInAnd (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:3189:16)
+    at JSXParserMixin.parseExpression (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:217:17)
+    at JSXParserMixin.parseStatementContent (/workspace/projects/node_modules/@babel/parser/src/parser/statement.ts:688:23)
+    at JSXParserMixin.parseStatementLike (/workspace/projects/node_modules/@babel/parser/src/parser/statement.ts:482:17)
+    at JSXParserMixin.parseStatementListItem (/workspace/projects/node_modules/@babel/parser/src/parser/statement.ts:431:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/workspace/projects/node_modules/@babel/parser/src/parser/statement.ts:1444:16)
+    at JSXParserMixin.parseBlockBody (/workspace/projects/node_modules/@babel/parser/src/parser/statement.ts:1417:10)
+    at JSXParserMixin.parseBlock (/workspace/projects/node_modules/@babel/parser/src/parser/statement.ts:1385:10)
+    at JSXParserMixin.parseFunctionBody (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:2618:24)
+    at JSXParserMixin.parseArrowExpression (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:2559:10)
+    at JSXParserMixin.parseParenAndDistinguishExpression (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:1847:12)
+    at JSXParserMixin.parseExprAtom (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:1170:21)
+    at JSXParserMixin.parseExprAtom (/workspace/projects/node_modules/@babel/parser/src/plugins/jsx/index.ts:583:22)
+    at JSXParserMixin.parseExprSubscripts (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:742:23)
+    at JSXParserMixin.parseUpdate (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:721:21)
+    at JSXParserMixin.parseMaybeUnary (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:683:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/workspace/projects/node_modules/@babel/parser/src/parser/expression.ts:417:14) {
+  code: 'PLUGIN_ERROR',
+  reasonCode: 'UnexpectedToken',
+  loc: Position { line: 27, column: 4, index: 764 },
+  pos: 764,
+  syntaxPlugin: undefined,
+  pluginCode: 'BABEL_PARSE_ERROR',
+  plugin: 'taro:vite-h5-api',
+  hook: 'transform',
+  id: '/workspace/projects/src/network.ts',
+  watchFiles: [
+    'taro:compiler',
+    '/workspace/projects/src/pages/index/index.config.ts',
+    '/workspace/projects/src/pages/login/index.config.ts',
+    '/workspace/projects/src/pages/register/index.config.ts',
+    '/workspace/projects/src/pages/register-form/index.config.ts',
+    '/workspace/projects/src/pages/disclaimer/index.config.ts',
+    '/workspace/projects/src/pages/download/index.config.ts',
+    '/workspace/projects/src/pages/admin/index.config.ts',
+    '/workspace/projects/src/pages/admin-packages/index.config.ts',
+    '/workspace/projects/src/pages/admin-recharge/index.config.ts',
+    '/workspace/projects/src/pages/patients-list/index.config.ts',
+    '/workspace/projects/src/pages/patient-detail/index.config.ts',
+    '/workspace/projects/src/pages/records-list/index.config.ts',
+    '/workspace/projects/src/pages/record-detail/index.config.ts',
+    '/workspace/projects/src/pages/prescription-adjust/index.config.ts',
+    '/workspace/projects/src/pages/medication-feedback/index.config.ts',
+    '/workspace/projects/src/pages/ai-chat/index.config.ts',
+    '/workspace/projects/src/pages/search/index.config.ts',
+    '/workspace/projects/src/pages/learning-center/index.config.ts',
+    '/workspace/projects/src/pages/sign-in/index.config.ts',
+    '/workspace/projects/src/pages/medical-cases/index.config.ts',
+    '/workspace/projects/src/pages/recharge/index.config.ts',
+    '/workspace/projects/src/pages/formula-management/index.config.ts',
+    '/workspace/projects/src/pages/formula-detail/index.config.ts',
+    '/workspace/projects/src/index.html',
+    '/workspace/projects/src/index.html?html-proxy&inline-css&index=1.css',
+    '\x00/workspace/projects/src/app.config.ts?taro-entry-loader=true',
+    '/workspace/projects/node_modules/@tarojs/plugin-platform-h5/dist/runtime/apis/index.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/index.js',
+    '/workspace/projects/node_modules/@babel/runtime/helpers/esm/regenerator.js',
+    '/workspace/projects/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js',
+    '\x00vite/preload-helper',
+    'package.json',
+    '/workspace/projects/node_modules/@tarojs/plugin-platform-h5/dist/runtime/index.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/index.js',
+    '/workspace/projects/node_modules/@tarojs/plugin-framework-react/dist/runtime.js',
+    '/workspace/projects/node_modules/react/index.js',
+    '/workspace/projects/node_modules/react-dom/client.js',
+    '/workspace/projects/node_modules/react-dom/index.js',
+    '/workspace/projects/node_modules/@tarojs/components/dist/components/index.js',
+    '/workspace/projects/node_modules/@tarojs/components/global.css',
+    '/workspace/projects/node_modules/react/cjs/react.production.min.js',
+    '/workspace/projects/node_modules/react-dom/cjs/react-dom.production.min.js',
+    '\x00commonjsHelpers.js',
+    '\x00/workspace/projects/node_modules/react/index.js?commonjs-module',
+    '\x00/workspace/projects/node_modules/react/cjs/react.production.min.js?commonjs-proxy',
+    '\x00/workspace/projects/node_modules/react/cjs/react.production.min.js?commonjs-exports',
+    '\x00vite/modulepreload-polyfill',
+    '/workspace/projects/node_modules/scheduler/index.js',
+    '/workspace/projects/src/app.tsx',
+    '/workspace/projects/src/pages/index/index.tsx',
+    '/workspace/projects/src/pages/login/index.tsx',
+    '/workspace/projects/src/pages/register-form/index.tsx',
+    '/workspace/projects/src/pages/disclaimer/index.tsx',
+    '/workspace/projects/src/pages/register/index.tsx',
+    '/workspace/projects/src/pages/download/index.tsx',
+    '/workspace/projects/src/pages/admin-packages/index.tsx',
+    '/workspace/projects/src/pages/admin/index.tsx',
+    '/workspace/projects/src/pages/patients-list/index.tsx',
+    '/workspace/projects/src/pages/admin-recharge/index.tsx',
+    '/workspace/projects/src/pages/patient-detail/index.tsx',
+    '/workspace/projects/src/pages/record-detail/index.tsx',
+    '/workspace/projects/src/pages/medication-feedback/index.tsx',
+    '/workspace/projects/src/pages/records-list/index.tsx',
+    '/workspace/projects/src/pages/search/index.tsx',
+    '/workspace/projects/src/pages/prescription-adjust/index.tsx',
+    '/workspace/projects/src/pages/sign-in/index.tsx',
+    '/workspace/projects/src/pages/ai-chat/index.tsx',
+    '/workspace/projects/src/pages/formula-detail/index.tsx',
+    '/workspace/projects/src/pages/medical-cases/index.tsx',
+    '/workspace/projects/src/pages/learning-center/index.tsx',
+    '/workspace/projects/src/pages/formula-management/index.tsx',
+    '/workspace/projects/src/pages/recharge/index.tsx',
+    '/workspace/projects/node_modules/@tarojs/plugin-platform-h5/dist/runtime/apis/taro.js',
+    '/workspace/projects/node_modules/lodash-es/isMatchWith.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/tabbar.js',
+    '/workspace/projects/node_modules/@tarojs/plugin-platform-h5/dist/definition.json',
+    '/workspace/projects/node_modules/@tarojs/plugin-platform-h5/dist/runtime/apis/taro-h5.js',
+    '/workspace/projects/node_modules/lodash-es/set.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/navigationBar.js',
+    '/workspace/projects/node_modules/@tarojs/taro-h5/dist/api/taro.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/api.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/history.js',
+    '/workspace/projects/node_modules/@tarojs/taro-h5/dist/api/index.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/router/mpa.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/utils/navigate.js',
+    '/workspace/projects/node_modules/history/index.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/utils/index.js',
+    '/workspace/projects/node_modules/@tarojs/router/dist/router/spa.js',
+    '/workspace/projects/node_modules/@tarojs/components/dist/taro-components/taro-components.css',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/dom-external/index.js',
+    '/workspace/projects/node_modules/@babel/runtime/helpers/esm/regeneratorDefine.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/env.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/bom/getComputedStyle.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/bom/document.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/bom/location.js',
+    '/workspace/projects/node_modules/@tarojs/shared/dist/index.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/bom/history.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/bom/raf.js',
+    '/workspace/projects/node_modules/@tarojs/runtime/dist/bom/navigator.js',
+    ... 347 more items
+  ]
+}
+
+Node.js v24.13.1

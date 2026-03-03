@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <!-- SEO Meta Tags -->
+  <title>中医智能诊疗好帮手 - AI智能问诊、处方推荐、健康管理</title>
+  <meta name="description" content="基于AI大模型的中医智能诊疗平台，提供智能问诊、经方推荐、处方生成、病历管理等专业服务。传承千年中医智慧，融合现代AI技术。">
+  <meta name="keywords" content="中医, 智能诊疗, AI问诊, 中医处方, 经方, 张仲景, 医案, 健康管理">
+  <meta name="author" content="中医智能诊疗好帮手">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png">
+  
+  <!-- iOS Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="中医诊疗">
+  
+  <!-- Android Meta Tags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1890ff">
+  <meta name="application-name" content="中医诊疗">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="中医智能诊疗好帮手">
+  <meta property="og:description" content="AI驱动的中医智能诊疗平台">
+  <meta property="og:image" content="/icons/icon-512x512.png">
+  <meta property="og:url" content="https://your-app.vercel.app">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="中医智能诊疗好帮手">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="中医智能诊疗好帮手">
+  <meta name="twitter:description" content="AI驱动的中医智能诊疗平台">
+  <meta name="twitter:image" content="/icons/icon-512x512.png">
+  
+  <!-- Robots -->
+  <meta name="robots" content="index, follow">
+  
+  <!-- Prevent zoom on double-tap -->
+  <meta name="format-detection" content="telephone=no">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body, #app {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Loading spinner */
+    #app-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      z-index: 9999;
+    }
+    
+    #app-loading.hidden {
+      display: none;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #1890ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="app-loading">
+    <div class="spinner"></div>
+    <div class="loading-text">加载中...</div>
+  </div>
+  
+  <!-- App container -->
+  <div id="app"></div>
+  
+  <script type="module" src="/src/main.tsx"></script>
+  
+  <script>
+    // Hide loading screen when app is ready
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var loading = document.getElementById('app-loading');
+        if (loading) {
+          loading.classList.add('hidden');
+        }
+      }, 500);
+    });
+    
+    // PWA install prompt handler
+    window.addEventListener('beforeinstallprompt', function(e) {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      window.deferredPrompt = e;
+      // Update UI to notify the user they can add to home screen
+      console.log('beforeinstallprompt event fired');
+    });
+    
+    // Handle app installed
+    window.addEventListener('appinstalled', function(e) {
+      console.log('app installed');
+      window.deferredPrompt = null;
+    });
+  </script>
+</body>
+</html>

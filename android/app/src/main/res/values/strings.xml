@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">中医智能诊疗</string>
+    <string name="title_activity_main">中医智能诊疗</string>
+    <string name="package_name">com.tcm.smart.diagnosis</string>
+    <string name="custom_url_scheme">com.tcm.smart.diagnosis</string>
+</resources>

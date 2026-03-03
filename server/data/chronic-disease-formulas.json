@@ -1,0 +1,580 @@
+{
+  "chronic_diseases": [
+    {
+      "code": "DIGESTIVE_GASTRITIS",
+      "name": "慢性胃炎",
+      "category": "消化系统慢性病",
+      "description": "慢性胃炎是指由各种原因引起的胃黏膜慢性炎症，是消化系统常见疾病之一。临床表现为胃脘疼痛、腹胀、嗳气、反酸、恶心等症状。",
+      "core_mechanism": "脾胃虚弱（太阴）、肝胃不和（厥阴）",
+      "treatment_principle": "温中健脾、疏肝和胃、调和寒热",
+      "precautions": "忌生冷油腻，避免情绪波动，可配合生姜红糖水助药力",
+      "formulas": [
+        {
+          "formula_name": "理中汤",
+          "priority": 10,
+          "indication": "胃脘冷痛、喜温喜按、食少便溏、舌淡苔白、脉沉缓",
+          "contraindication": "胃热炽盛、阴虚火旺者慎用",
+          "dosage_adjustment": "慢性调理可减量，长期服用",
+          "duration": 30,
+          "symptoms": ["胃脘冷痛", "喜温喜按", "食少便溏", "舌淡苔白", "脉沉缓", "恶心呕吐", "神疲乏力"]
+        },
+        {
+          "formula_name": "半夏泻心汤",
+          "priority": 9,
+          "indication": "心下痞满、恶心呕吐、肠鸣腹泻、口苦或口淡、苔腻",
+          "contraindication": "纯虚无邪者禁用",
+          "dosage_adjustment": "根据寒热比例调整",
+          "duration": 21,
+          "symptoms": ["心下痞满", "恶心呕吐", "肠鸣", "腹泻", "口苦", "口淡", "苔腻"]
+        },
+        {
+          "formula_name": "小柴胡汤",
+          "priority": 8,
+          "indication": "情绪波动后胃胀、默默不欲饮食、胸胁苦满、口苦咽干",
+          "contraindication": "肝火炽盛者慎用",
+          "dosage_adjustment": "可加白术、茯苓健脾",
+          "duration": 28,
+          "symptoms": ["情绪波动后胃胀", "默默不欲饮食", "胸胁苦满", "口苦", "咽干", "往来寒热"]
+        },
+        {
+          "formula_name": "香砂六君子汤",
+          "priority": 7,
+          "indication": "脾胃气虚、胃脘胀满、嗳气、食欲不振、倦怠乏力",
+          "contraindication": "阴虚火旺者禁用",
+          "dosage_adjustment": "常规剂量",
+          "duration": 30,
+          "symptoms": ["胃脘胀满", "嗳气", "食欲不振", "倦怠乏力", "面色萎黄", "舌淡苔白"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "饮食", "content": "忌生冷油腻，定时定量，少食多餐", "priority": 10},
+        {"type": "饮食", "content": "可常食山药、小米粥、生姜红糖水", "priority": 8},
+        {"type": "起居", "content": "饭后适当活动，促进消化", "priority": 6},
+        {"type": "情志", "content": "保持心情舒畅，避免情绪波动", "priority": 9},
+        {"type": "起居", "content": "注意保暖，腹部勿受凉", "priority": 7}
+      ]
+    },
+    {
+      "code": "DIGESTIVE_IBS",
+      "name": "肠易激综合征",
+      "category": "消化系统慢性病",
+      "description": "肠易激综合征是一种常见的功能性肠病，以腹痛、腹胀、排便习惯改变为主要特征，常伴有情绪障碍。",
+      "core_mechanism": "肝郁脾虚（厥阴）、脾胃虚弱（太阴）",
+      "treatment_principle": "疏肝理脾、调和肠道",
+      "precautions": "避免情绪紧张，注意饮食规律，忌辛辣刺激",
+      "formulas": [
+        {
+          "formula_name": "四逆散",
+          "priority": 10,
+          "indication": "腹痛即泻、泻后痛减、情绪相关、胸胁胀满、脉弦",
+          "contraindication": "纯虚无邪者禁用",
+          "dosage_adjustment": "可加白术、茯苓健脾",
+          "duration": 28,
+          "symptoms": ["腹痛即泻", "泻后痛减", "情绪相关", "胸胁胀满", "脉弦", "嗳气"]
+        },
+        {
+          "formula_name": "痛泻要方",
+          "priority": 9,
+          "indication": "腹痛泄泻、泻后痛减、肠鸣腹痛、苔薄白",
+          "contraindication": "湿热泄泻者禁用",
+          "dosage_adjustment": "常规剂量",
+          "duration": 21,
+          "symptoms": ["腹痛泄泻", "泻后痛减", "肠鸣", "腹痛", "苔薄白", "脉弦"]
+        },
+        {
+          "formula_name": "参苓白术散",
+          "priority": 8,
+          "indication": "脾胃虚弱、大便溏稀、食后腹胀、倦怠乏力、面色萎黄",
+          "contraindication": "实证泄泻者禁用",
+          "dosage_adjustment": "可加补骨脂、肉豆蔻",
+          "duration": 30,
+          "symptoms": ["大便溏稀", "食后腹胀", "倦怠乏力", "面色萎黄", "食少", "舌淡苔白"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "饮食", "content": "避免辛辣刺激、生冷食物", "priority": 10},
+        {"type": "情志", "content": "调节情绪，保持心情舒畅", "priority": 9},
+        {"type": "饮食", "content": "少食多餐，定时定量", "priority": 8},
+        {"type": "起居", "content": "规律作息，避免熬夜", "priority": 7},
+        {"type": "运动", "content": "适当运动，促进肠道蠕动", "priority": 6}
+      ]
+    },
+    {
+      "code": "DIGESTIVE_CONSTIPATION",
+      "name": "慢性便秘",
+      "category": "消化系统慢性病",
+      "description": "慢性便秘是指排便次数减少、粪便干结、排便困难或不尽感等症状持续超过 6 个月。",
+      "core_mechanism": "阳明燥结、脾胃虚弱、肾虚便秘",
+      "treatment_principle": "润肠通便、益气健脾、温肾通便",
+      "precautions": "不可长期使用泻下药，以免损伤正气",
+      "formulas": [
+        {
+          "formula_name": "麻子仁丸",
+          "priority": 10,
+          "indication": "大便干结如羊屎、腹胀、口干、小便频数、脉涩",
+          "contraindication": "脾胃虚寒者慎用",
+          "dosage_adjustment": "老年人可减量",
+          "duration": 14,
+          "symptoms": ["大便干结", "腹胀", "口干", "小便频数", "脉涩", "舌红少苔"]
+        },
+        {
+          "formula_name": "济川煎",
+          "priority": 9,
+          "indication": "肾虚便秘、腰膝酸软、小便清长、大便秘结",
+          "contraindication": "实热便秘者禁用",
+          "dosage_adjustment": "可加肉苁蓉、当归",
+          "duration": 21,
+          "symptoms": ["腰膝酸软", "小便清长", "大便秘结", "头晕耳鸣", "舌淡苔白"]
+        },
+        {
+          "formula_name": "黄芪汤",
+          "priority": 8,
+          "indication": "气虚便秘、大便不干、排便无力、面色萎黄、气短",
+          "contraindication": "实热便秘者禁用",
+          "dosage_adjustment": "可加陈皮、火麻仁",
+          "duration": 28,
+          "symptoms": ["大便不干", "排便无力", "面色萎黄", "气短", "神疲乏力", "舌淡"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "饮食", "content": "多食蔬菜水果，增加膳食纤维", "priority": 10},
+        {"type": "起居", "content": "养成定时排便的习惯", "priority": 9},
+        {"type": "运动", "content": "适当运动，促进肠道蠕动", "priority": 8},
+        {"type": "饮食", "content": "多饮水，每日至少 2000ml", "priority": 7},
+        {"type": "起居", "content": "避免久坐，定时起身活动", "priority": 6}
+      ]
+    },
+    {
+      "code": "IMMUNE_HASHIMOTO",
+      "name": "桥本甲状腺炎",
+      "category": "免疫与代谢类疾病",
+      "description": "桥本甲状腺炎是一种自身免疫性甲状腺疾病，临床表现为甲状腺肿大、甲状腺功能减退或亢进。",
+      "core_mechanism": "阳虚寒凝 + 痰湿内阻",
+      "treatment_principle": "温阳利水、化痰软坚、扶正祛邪",
+      "precautions": "不可盲目清热解毒，反伤阳气；定期监测甲状腺功能",
+      "formulas": [
+        {
+          "formula_name": "真武汤",
+          "priority": 10,
+          "indication": "畏寒、浮肿、乏力、脉沉细、小便不利",
+          "contraindication": "阴虚火旺者禁用",
+          "dosage_adjustment": "可加黄芪、党参",
+          "duration": 60,
+          "symptoms": ["畏寒", "浮肿", "乏力", "脉沉细", "小便不利", "舌淡胖"]
+        },
+        {
+          "formula_name": "桂枝加附子汤",
+          "priority": 9,
+          "indication": "汗多、恶风、手足冷、脉浮缓、舌苔白",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "附子先煎，用量从小开始",
+          "duration": 45,
+          "symptoms": ["汗多", "恶风", "手足冷", "脉浮缓", "舌苔白", "乏力"]
+        },
+        {
+          "formula_name": "当归芍药散",
+          "priority": 8,
+          "indication": "面色萎黄、月经不调、轻度浮肿、腹痛",
+          "contraindication": "湿热内蕴者慎用",
+          "dosage_adjustment": "常规剂量",
+          "duration": 30,
+          "symptoms": ["面色萎黄", "月经不调", "轻度浮肿", "腹痛", "头晕目眩", "舌淡苔白"]
+        },
+        {
+          "formula_name": "小柴胡汤合五苓散",
+          "priority": 7,
+          "indication": "胸胁苦满、口苦咽干、小便不利、微恶寒",
+          "contraindication": "纯虚无邪者禁用",
+          "dosage_adjustment": "可加黄芪、当归",
+          "duration": 30,
+          "symptoms": ["胸胁苦满", "口苦咽干", "小便不利", "微恶寒", "心烦", "舌淡苔白"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "饮食", "content": "避免碘过量，忌辛辣刺激", "priority": 10},
+        {"type": "起居", "content": "注意保暖，避免受凉", "priority": 9},
+        {"type": "情志", "content": "保持心情舒畅，避免焦虑", "priority": 8},
+        {"type": "起居", "content": "规律作息，避免熬夜", "priority": 7},
+        {"type": "运动", "content": "适当运动，增强体质", "priority": 6}
+      ]
+    },
+    {
+      "code": "IMMUNE_DIABETES",
+      "name": "2型糖尿病",
+      "category": "免疫与代谢类疾病",
+      "description": "2型糖尿病是由于胰岛素抵抗和胰岛素分泌不足导致的慢性代谢性疾病。",
+      "core_mechanism": "阳明热盛津伤、少阴虚劳、水饮内停",
+      "treatment_principle": "清热生津、温补肾阳、化气行水",
+      "precautions": "慎用滋阴降火套路，需辨证论治；定期监测血糖",
+      "formulas": [
+        {
+          "formula_name": "白虎加人参汤",
+          "priority": 9,
+          "indication": "大热、大汗、大渴、脉洪大、舌红苔黄",
+          "contraindication": "脾胃虚寒者禁用",
+          "dosage_adjustment": "仅限实热证，中病即止",
+          "duration": 14,
+          "symptoms": ["大热", "大汗", "大渴", "脉洪大", "舌红苔黄", "烦躁"]
+        },
+        {
+          "formula_name": "肾气丸",
+          "priority": 10,
+          "indication": "口渴但饮水不多、腰膝酸冷、夜尿多、脉沉弱",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加山茱萸、五味子",
+          "duration": 60,
+          "symptoms": ["口渴饮水不多", "腰膝酸冷", "夜尿多", "脉沉弱", "舌淡苔白"]
+        },
+        {
+          "formula_name": "五苓散",
+          "priority": 8,
+          "indication": "口渴但水入则吐、小便不利、水肿、脉浮",
+          "contraindication": "阴虚津伤者慎用",
+          "dosage_adjustment": "可加猪苓、茯苓",
+          "duration": 21,
+          "symptoms": ["口渴水入则吐", "小便不利", "水肿", "脉浮", "舌苔白腻"]
+        },
+        {
+          "formula_name": "黄芪桂枝五物汤",
+          "priority": 7,
+          "indication": "肢体麻木、乏力、自汗、脉微涩",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加当归、鸡血藤",
+          "duration": 45,
+          "symptoms": ["肢体麻木", "乏力", "自汗", "脉微涩", "舌淡苔白"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "饮食", "content": "控制碳水化合物摄入，低糖低脂", "priority": 10},
+        {"type": "运动", "content": "规律运动，每日至少 30 分钟", "priority": 9},
+        {"type": "起居", "content": "规律作息，避免熬夜", "priority": 8},
+        {"type": "情志", "content": "保持心情舒畅，避免焦虑", "priority": 7},
+        {"type": "饮食", "content": "多食蔬菜，适量蛋白质", "priority": 6}
+      ]
+    },
+    {
+      "code": "NERVOUS_ANXIETY",
+      "name": "焦虑症",
+      "category": "情志与神经系统慢性病",
+      "description": "焦虑症是以广泛、持续、过度担忧为特征的常见心理疾病，常伴有心悸、出汗、呼吸困难等症状。",
+      "core_mechanism": "枢机不利（少阳）、气血失和（厥阴）",
+      "treatment_principle": "和解枢机、调和气血、疏肝解郁",
+      "precautions": "避免情绪刺激，保持规律作息",
+      "formulas": [
+        {
+          "formula_name": "柴胡加龙骨牡蛎汤",
+          "priority": 10,
+          "indication": "胸满烦惊、失眠多梦、心悸、便秘、易惊",
+          "contraindication": "纯虚无邪者禁用",
+          "dosage_adjustment": "可加酸枣仁、远志",
+          "duration": 28,
+          "symptoms": ["胸满烦惊", "失眠多梦", "心悸", "便秘", "易惊", "口苦"]
+        },
+        {
+          "formula_name": "甘麦大枣汤",
+          "priority": 9,
+          "indication": "悲伤欲哭、精神恍惚、哈欠频作、心中烦乱",
+          "contraindication": "实证热证者禁用",
+          "dosage_adjustment": "可加百合、生地",
+          "duration": 21,
+          "symptoms": ["悲伤欲哭", "精神恍惚", "哈欠频作", "心中烦乱", "乏力"]
+        },
+        {
+          "formula_name": "酸枣仁汤",
+          "priority": 8,
+          "indication": "虚烦失眠、心悸盗汗、头晕目眩、咽干",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加当归、白芍",
+          "duration": 28,
+          "symptoms": ["虚烦失眠", "心悸", "盗汗", "头晕目眩", "咽干", "舌红少苔"]
+        },
+        {
+          "formula_name": "温胆汤",
+          "priority": 7,
+          "indication": "心烦失眠、胆怯易惊、头晕目眩、口苦",
+          "contraindication": "脾胃虚寒者慎用",
+          "dosage_adjustment": "可加远志、石菖蒲",
+          "duration": 21,
+          "symptoms": ["心烦失眠", "胆怯易惊", "头晕目眩", "口苦", "苔腻"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "情志", "content": "保持心情舒畅，避免焦虑紧张", "priority": 10},
+        {"type": "起居", "content": "规律作息，避免熬夜", "priority": 9},
+        {"type": "运动", "content": "适当运动，如散步、瑜伽", "priority": 8},
+        {"type": "饮食", "content": "少食辛辣刺激，多食疏肝食物", "priority": 7},
+        {"type": "情志", "content": "学会放松，深呼吸、冥想", "priority": 6}
+      ]
+    },
+    {
+      "code": "NERVOUS_INSOMNIA",
+      "name": "失眠",
+      "category": "情志与神经系统慢性病",
+      "description": "失眠是指入睡困难、睡眠维持困难、早醒等症状，影响日间功能的睡眠障碍。",
+      "core_mechanism": "阴虚火旺、心脾两虚、肝火扰心",
+      "treatment_principle": "养血安神、滋阴清热、疏肝宁心",
+      "precautions": "避免睡前刺激，保持规律作息",
+      "formulas": [
+        {
+          "formula_name": "酸枣仁汤",
+          "priority": 10,
+          "indication": "虚烦失眠、心悸盗汗、头晕目眩、咽干",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加当归、白芍",
+          "duration": 28,
+          "symptoms": ["虚烦失眠", "心悸", "盗汗", "头晕目眩", "咽干", "舌红少苔"]
+        },
+        {
+          "formula_name": "黄连阿胶汤",
+          "priority": 9,
+          "indication": "心中烦、不得卧、舌红苔黄、脉细数",
+          "contraindication": "脾胃虚寒者禁用",
+          "dosage_adjustment": "阿胶烊化，黄连少量",
+          "duration": 21,
+          "symptoms": ["心中烦", "不得卧", "舌红苔黄", "脉细数", "口干"]
+        },
+        {
+          "formula_name": "归脾汤",
+          "priority": 8,
+          "indication": "心脾两虚、失眠健忘、心悸食少、面色萎黄",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加酸枣仁、远志",
+          "duration": 30,
+          "symptoms": ["失眠健忘", "心悸", "食少", "面色萎黄", "倦怠乏力", "舌淡"]
+        },
+        {
+          "formula_name": "桂枝加龙骨牡蛎汤",
+          "priority": 7,
+          "indication": "心悸失眠、自汗盗汗、易惊、脉浮",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "常规剂量",
+          "duration": 21,
+          "symptoms": ["心悸失眠", "自汗盗汗", "易惊", "脉浮", "乏力", "舌淡"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "起居", "content": "规律作息，固定睡眠时间", "priority": 10},
+        {"type": "起居", "content": "睡前避免刺激，如手机、咖啡", "priority": 9},
+        {"type": "情志", "content": "保持心情舒畅，避免焦虑", "priority": 8},
+        {"type": "运动", "content": "适当运动，但避免睡前剧烈运动", "priority": 7},
+        {"type": "饮食", "content": "晚餐清淡，避免过饱", "priority": 6}
+      ]
+    },
+    {
+      "code": "NERVOUS_CHRONIC_FATIGUE",
+      "name": "慢性疲劳综合征",
+      "category": "情志与神经系统慢性病",
+      "description": "慢性疲劳综合征是以持续或反复发作的疲劳为主要特征，伴有多种躯体和精神症状的疾病。",
+      "core_mechanism": "虚劳（气血阴阳俱虚）",
+      "treatment_principle": "建中气、调阴阳、扶正祛邪",
+      "precautions": "注意休息，避免过度劳累",
+      "formulas": [
+        {
+          "formula_name": "小建中汤",
+          "priority": 10,
+          "indication": "腹中隐痛、心悸、手足烦热、面色无华",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加黄芪、当归",
+          "duration": 30,
+          "symptoms": ["腹中隐痛", "心悸", "手足烦热", "面色无华", "乏力", "舌淡"]
+        },
+        {
+          "formula_name": "薯蓣丸",
+          "priority": 9,
+          "indication": "体虚易感、头晕乏力、食欲差、消瘦",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加人参、黄芪",
+          "duration": 45,
+          "symptoms": ["体虚易感", "头晕乏力", "食欲差", "消瘦", "面色萎黄", "脉弱"]
+        },
+        {
+          "formula_name": "黄芪建中汤",
+          "priority": 8,
+          "indication": "气虚较重、乏力、自汗、易感冒",
+          "contraindication": "阴虚火旺者慎用",
+          "dosage_adjustment": "可加党参、白术",
+          "duration": 30,
+          "symptoms": ["乏力", "自汗", "易感冒", "气短", "面色萎黄", "舌淡"]
+        },
+        {
+          "formula_name": "桂枝加黄芪汤",
+          "priority": 7,
+          "indication": "气血两虚、乏力、自汗、易感冒",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加当归、白芍",
+          "duration": 28,
+          "symptoms": ["乏力", "自汗", "易感冒", "面色萎黄", "脉浮缓"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "起居", "content": "规律作息，保证充足睡眠", "priority": 10},
+        {"type": "运动", "content": "适当运动，如散步、太极", "priority": 9},
+        {"type": "情志", "content": "保持心情舒畅，避免压力", "priority": 8},
+        {"type": "饮食", "content": "营养丰富，均衡饮食", "priority": 7},
+        {"type": "起居", "content": "避免过度劳累", "priority": 6}
+      ]
+    },
+    {
+      "code": "RHEUMATOID_RA",
+      "name": "类风湿关节炎",
+      "category": "风湿免疫与退行性疾病",
+      "description": "类风湿关节炎是一种以关节滑膜炎症为主要特征的自身免疫性疾病，临床表现为关节肿痛、畸形、功能障碍。",
+      "core_mechanism": "风寒湿痹、肝肾亏虚、痰瘀互结",
+      "treatment_principle": "温经散寒、祛风除湿、补益肝肾、活血化瘀",
+      "precautions": "注意保暖，避免受寒；急性期需动态调整",
+      "formulas": [
+        {
+          "formula_name": "桂枝芍药知母汤",
+          "priority": 10,
+          "indication": "关节肿痛发热、脚肿如脱、头眩短气",
+          "contraindication": "纯虚无邪者禁用",
+          "dosage_adjustment": "根据寒热比例调整",
+          "duration": 30,
+          "symptoms": ["关节肿痛", "关节发热", "脚肿如脱", "头眩", "短气", "脉浮"]
+        },
+        {
+          "formula_name": "乌头汤",
+          "priority": 9,
+          "indication": "剧痛不可屈伸、遇寒加重、脉沉紧",
+          "contraindication": "热痹者禁用；需严格炮制与煎法",
+          "dosage_adjustment": "乌头先煎，用量从小开始",
+          "duration": 21,
+          "symptoms": ["剧痛不可屈伸", "遇寒加重", "脉沉紧", "关节冷痛"]
+        },
+        {
+          "formula_name": "防己黄芪汤",
+          "priority": 8,
+          "indication": "关节酸重、汗出恶风、浮肿、脉浮",
+          "contraindication": "热痹者慎用",
+          "dosage_adjustment": "可加桂枝、茯苓",
+          "duration": 28,
+          "symptoms": ["关节酸重", "汗出恶风", "浮肿", "脉浮", "乏力"]
+        },
+        {
+          "formula_name": "桂枝附子汤",
+          "priority": 7,
+          "indication": "肢体疼痛、不得屈伸、汗出恶风、小便不利",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "附子先煎，从小剂量开始",
+          "duration": 21,
+          "symptoms": ["肢体疼痛", "不得屈伸", "汗出恶风", "小便不利", "脉浮"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "起居", "content": "注意保暖，避免受寒", "priority": 10},
+        {"type": "运动", "content": "适当运动，保持关节活动度", "priority": 9},
+        {"type": "起居", "content": "避免潮湿环境", "priority": 8},
+        {"type": "饮食", "content": "忌生冷油腻，多食温性食物", "priority": 7},
+        {"type": "情志", "content": "保持心情舒畅，避免焦虑", "priority": 6}
+      ]
+    },
+    {
+      "code": "GYNECOLOGY_MENSTRUAL",
+      "name": "月经不调",
+      "category": "妇科慢性病",
+      "description": "月经不调是指月经周期、经期、经量、经色、经质异常的疾病。",
+      "core_mechanism": "冲任失调、气血失调、肝郁脾虚",
+      "treatment_principle": "调理冲任、调和气血、疏肝健脾",
+      "precautions": "注意经期保暖，避免情绪波动",
+      "formulas": [
+        {
+          "formula_name": "温经汤",
+          "priority": 10,
+          "indication": "月经后期、唇口干燥、手足凉但 evening 发热",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加当归、川芎",
+          "duration": 21,
+          "symptoms": ["月经后期", "唇口干燥", "手足凉", "evening 发热", "经量少", "色暗"]
+        },
+        {
+          "formula_name": "当归芍药散",
+          "priority": 9,
+          "indication": "月经量少、色暗、腹痛、浮肿、头晕",
+          "contraindication": "湿热内蕴者慎用",
+          "dosage_adjustment": "常规剂量",
+          "duration": 21,
+          "symptoms": ["月经量少", "色暗", "腹痛", "浮肿", "头晕", "面色萎黄"]
+        },
+        {
+          "formula_name": "桂枝茯苓丸",
+          "priority": 8,
+          "indication": "瘀血证明显、痛经、包块、舌紫",
+          "contraindication": "孕妇禁用",
+          "dosage_adjustment": "可加丹参、香附",
+          "duration": 28,
+          "symptoms": ["痛经", "包块", "舌紫", "经色暗", "有血块"]
+        },
+        {
+          "formula_name": "胶艾汤",
+          "priority": 7,
+          "indication": "崩漏不止、腹痛、脉细",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加黄芪、党参",
+          "duration": 14,
+          "symptoms": ["崩漏不止", "腹痛", "脉细", "面色萎黄", "乏力"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "起居", "content": "经期注意保暖，避免受凉", "priority": 10},
+        {"type": "情志", "content": "保持心情舒畅，避免情绪波动", "priority": 9},
+        {"type": "饮食", "content": "经期忌生冷辛辣", "priority": 8},
+        {"type": "起居", "content": "规律作息，避免熬夜", "priority": 7},
+        {"type": "运动", "content": "经期适当休息，避免剧烈运动", "priority": 6}
+      ]
+    },
+    {
+      "code": "GYNECOLOGY_MENOPAUSE",
+      "name": "更年期综合征",
+      "category": "妇科慢性病",
+      "description": "更年期综合征是指妇女在绝经前后出现的一系列躯体及精神心理症状。",
+      "core_mechanism": "肾阴阳两虚、冲任失调、心肾不交",
+      "treatment_principle": "调理阴阳、补肾养心、调理冲任",
+      "precautions": "保持心情舒畅，规律作息",
+      "formulas": [
+        {
+          "formula_name": "二仙汤",
+          "priority": 10,
+          "indication": "潮热盗汗、心烦失眠、腰膝酸软、头晕耳鸣",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "可加酸枣仁、夜交藤",
+          "duration": 30,
+          "symptoms": ["潮热盗汗", "心烦失眠", "腰膝酸软", "头晕耳鸣", "脉细数"]
+        },
+        {
+          "formula_name": "甘麦大枣汤合酸枣仁汤",
+          "priority": 9,
+          "indication": "情绪不稳、失眠多梦、易哭易怒",
+          "contraindication": "实热证者禁用",
+          "dosage_adjustment": "常规剂量",
+          "duration": 28,
+          "symptoms": ["情绪不稳", "失眠多梦", "易哭易怒", "心烦", "乏力"]
+        },
+        {
+          "formula_name": "六味地黄丸",
+          "priority": 8,
+          "indication": "肾阴虚为主、潮热盗汗、腰膝酸软、口干咽燥",
+          "contraindication": "肾阳虚者慎用",
+          "dosage_adjustment": "可加知母、黄柏",
+          "duration": 30,
+          "symptoms": ["潮热盗汗", "腰膝酸软", "口干咽燥", "舌红少苔", "脉细数"]
+        },
+        {
+          "formula_name": "金匮肾气丸",
+          "priority": 7,
+          "indication": "肾阳虚为主、畏寒肢冷、腰膝酸冷、夜尿多",
+          "contraindication": "阴虚火旺者禁用",
+          "dosage_adjustment": "可加杜仲、续断",
+          "duration": 30,
+          "symptoms": ["畏寒肢冷", "腰膝酸冷", "夜尿多", "舌淡苔白", "脉沉弱"]
+        }
+      ],
+      "nursing_recommendations": [
+        {"type": "情志", "content": "保持心情舒畅，避免焦虑", "priority": 10},
+        {"type": "起居", "content": "规律作息，保证充足睡眠", "priority": 9},
+        {"type": "运动", "content": "适当运动，如散步、瑜伽", "priority": 8},
+        {"type": "饮食", "content": "均衡饮食，多食蔬菜水果", "priority": 7},
+        {"type": "情志", "content": "家人理解和支持", "priority": 6}
+      ]
+    }
+  ]
+}

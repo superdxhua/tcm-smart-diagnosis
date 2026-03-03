@@ -1,0 +1,298 @@
+{
+  "constitutions": [
+    {
+      "constitution_id": "TAIYIN_PI_XU",
+      "name": "太阴脾虚质",
+      "meridian_basis": "太阴",
+      "tongue_features": ["舌淡胖", "有齿痕", "苔白腻"],
+      "pulse_features": ["脉沉细", "脉缓"],
+      "typical_symptoms": ["食欲不振", "便溏", "腹胀", "乏力", "畏寒"],
+      "syndrome_combinations": ["太阴+少阴（脾肾阳虚）", "太阴+厥阴（肝郁脾虚）"],
+      "description": "脾胃运化功能减退，气血生化乏源，常见于消化系统肿瘤患者。"
+    },
+    {
+      "constitution_id": "SHAOYIN_YANG_XU",
+      "name": "少阴阳虚质",
+      "meridian_basis": "少阴",
+      "tongue_features": ["舌淡白", "胖嫩", "苔白滑"],
+      "pulse_features": ["脉沉微", "脉弱", "脉沉细"],
+      "typical_symptoms": ["畏寒肢冷", "腰膝酸软", "精神萎靡", "小便清长", "夜尿频"],
+      "syndrome_combinations": ["少阴+太阴（脾肾阳虚）", "少阴+厥阴（阳虚阴凝）"],
+      "description": "肾阳不足，命门火衰，常见于晚期肿瘤患者或放化疗后。"
+    },
+    {
+      "constitution_id": "JUEYIN_HAN_RE_CUO_ZA",
+      "name": "厥阴寒热错杂质",
+      "meridian_basis": "厥阴",
+      "tongue_features": ["舌红", "苔白或黄腻", "舌边尖红"],
+      "pulse_features": ["脉弦", "脉数"],
+      "typical_symptoms": ["寒热往来", "口苦", "咽干", "恶心", "腹痛", "情绪波动"],
+      "syndrome_combinations": ["厥阴+少阳", "厥阴+太阴"],
+      "description": "肝胃不和，寒热错杂，常见于肝癌、胃癌患者或靶向药治疗中。"
+    },
+    {
+      "constitution_id": "SHAOYANG_QI_YU",
+      "name": "少阳气郁质",
+      "meridian_basis": "少阳",
+      "tongue_features": ["舌边尖红", "苔薄黄", "苔薄白"],
+      "pulse_features": ["脉弦", "脉弦细"],
+      "typical_symptoms": ["胸胁苦满", "口苦", "咽干", "情绪低落", "嗳气", "腹胀"],
+      "syndrome_combinations": ["少阳+厥阴", "少阳+太阴"],
+      "description": "肝胆气机郁滞，常见于乳腺癌、肺癌患者或有明显情绪压力者。"
+    }
+  ],
+  "pathogenesis": [
+    {
+      "pathogenesis_id": "BLOOD_STASIS",
+      "category": "瘀血内阻",
+      "meridian_type": "厥阴",
+      "description": "血行不畅，瘀血内停，形成癥积。",
+      "typical_manifestations": ["刺痛", "肿块固定", "舌紫暗", "脉涩", "面色晦暗"],
+      "treatment_principle": "活血化瘀，缓消癥块"
+    },
+    {
+      "pathogenesis_id": "PHLEGM_DAMPNESS",
+      "category": "痰饮凝聚",
+      "meridian_type": "太阴",
+      "description": "脾失健运，水湿内停，聚而成痰。",
+      "typical_manifestations": ["胸胁满", "眩晕", "苔腻", "水肿", "咳嗽痰多"],
+      "treatment_principle": "健脾化饮，利水渗湿"
+    },
+    {
+      "pathogenesis_id": "QI_STAGNATION",
+      "category": "气滞不行",
+      "meridian_type": "少阳",
+      "description": "肝失疏泄，气机郁滞，运行不畅。",
+      "typical_manifestations": ["胀痛", "情绪波动加重", "胸胁胀满", "嗳气", "腹胀"],
+      "treatment_principle": "疏肝理气，调和气机"
+    },
+    {
+      "pathogenesis_id": "TOXIC_HEAT",
+      "category": "毒热蕴结",
+      "meridian_type": "阳明",
+      "description": "热毒蕴结，灼伤津液，耗损正气。",
+      "typical_manifestations": ["高热", "红肿热痛", "舌红苔黄燥", "口渴", "便秘"],
+      "treatment_principle": "清热解毒，养阴生津"
+    }
+  ],
+  "treatment_complications": [
+    {
+      "complication_id": "POST_OP_QI_XU",
+      "treatment_type": "手术",
+      "complication_name": "术后气血大虚",
+      "meridian_type": "太阴",
+      "core_pathogenesis": ["气血两虚", "脾胃虚弱"],
+      "key_symptoms": ["乏力", "面色苍白", "心悸", "气短", "伤口愈合慢"],
+      "time_window": "术后1-2周",
+      "severity": "中",
+      "description": "手术耗伤气血，导致气血两虚。"
+    },
+    {
+      "complication_id": "POST_OP_YANG_LUO",
+      "treatment_type": "手术",
+      "complication_name": "术后阳气外脱",
+      "meridian_type": "少阴",
+      "core_pathogenesis": ["阳气暴脱", "卫外不固"],
+      "key_symptoms": ["大汗淋漓", "四肢厥冷", "脉微欲绝", "神疲乏力"],
+      "time_window": "术后即刻",
+      "severity": "重",
+      "description": "手术过程中阳气耗损，导致阳气外脱。"
+    },
+    {
+      "complication_id": "POST_OP_BLOATED",
+      "treatment_type": "手术",
+      "complication_name": "术后腹胀肠鸣",
+      "meridian_type": "少阳",
+      "core_pathogenesis": ["气机紊乱", "升降失司"],
+      "key_symptoms": ["腹胀", "肠鸣", "恶心", "嗳气", "排便不畅"],
+      "time_window": "术后3-7天",
+      "severity": "轻",
+      "description": "麻醉和手术影响胃肠气机，导致腹胀肠鸣。"
+    },
+    {
+      "complication_id": "CHEMO_MARROW_SUPPRESSION",
+      "treatment_type": "化疗",
+      "complication_name": "化疗后骨髓抑制",
+      "meridian_type": "少阴",
+      "core_pathogenesis": ["肾精亏虚", "气血生化乏源"],
+      "key_symptoms": ["贫血", "白细胞低", "头晕乏力", "心悸", "易感冒"],
+      "time_window": "化疗后7-14天",
+      "severity": "中",
+      "description": "化疗药物损伤骨髓造血功能，导致气血两虚。"
+    },
+    {
+      "complication_id": "CHEMO_GI_REACTION",
+      "treatment_type": "化疗",
+      "complication_name": "化疗后消化道反应",
+      "meridian_type": "少阳",
+      "core_pathogenesis": ["少阳枢机不利", "胃气不降"],
+      "key_symptoms": ["恶心呕吐", "纳差", "口苦", "咽干", "默默不欲饮食"],
+      "time_window": "化疗后1-3天",
+      "severity": "中",
+      "description": "化疗药物损伤胃肠，导致少阳枢机不利。"
+    },
+    {
+      "complication_id": "CHEMO_STOMATITIS",
+      "treatment_type": "化疗",
+      "complication_name": "化疗后口腔溃疡",
+      "meridian_type": "少阴",
+      "core_pathogenesis": ["少阴热化", "津伤胃燥"],
+      "key_symptoms": ["口腔溃疡", "口干", "咽痛", "心烦", "失眠"],
+      "time_window": "化疗后5-10天",
+      "severity": "轻",
+      "description": "化疗药物损伤口腔黏膜，导致少阴热化。"
+    },
+    {
+      "complication_id": "CHEMO_DIARRHEA",
+      "treatment_type": "化疗",
+      "complication_name": "化疗后腹泻",
+      "meridian_type": "太阴",
+      "core_pathogenesis": ["太阴下利", "脾失健运"],
+      "key_symptoms": ["腹泻", "腹痛", "便溏", "乏力", "纳差"],
+      "time_window": "化疗后2-5天",
+      "severity": "中",
+      "description": "化疗药物损伤肠道，导致太阴下利。"
+    },
+    {
+      "complication_id": "RADIATION_DRYNESS",
+      "treatment_type": "放疗",
+      "complication_name": "放疗后阴虚火旺",
+      "meridian_type": "少阴",
+      "core_pathogenesis": ["阴虚火旺", "津液耗伤"],
+      "key_symptoms": ["口干", "咽燥", "五心烦热", "盗汗", "舌红少苔"],
+      "time_window": "放疗期间及结束后",
+      "severity": "中",
+      "description": "放射线损伤津液，导致阴虚火旺。"
+    },
+    {
+      "complication_id": "RADIATION_COUGH",
+      "treatment_type": "放疗",
+      "complication_name": "放疗后局部灼热干咳",
+      "meridian_type": "太阴",
+      "core_pathogenesis": ["肺阴亏虚", "燥邪伤肺"],
+      "key_symptoms": ["干咳", "咽干", "局部灼热", "痰少难咳", "胸痛"],
+      "time_window": "胸部放疗期间及结束后",
+      "severity": "轻",
+      "description": "胸部放射线损伤肺阴，导致干咳。"
+    },
+    {
+      "complication_id": "TARGETED_RASH",
+      "treatment_type": "靶向",
+      "complication_name": "靶向药皮疹腹泻",
+      "meridian_type": "少阳",
+      "core_pathogenesis": ["少阳失和", "表里不和"],
+      "key_symptoms": ["皮疹", "腹泻", "瘙痒", "口苦", "咽干"],
+      "time_window": "靶向药治疗期间",
+      "severity": "轻",
+      "description": "靶向药物引起的皮肤和消化道反应。"
+    },
+    {
+      "complication_id": "TARGETED_THYROIDITIS",
+      "treatment_type": "靶向",
+      "complication_name": "靶向药甲状腺炎",
+      "meridian_type": "少阴",
+      "core_pathogenesis": ["少阴阳虚", "水湿内停"],
+      "key_symptoms": ["畏寒", "乏力", "浮肿", "甲减倾向", "脉沉"],
+      "time_window": "靶向药治疗数周后",
+      "severity": "中",
+      "description": "靶向药物引起的甲状腺功能减退。"
+    }
+  ],
+  "symptom_support": [
+    {
+      "symptom_id": "CANCER_PAIN",
+      "symptom_name": "癌性疼痛",
+      "symptom_category": "疼痛",
+      "recommended_formula": "芍药甘草汤",
+      "formula_source": "伤寒论",
+      "evidence": "《伤寒论》第29条：脚挛急，与芍药甘草汤",
+      "meridian_type": "厥阴",
+      "safety_level": "A",
+      "dosage_adjustment": "芍药15-30g，甘草9-15g，可加乌头、细辛止痛",
+      "contraindications": ["无寒象者慎用乌头", "肝肾功能不全者慎用"]
+    },
+    {
+      "symptom_id": "INTRACTABLE_HICCUPS",
+      "symptom_name": "顽固性呃逆",
+      "symptom_category": "呃逆",
+      "recommended_formula": "旋覆代赭汤",
+      "formula_source": "伤寒论",
+      "evidence": "《伤寒论》第161条：伤寒发汗，若吐若下，心下痞硬，噫气不除者，旋覆代赭汤主之",
+      "meridian_type": "太阴",
+      "safety_level": "A",
+      "dosage_adjustment": "旋覆花9g（包煎），代赭石15g（先煎）",
+      "contraindications": ["胃热炽盛者慎用", "无胃气虚者不宜"]
+    },
+    {
+      "symptom_id": "ASCITES",
+      "symptom_name": "腹水/胸水",
+      "symptom_category": "水肿",
+      "recommended_formula": "十枣汤",
+      "formula_source": "伤寒论",
+      "evidence": "《伤寒论》第152条：太阳中风，下利呕逆，表解者，乃可攻之。其人絷絷汗出，发作有时，头痛，心下痞硬满，引胁下痛，干呕短气，汗出不恶寒者，此表解里未和也，十枣汤主之",
+      "meridian_type": "太阳",
+      "safety_level": "C",
+      "dosage_adjustment": "极小剂量，短期使用，严密监护",
+      "contraindications": ["肝肾功能不全者禁用", "体质虚弱者禁用", "孕妇禁用"]
+    },
+    {
+      "symptom_id": "INSOMNIA_ANXIETY",
+      "symptom_name": "失眠焦虑",
+      "symptom_category": "情志",
+      "recommended_formula": "柴胡加龙骨牡蛎汤",
+      "formula_source": "伤寒论",
+      "evidence": "《伤寒论》第107条：伤寒八九日，下之，胸满烦惊，小便不利，谵语，一身尽重，不可转侧者，柴胡加龙骨牡蛎汤主之",
+      "meridian_type": "少阳",
+      "safety_level": "A",
+      "dosage_adjustment": "常规剂量，可加酸枣仁、远志",
+      "contraindications": ["无少阳证者慎用", "肝火炽盛者不宜"]
+    }
+  ],
+  "modern_drug_interactions": [
+    {
+      "herb_name": "丹参",
+      "modern_drug": "华法林",
+      "interaction_type": "增强抗凝作用",
+      "severity": "中",
+      "mechanism": "抑制血小板聚集，延长凝血时间",
+      "recommendation": "监测凝血功能，调整华法林剂量",
+      "evidence_source": "药理学研究"
+    },
+    {
+      "herb_name": "当归",
+      "modern_drug": "华法林",
+      "interaction_type": "增强抗凝作用",
+      "severity": "中",
+      "mechanism": "抑制血小板聚集",
+      "recommendation": "监测凝血功能，调整华法林剂量",
+      "evidence_source": "药理学研究"
+    },
+    {
+      "herb_name": "甘草",
+      "modern_drug": "地高辛",
+      "interaction_type": "增加地高辛血药浓度",
+      "severity": "中",
+      "mechanism": "抑制P-gp转运蛋白",
+      "recommendation": "监测地高辛血药浓度，观察心律变化",
+      "evidence_source": "药理学研究"
+    },
+    {
+      "herb_name": "附子",
+      "modern_drug": "β受体阻滞剂",
+      "interaction_type": "可能增加低血压风险",
+      "severity": "中",
+      "mechanism": "协同降压作用",
+      "recommendation": "密切监测血压，调整降压药剂量",
+      "evidence_source": "药理学研究"
+    },
+    {
+      "herb_name": "多种中药",
+      "modern_drug": "吉非替尼",
+      "interaction_type": "影响CYP3A4代谢",
+      "severity": "轻",
+      "mechanism": "中药成分可能诱导或抑制CYP3A4酶",
+      "recommendation": "避免使用强CYP3A4抑制剂或诱导剂",
+      "evidence_source": "药理学研究"
+    }
+  ]
+}

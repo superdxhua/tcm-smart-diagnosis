@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能中医辅助诊疗 - 应用下载</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #C8102E 0%, #8B0000 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .header p {
+      font-size: 20px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .platform-section {
+      margin-bottom: 60px;
+    }
+
+    .platform-title {
+      font-size: 32px;
+      color: #333;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid #C8102E;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .platform-icon {
+      font-size: 40px;
+    }
+
+    .version-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .version-card {
+      border: 2px solid #e0e0e0;
+      border-radius: 15px;
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .version-card:hover {
+      border-color: #C8102E;
+      box-shadow: 0 10px 30px rgba(200, 16, 46, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .version-card.recommended {
+      border-color: #C8102E;
+      background: linear-gradient(135deg, #fff5f5 0%, #ffebee 100%);
+    }
+
+    .recommended-badge {
+      background: #C8102E;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    .version-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .version-name {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .version-info {
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .version-details {
+      margin-bottom: 20px;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e0e0e0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .download-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #C8102E 0%, #8B0000 100%);
+      color: white;
+      padding: 15px;
+      border-radius: 50px;
+      text-decoration: none;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(200, 16, 46, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(200, 16, 46, 0.4);
+    }
+
+    .download-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .download-btn.disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .info-btn {
+      display: block;
+      width: 100%;
+      background: white;
+      color: #C8102E;
+      padding: 12px;
+      border-radius: 50px;
+      text-decoration: none;
+      text-align: center;
+      font-size: 16px;
+      border: 2px solid #C8102E;
+      transition: all 0.3s ease;
+    }
+
+    .info-btn:hover {
+      background: #C8102E;
+      color: white;
+    }
+
+    .install-guide {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .install-guide h4 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .install-guide ol {
+      margin-left: 20px;
+    }
+
+    .install-guide li {
+      color: #666;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .install-guide code {
+      background: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .disclaimer {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+    }
+
+    .disclaimer h3 {
+      color: #856404;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .disclaimer p {
+      color: #856404;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      background: #f5f5f5;
+      padding: 30px;
+      text-align: center;
+      color: #666;
+    }
+
+    .footer p {
+      margin-bottom: 10px;
+    }
+
+    .footer a {
+      color: #C8102E;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 32px;
+      }
+
+      .header p {
+        font-size: 16px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .version-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    .status-available {
+      background: #28a745;
+      color: white;
+    }
+
+    .status-coming-soon {
+      background: #ffc107;
+      color: #333;
+    }
+
+    .status-beta {
+      background: #17a2b8;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>智能中医辅助诊疗</h1>
+      <p>基于 AI 的中医智能诊断与处方生成系统<br>传承千年智慧，赋能现代医疗</p>
+    </div>
+
+    <div class="content">
+      <!-- 电脑版 -->
+      <div class="platform-section">
+        <h2 class="platform-title">
+          <span class="platform-icon">💻</span>
+          电脑版
+        </h2>
+
+        <div class="version-grid">
+          <!-- Windows -->
+          <div class="version-card recommended">
+            <span class="recommended-badge">推荐</span>
+            <div class="version-icon">🪟</div>
+            <h3 class="version-name">Windows</h3>
+            <p class="version-info">
+              适用于 Windows 10 及以上版本，64 位系统
+            </p>
+
+            <div class="version-details">
+              <div class="detail-item">
+                <span>版本</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="detail-item">
+                <span>大小</span>
+                <span>约 120 MB</span>
+              </div>
+              <div class="detail-item">
+                <span>更新日期</span>
+                <span>2024-02-15</span>
+              </div>
+              <div class="detail-item">
+                <span>状态</span>
+                <span><span class="status-badge status-available">可用</span></span>
+              </div>
+            </div>
+
+            <a href="#" class="download-btn disabled" onclick="alert('电脑版应用需要构建，请参考 electron/README.md 中的说明进行构建')">
+              下载 Windows 版
+            </a>
+            <a href="#windows-install" class="info-btn">安装说明</a>
+
+            <div class="install-guide" id="windows-install">
+              <h4>📖 Windows 安装说明</h4>
+              <ol>
+                <li>下载 <code>智能中医辅助诊疗-Setup-1.0.0.exe</code></li>
+                <li>双击运行安装程序</li>
+                <li>选择安装目录（或使用默认目录）</li>
+                <li>点击"安装"按钮</li>
+                <li>安装完成后，点击"完成"</li>
+                <li>从桌面或开始菜单启动应用</li>
+              </ol>
+              <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                <strong>提示：</strong>如果无法安装，请右键点击安装程序，选择"以管理员身份运行"
+              </p>
+            </div>
+          </div>
+
+          <!-- macOS -->
+          <div class="version-card recommended">
+            <span class="recommended-badge">推荐</span>
+            <div class="version-icon">🍎</div>
+            <h3 class="version-name">macOS</h3>
+            <p class="version-info">
+              适用于 macOS 10.14 (Mojave) 及以上版本
+            </p>
+
+            <div class="version-details">
+              <div class="detail-item">
+                <span>版本</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="detail-item">
+                <span>大小</span>
+                <span>约 130 MB</span>
+              </div>
+              <div class="detail-item">
+                <span>更新日期</span>
+                <span>2024-02-15</span>
+              </div>
+              <div class="detail-item">
+                <span>状态</span>
+                <span><span class="status-badge status-available">可用</span></span>
+              </div>
+            </div>
+
+            <a href="#" class="download-btn disabled" onclick="alert('macOS 版应用需要在 Mac 电脑上构建，请参考 electron/README.md 中的说明进行构建')">
+              下载 macOS 版
+            </a>
+            <a href="#macos-install" class="info-btn">安装说明</a>
+
+            <div class="install-guide" id="macos-install">
+              <h4>📖 macOS 安装说明</h4>
+              <ol>
+                <li>下载 <code>智能中医辅助诊疗-1.0.0.dmg</code></li>
+                <li>双击打开 DMG 文件</li>
+                <li>将应用图标拖拽到"应用程序"文件夹</li>
+                <li>等待复制完成</li>
+                <li>从启动台启动应用</li>
+              </ol>
+              <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                <strong>提示：</strong>如果无法打开，请右键点击应用，选择"打开"，然后确认
+              </p>
+            </div>
+          </div>
+
+          <!-- Linux -->
+          <div class="version-card">
+            <div class="version-icon">🐧</div>
+            <h3 class="version-name">Linux</h3>
+            <p class="version-info">
+              适用于 Ubuntu、Fedora、Arch 等 Linux 发行版
+            </p>
+
+            <div class="version-details">
+              <div class="detail-item">
+                <span>版本</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="detail-item">
+                <span>大小</span>
+                <span>约 110 MB</span>
+              </div>
+              <div class="detail-item">
+                <span>更新日期</span>
+                <span>2024-02-15</span>
+              </div>
+              <div class="detail-item">
+                <span>状态</span>
+                <span><span class="status-badge status-available">可用</span></span>
+              </div>
+            </div>
+
+            <a href="#" class="download-btn disabled" onclick="alert('Linux 版应用需要构建，请参考 electron/README.md 中的说明进行构建')">
+              下载 Linux 版
+            </a>
+            <a href="#linux-install" class="info-btn">安装说明</a>
+
+            <div class="install-guide" id="linux-install">
+              <h4>📖 Linux 安装说明</h4>
+              <p style="margin-bottom: 15px;"><strong>方法一：AppImage（推荐）</strong></p>
+              <ol>
+                <li>下载 <code>智能中医辅助诊疗-1.0.0.AppImage</code></li>
+                <li>赋予执行权限：<code>chmod +x 智能中医辅助诊疗-1.0.0.AppImage</code></li>
+                <li>双击运行</li>
+              </ol>
+              <p style="margin: 15px 0;"><strong>方法二：DEB 包（Ubuntu/Debian）</strong></p>
+              <ol>
+                <li>下载 <code>智能中医辅助诊疗-1.0.0.deb</code></li>
+                <li>安装：<code>sudo dpkg -i 智能中医辅助诊疗-1.0.0.deb</code></li>
+                <li>如有依赖问题，运行：<code>sudo apt-get install -f</code></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 手机版 -->
+      <div class="platform-section">
+        <h2 class="platform-title">
+          <span class="platform-icon">📱</span>
+          手机版
+        </h2>
+
+        <div class="version-grid">
+          <!-- Android -->
+          <div class="version-card recommended">
+            <span class="recommended-badge">推荐</span>
+            <div class="version-icon">🤖</div>
+            <h3 class="version-name">Android</h3>
+            <p class="version-info">
+              适用于 Android 7.0 及以上版本
+            </p>
+
+            <div class="version-details">
+              <div class="detail-item">
+                <span>版本</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="detail-item">
+                <span>大小</span>
+                <span>约 50 MB</span>
+              </div>
+              <div class="detail-item">
+                <span>更新日期</span>
+                <span>2024-02-15</span>
+              </div>
+              <div class="detail-item">
+                <span>状态</span>
+                <span><span class="status-badge status-available">可用</span></span>
+              </div>
+            </div>
+
+            <a href="#" class="download-btn disabled" onclick="alert('Android APK 需要使用在线工具生成，请参考 手机版App生成指南.md 中的说明')">
+              下载 Android APK
+            </a>
+            <a href="#android-install" class="info-btn">安装说明</a>
+
+            <div class="install-guide" id="android-install">
+              <h4>📖 Android 安装说明</h4>
+              <ol>
+                <li>下载 <code>智能中医辅助诊疗-1.0.0.apk</code></li>
+                <li>在手机上打开 APK 文件</li>
+                <li>如提示"安装未知来源应用"，请前往设置中开启</li>
+                <li>点击"安装"按钮</li>
+                <li>等待安装完成</li>
+                <li>点击"打开"启动应用</li>
+              </ol>
+              <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                <strong>提示：</strong>部分品牌手机可能需要在"安全"设置中允许"安装未知来源应用"
+              </p>
+            </div>
+          </div>
+
+          <!-- iOS -->
+          <div class="version-card">
+            <div class="version-icon">🍎</div>
+            <h3 class="version-name">iOS</h3>
+            <p class="version-info">
+              适用于 iOS 14.0 及以上版本
+            </p>
+
+            <div class="version-details">
+              <div class="detail-item">
+                <span>版本</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="detail-item">
+                <span>大小</span>
+                <span>约 60 MB</span>
+              </div>
+              <div class="detail-item">
+                <span>更新日期</span>
+                <span>2024-02-15</span>
+              </div>
+              <div class="detail-item">
+                <span>状态</span>
+                <span><span class="status-badge status-coming-soon">即将上线</span></span>
+              </div>
+            </div>
+
+            <a href="#" class="download-btn disabled">
+              下载 iOS IPA
+            </a>
+            <a href="#ios-install" class="info-btn">安装说明</a>
+
+            <div class="install-guide" id="ios-install">
+              <h4>📖 iOS 安装说明</h4>
+              <p style="margin-bottom: 15px; color: #666;">
+                iOS 版本需要通过 App Store 下载，或使用 TestFlight 进行测试。
+              </p>
+              <p><strong>方法一：App Store（推荐）</strong></p>
+              <ol>
+                <li>打开 App Store</li>
+                <li>搜索"智能中医辅助诊疗"</li>
+                <li>点击"获取"按钮</li>
+                <li>等待下载和安装</li>
+              </ol>
+              <p style="margin: 15px 0;"><strong>方法二：TestFlight（测试版）</strong></p>
+              <ol>
+                <li>下载 TestFlight 应用</li>
+                <li>点击测试邀请链接</li>
+                <li>加入测试计划</li>
+                <li>下载测试版应用</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 网页版 -->
+      <div class="platform-section">
+        <h2 class="platform-title">
+          <span class="platform-icon">🌐</span>
+          网页版
+        </h2>
+
+        <div class="version-grid">
+          <div class="version-card recommended">
+            <span class="recommended-badge">无需安装</span>
+            <div class="version-icon">🖥️</div>
+            <h3 class="version-name">H5 网页版</h3>
+            <p class="version-info">
+              无需下载，浏览器直接访问
+            </p>
+
+            <div class="version-details">
+              <div class="detail-item">
+                <span>版本</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="detail-item">
+                <span>支持</span>
+                <span>Chrome、Safari、Edge</span>
+              </div>
+              <div class="detail-item">
+                <span>更新日期</span>
+                <span>2024-02-15</span>
+              </div>
+              <div class="detail-item">
+                <span>状态</span>
+                <span><span class="status-badge status-available">在线</span></span>
+              </div>
+            </div>
+
+            <a href="http://localhost:5000" class="download-btn">
+              打开网页版
+            </a>
+            <a href="#web-info" class="info-btn">使用说明</a>
+
+            <div class="install-guide" id="web-info">
+              <h4>📖 网页版使用说明</h4>
+              <ol>
+                <li>点击"打开网页版"按钮</li>
+                <li>浏览器会自动打开应用</li>
+                <li>建议使用 Chrome、Safari 或 Edge 浏览器</li>
+                <li>首次使用可能需要登录或注册</li>
+              </ol>
+              <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                <strong>提示：</strong>网页版功能与桌面版相同，但需要网络连接
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 免责声明 -->
+      <div class="disclaimer">
+        <h3>⚠️ 重要免责声明</h3>
+        <p><strong>本应用仅提供辅助诊疗建议，不代替专业医生诊断。请在专业医师指导下使用。</strong></p>
+        <p>1. 本应用的人工智能分析结果仅供参考，不应作为诊断依据。</p>
+        <p>2. 如有任何健康问题，请及时就医，遵医嘱治疗。</p>
+        <p>3. 本应用不对使用本应用造成的任何后果承担责任。</p>
+        <p>4. 本应用不保证诊断结果的准确性和完整性。</p>
+        <p>用户使用本应用即表示同意以上条款。</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2024 智能中医辅助诊疗系统</p>
+      <p>联系我们：<a href="mailto:support@tcm-assistant.com">support@tcm-assistant.com</a></p>
+      <p>
+        <a href="https://github.com/your-repo" target="_blank">GitHub</a> |
+        <a href="#" onclick="return false;">用户协议</a> |
+        <a href="#" onclick="return false;">隐私政策</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // 页面加载完成后
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('下载页面加载完成')
+    })
+
+    // 点击安装说明链接时滚动到对应位置
+    document.querySelectorAll('.info-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const href = btn.getAttribute('href')
+        if (href.startsWith('#')) {
+          e.preventDefault()
+          const target = document.querySelector(href)
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

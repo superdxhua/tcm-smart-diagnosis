@@ -1,0 +1,170 @@
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
+import { getSupabaseClient } from '@/storage/database/supabase-client'
+
+/**
+ * 将数据库的下划线命名转换为驼峰命名
+ */
+function convertToCamelCase(data: any): any {
+  if (!data) return null
+
+  if (Array.isArray(data)) {
+    return data.map(item => convertToCamelCase(item))
+  }
+
+  if (typeof data === 'object') {
+    const result: any = {}
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        // 将下划线命名转换为驼峰命名
+        const camelCaseKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+        result[camelCaseKey] = convertToCamelCase(data[key])
+      }
+    }
+    return result
+  }
+
+  return data
+}
+
+@Injectable()
+export class PatientsService {
+  async findAll() {
+    const supabase = getSupabaseClient()
+    const result = await supabase
+      .from('members')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    console.log('[PatientsService] findAll result:', result)
+    console.log('[PatientsService] data length:', result.data?.length || 0)
+
+    return convertToCamelCase(result.data || [])
+  }
+
+  async countByUser() {
+    const supabase = getSupabaseClient()
+    const { count } = await supabase
+      .from('members')
+      .select('*', { count: 'exact', head: true })
+
+    return count || 0
+  }
+
+  async findOne(id: string) {
+    const supabase = getSupabaseClient()
+    const result = await supabase
+      .from('members')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (result.error || !result.data) {
+      throw new NotFoundException('用户不存在')
+    }
+
+    return convertToCamelCase(result.data)
+  }
+
+  async create(data: any) {
+    const supabase = getSupabaseClient()
+    const { data: member, error } = await supabase
+      .from('members')
+      .insert({
+        id: crypto.randomUUID(),
+        consultant_id: data.consultantId || 'default-consultant',
+        name: data.name,
+        gender: data.gender,
+        age: data.age,
+        birth_year: data.birthYear,
+        height: data.height,
+        weight: data.weight,
+        phone: data.phone,
+        contact_info: data.contactInfo,
+        address: data.address,
+        health_history: data.healthHistory,
+        allergies: data.allergies,
+        is_pregnant: data.isPregnant || false,
+        is_child: data.isChild || false,
+        visit_count: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .select()
+      .single()
+
+    if (error) {
+      throw new BadRequestException(error.message)
+    }
+
+    return convertToCamelCase(member)
+  }
+
+  async update(id: string, data: any) {
+    const supabase = getSupabaseClient()
+    const { data: member, error } = await supabase
+      .from('members')
+      .update({
+        name: data.name,
+        gender: data.gender,
+        age: data.age,
+        birth_year: data.birthYear,
+        height: data.height,
+        weight: data.weight,
+        phone: data.phone,
+        contact_info: data.contactInfo,
+        address: data.address,
+        health_history: data.healthHistory,
+        allergies: data.allergies,
+        is_pregnant: data.isPregnant,
+        is_child: data.isChild,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      throw new BadRequestException(error.message)
+    }
+
+    return convertToCamelCase(member)
+  }
+
+  async remove(id: string) {
+    const supabase = getSupabaseClient()
+    const { error } = await supabase
+      .from('members')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      throw new BadRequestException(error.message)
+    }
+
+    return { id }
+  }
+
+  async incrementVisitCount(id: string) {
+    const supabase = getSupabaseClient()
+    const { data: member, error } = await supabase
+      .from('members')
+      .update({
+        visit_count: supabase.rpc('increment', { count: 'visit_count' }),
+        last_visit_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      // 如果函数不存在，手动更新
+      const current = await this.findOne(id)
+      if (current) {
+        return this.update(id, { ...current, visitCount: current.visitCount + 1 })
+      }
+    }
+
+    return convertToCamelCase(member)
+  }
+}

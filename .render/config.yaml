@@ -1,0 +1,24 @@
+version: 1
+services:
+  - type: web
+    name: tcm-smart-diagnosis
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd server && npm install --legacy-peer-deps && npx @nestjs/cli build
+    startCommand: cd server && node dist/main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: SUPABASE_URL
+        value: https://dwswtkfbtdohaftnklxx.supabase.co
+      - key: SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3c3d0a2ZidGRvaGFmdG5rbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDI5OTU4MTMsImV4cCI6MjAxODU3MTgxM30.DQWj0Yk3oX6sQJXJF1W7Z2qVJY5TQVxP0pR0nY9JWwM
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PROJECT_DOMAIN
+        value: https://tcm-smart-diagnosis.onrender.com

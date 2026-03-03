@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:web",
+  "outputDirectory": "dist-web",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": null,
+  "env": {
+    "NODE_ENV": "production",
+    "BUILD_TIME": "2026-03-02-01-28-00"
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://api.zhongyihskhealth.com/api/:path*"
+    }
+  ]
+}

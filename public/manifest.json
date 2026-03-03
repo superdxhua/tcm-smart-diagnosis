@@ -1,0 +1,122 @@
+{
+  "name": "中医智能好帮手",
+  "short_name": "中医智能",
+  "description": "基于AI大模型的中医智能健康平台，提供智能健康咨询、经方推荐、健康方案生成、健康记录管理等专业服务",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1890ff",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home-iphone.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/home-iphone.png",
+      "sizes": "828x1792",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": [
+    "medical",
+    "health",
+    "lifestyle"
+  ],
+  "shortcuts": [
+    {
+      "name": "智能咨询",
+      "short_name": "咨询",
+      "description": "开始智能健康咨询",
+      "url": "/pages/index",
+      "icons": [
+        {
+          "src": "/icons/shortcut-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "病历管理",
+      "short_name": "病历",
+      "description": "查看健康记录",
+      "url": "/pages/records-list",
+      "icons": [
+        {
+          "src": "/icons/shortcut-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "用户中心",
+      "short_name": "我的",
+      "description": "个人信息管理",
+      "url": "/pages/profile",
+      "icons": [
+        {
+          "src": "/icons/shortcut-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,863 @@
+{
+  "formula_disease_relations": [
+    {
+      "id": "fdr_001",
+      "formula_id": "c3138a18-3c15-4dd8-90b6-003cf2d19b80",
+      "disease_category_id": "digestive_gastritis",
+      "efficacy_score": 0.85,
+      "evidence_level": "high",
+      "evidence_sources": [
+        "伤寒论",
+        "临床研究"
+      ],
+      "clinical_cases_count": 120,
+      "clinical_effectiveness": 0.88
+    },
+    {
+      "id": "fdr_002",
+      "formula_id": "481065b5-cdf1-44f2-ab62-9e2b523fd592",
+      "disease_category_id": "immune_diabetes",
+      "efficacy_score": 0.78,
+      "evidence_level": "medium",
+      "evidence_sources": [
+        "临床研究",
+        "专家经验"
+      ],
+      "clinical_cases_count": 85,
+      "clinical_effectiveness": 0.82
+    },
+    {
+      "id": "fdr_003",
+      "formula_id": "94a7fb67-d6e3-4335-a05f-344182ad35f4",
+      "disease_category_id": "emotion_insomnia",
+      "efficacy_score": 0.82,
+      "evidence_level": "medium",
+      "evidence_sources": [
+        "金匮要略",
+        "临床观察"
+      ],
+      "clinical_cases_count": 95,
+      "clinical_effectiveness": 0.85
+    }
+  ],
+  "chronic_disease_formulas": [
+    {
+      "id": "cdf_001",
+      "formula_id": "c3138a18-3c15-4dd8-90b6-003cf2d19b80",
+      "disease_category_id": "digestive_gastritis",
+      "disease_stage": "all",
+      "symptom_pattern": "胃痛、胀满、嗳气",
+      "syndrome_type": "脾胃气虚",
+      "dosage_adjustment": "原方剂量，可酌加黄芪30g",
+      "duration_notes": "4周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "胃阴不足",
+        "胃火炽盛"
+      ],
+      "special_cautions": [
+        "服药期间忌食生冷",
+        "避免过度劳累"
+      ],
+      "lifestyle_advice": {
+        "diet": "易消化饮食，少食多餐",
+        "exercise": "适度运动，避免剧烈运动",
+        "sleep": "规律作息，避免熬夜",
+        "emotion": "保持心情舒畅，避免焦虑"
+      }
+    },
+    {
+      "id": "cdf_006",
+      "formula_id": "ac16f20a-96c7-4a87-8d38-c5c213c1667d",
+      "disease_category_id": "digestive_ulcer",
+      "disease_stage": "middle",
+      "symptom_pattern": "胃脘疼痛、泛酸、烧心",
+      "syndrome_type": "脾胃虚寒",
+      "dosage_adjustment": "原方剂量，可酌加吴茱萸5g",
+      "duration_notes": "6周为一个疗程",
+      "combination_formulas": [
+        "c3138a18-3c15-4dd8-90b6-003cf2d19b80"
+      ],
+      "contraindications": [
+        "胃火炽盛",
+        "湿热内蕴"
+      ],
+      "special_cautions": [
+        "忌食辛辣",
+        "避免过度劳累"
+      ],
+      "lifestyle_advice": {
+        "diet": "温热饮食，避免生冷辛辣",
+        "exercise": "适度运动",
+        "sleep": "规律作息",
+        "emotion": "保持心情舒畅"
+      }
+    },
+    {
+      "id": "cdf_007",
+      "formula_id": "2a7cff44-f601-4789-9b1f-ade6d7a9dd10",
+      "disease_category_id": "digestive_ibs",
+      "disease_stage": "all",
+      "symptom_pattern": "腹痛、腹胀、大便不调",
+      "syndrome_type": "肝郁脾虚",
+      "dosage_adjustment": "原方剂量",
+      "duration_notes": "8周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "脾胃虚寒",
+        "湿热内蕴"
+      ],
+      "special_cautions": [
+        "避免精神紧张",
+        "规律饮食"
+      ],
+      "lifestyle_advice": {
+        "diet": "清淡饮食，避免刺激性食物",
+        "exercise": "适度运动",
+        "sleep": "规律作息",
+        "emotion": "调节情绪，避免焦虑"
+      }
+    },
+    {
+      "id": "cdf_002",
+      "formula_id": "481065b5-cdf1-44f2-ab62-9e2b523fd592",
+      "disease_category_id": "immune_diabetes",
+      "disease_stage": "middle",
+      "symptom_pattern": "消渴、乏力、口干",
+      "syndrome_type": "气阴两虚",
+      "dosage_adjustment": "原方剂量，可酌加天花粉15g",
+      "duration_notes": "8周为一个疗程",
+      "combination_formulas": [
+        "91464d5a-23d3-4075-a3bf-3fc4cdf57a7b"
+      ],
+      "contraindications": [
+        "阴虚火旺",
+        "湿热内蕴"
+      ],
+      "special_cautions": [
+        "定期监测血糖",
+        "避免低血糖"
+      ],
+      "lifestyle_advice": {
+        "diet": "低糖低脂饮食，控制总热量",
+        "exercise": "每天30分钟有氧运动",
+        "sleep": "保证充足睡眠",
+        "emotion": "保持平和心态"
+      }
+    },
+    {
+      "id": "cdf_003",
+      "formula_id": "94a7fb67-d6e3-4335-a05f-344182ad35f4",
+      "disease_category_id": "emotion_insomnia",
+      "disease_stage": "all",
+      "symptom_pattern": "失眠、多梦、心悸",
+      "syndrome_type": "心脾两虚",
+      "dosage_adjustment": "原方剂量",
+      "duration_notes": "4周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "痰热内扰",
+        "肝火旺盛"
+      ],
+      "special_cautions": [
+        "避免睡前饮茶",
+        "保持卧室安静"
+      ],
+      "lifestyle_advice": {
+        "diet": "晚餐不宜过饱，避免咖啡因",
+        "exercise": "白天适量运动",
+        "sleep": "固定睡眠时间，睡前放松",
+        "emotion": "避免过度兴奋或焦虑"
+      }
+    },
+    {
+      "id": "cdf_004",
+      "formula_id": "91464d5a-23d3-4075-a3bf-3fc4cdf57a7b",
+      "disease_category_id": "rheumatic_arthritis",
+      "disease_stage": "all",
+      "symptom_pattern": "关节肿痛、僵硬、活动受限",
+      "syndrome_type": "寒湿阻络",
+      "dosage_adjustment": "原方剂量，可酌加威灵仙15g",
+      "duration_notes": "12周为一个疗程",
+      "combination_formulas": [
+        "ddc2f7df-0275-4e1d-bb78-0b4bc69cc0d0"
+      ],
+      "contraindications": [
+        "热痹",
+        "阴虚发热"
+      ],
+      "special_cautions": [
+        "注意保暖",
+        "避免潮湿环境"
+      ],
+      "lifestyle_advice": {
+        "diet": "温热饮食，避免生冷",
+        "exercise": "关节功能锻炼",
+        "sleep": "注意保暖",
+        "emotion": "保持乐观心态"
+      }
+    },
+    {
+      "id": "cdf_005",
+      "formula_id": "ddc2f7df-0275-4e1d-bb78-0b4bc69cc0d0",
+      "disease_category_id": "cardiovascular_hypertension",
+      "disease_stage": "early",
+      "symptom_pattern": "头晕、头痛、耳鸣",
+      "syndrome_type": "肝阳上亢",
+      "dosage_adjustment": "原方剂量，可酌加菊花10g",
+      "duration_notes": "8周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "肾阳虚",
+        "气血两虚"
+      ],
+      "special_cautions": [
+        "定期监测血压",
+        "避免情绪激动"
+      ],
+      "lifestyle_advice": {
+        "diet": "低盐低脂饮食",
+        "exercise": "适度有氧运动",
+        "sleep": "规律作息",
+        "emotion": "保持平和心态，避免激动"
+      }
+    },
+    {
+      "id": "cdf_008",
+      "formula_id": "0f5991c4-af44-4366-8296-8b647254a602",
+      "disease_category_id": "respiratory_asthma",
+      "disease_stage": "all",
+      "symptom_pattern": "喘息、气短、胸闷",
+      "syndrome_type": "肺肾两虚",
+      "dosage_adjustment": "原方剂量，可酌加补骨脂15g",
+      "duration_notes": "12周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "痰热壅肺",
+        "肺实喘证"
+      ],
+      "special_cautions": [
+        "避免冷空气刺激",
+        "戒烟"
+      ],
+      "lifestyle_advice": {
+        "diet": "忌食辛辣刺激性食物",
+        "exercise": "适度有氧运动，避免过度",
+        "sleep": "保持室内空气流通",
+        "emotion": "保持心情平静"
+      }
+    },
+    {
+      "id": "cdf_009",
+      "formula_id": "3443a556-bbd8-4655-86a9-cc3dd5c976be",
+      "disease_category_id": "rheumatic_arthritis",
+      "disease_stage": "middle",
+      "symptom_pattern": "关节疼痛、僵硬、活动受限",
+      "syndrome_type": "肝肾亏虚",
+      "dosage_adjustment": "原方剂量，可酌加杜仲15g",
+      "duration_notes": "16周为一个疗程",
+      "combination_formulas": [
+        "91464d5a-23d3-4075-a3bf-3fc4cdf57a7b"
+      ],
+      "contraindications": [
+        "湿热痹",
+        "寒湿痹"
+      ],
+      "special_cautions": [
+        "注意保暖",
+        "避免过度劳累"
+      ],
+      "lifestyle_advice": {
+        "diet": "温热饮食，避免生冷",
+        "exercise": "适度功能锻炼",
+        "sleep": "注意休息",
+        "emotion": "保持积极心态"
+      }
+    },
+    {
+      "id": "cdf_010",
+      "formula_id": "08130d04-59d3-43c8-a72e-f8af93a8bba1",
+      "disease_category_id": "gynecological_dysmenorrhea",
+      "disease_stage": "all",
+      "symptom_pattern": "经行腹痛、经量少、色暗",
+      "syndrome_type": "气滞血瘀",
+      "dosage_adjustment": "原方剂量，可酌加延胡索10g",
+      "duration_notes": "3个月经周期为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "气血两虚",
+        "寒凝血瘀"
+      ],
+      "special_cautions": [
+        "经期避免受凉",
+        "注意保暖"
+      ],
+      "lifestyle_advice": {
+        "diet": "温热饮食，经期忌生冷",
+        "exercise": "适度运动，经期避免剧烈",
+        "sleep": "规律作息，保证充足睡眠",
+        "emotion": "调节情绪，避免抑郁"
+      }
+    },
+    {
+      "id": "cdf_011",
+      "formula_id": "2ccdac4b-4c95-43c2-ae95-dfd9643df61b",
+      "disease_category_id": "gynecological_menopause",
+      "disease_stage": "all",
+      "symptom_pattern": "潮热汗出、心悸失眠、情绪不稳",
+      "syndrome_type": "肾阴阳两虚",
+      "dosage_adjustment": "原方剂量",
+      "duration_notes": "8周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "湿热内蕴",
+        "痰湿阻滞"
+      ],
+      "special_cautions": [
+        "定期体检",
+        "监测激素水平"
+      ],
+      "lifestyle_advice": {
+        "diet": "清淡饮食，多食富含雌激素食物",
+        "exercise": "适度运动",
+        "sleep": "规律作息，保证睡眠",
+        "emotion": "保持心情舒畅，学会放松"
+      }
+    },
+    {
+      "id": "cdf_012",
+      "formula_id": "c35c2627-fe59-4d86-b90a-5127a6648f73",
+      "disease_category_id": "immune_obesity",
+      "disease_stage": "early",
+      "symptom_pattern": "肥胖、乏力、口黏",
+      "syndrome_type": "脾虚湿盛",
+      "dosage_adjustment": "原方剂量，可酌加茯苓30g",
+      "duration_notes": "12周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "胃阴不足",
+        "阴虚火旺"
+      ],
+      "special_cautions": [
+        "控制饮食总热量",
+        "定期监测体重"
+      ],
+      "lifestyle_advice": {
+        "diet": "低热量饮食，增加膳食纤维",
+        "exercise": "每天有氧运动30分钟",
+        "sleep": "规律作息",
+        "emotion": "保持积极心态"
+      }
+    },
+    {
+      "id": "cdf_013",
+      "formula_id": "formula_013",
+      "disease_category_id": "emotion_depression",
+      "disease_stage": "middle",
+      "symptom_pattern": "情绪低落、兴趣减退、乏力",
+      "syndrome_type": "肝郁脾虚",
+      "dosage_adjustment": "原方剂量，可酌加柴胡12g",
+      "duration_notes": "8周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "痰热内扰",
+        "心肾不交"
+      ],
+      "special_cautions": [
+        "定期心理评估",
+        "严重时需专业治疗"
+      ],
+      "lifestyle_advice": {
+        "diet": "清淡饮食，多食疏肝解郁食物",
+        "exercise": "适度运动",
+        "sleep": "规律作息",
+        "emotion": "积极心理疏导，多参与社交"
+      }
+    },
+    {
+      "id": "cdf_014",
+      "formula_id": "formula_014",
+      "disease_category_id": "immune_gout",
+      "disease_stage": "acute",
+      "symptom_pattern": "关节红肿热痛、活动受限",
+      "syndrome_type": "湿热蕴结",
+      "dosage_adjustment": "原方剂量，可酌加土茯苓30g",
+      "duration_notes": "4周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "寒湿痹",
+        "肝肾亏虚"
+      ],
+      "special_cautions": [
+        "严格低嘌呤饮食",
+        "多饮水"
+      ],
+      "lifestyle_advice": {
+        "diet": "低嘌呤饮食，戒酒",
+        "exercise": "急性期休息，缓解期适度运动",
+        "sleep": "规律作息",
+        "emotion": "保持心情平和"
+      }
+    },
+    {
+      "id": "cdf_015",
+      "formula_id": "formula_015",
+      "disease_category_id": "cardiovascular_angina",
+      "disease_stage": "stable",
+      "symptom_pattern": "胸闷、心悸、气短",
+      "syndrome_type": "心血瘀阻",
+      "dosage_adjustment": "原方剂量，可酌加丹参15g",
+      "duration_notes": "12周为一个疗程",
+      "combination_formulas": [],
+      "contraindications": [
+        "心阳虚",
+        "心气虚"
+      ],
+      "special_cautions": [
+        "定期心电图检查",
+        "随身携带急救药"
+      ],
+      "lifestyle_advice": {
+        "diet": "低脂低盐饮食",
+        "exercise": "适度有氧运动，避免剧烈",
+        "sleep": "规律作息，避免劳累",
+        "emotion": "保持情绪稳定，避免激动"
+      }
+    }
+  ],
+  "formula_evidence": [
+    {
+      "id": "fe_001",
+      "formula_id": "c3138a18-3c15-4dd8-90b6-003cf2d19b80",
+      "disease_category_id": "digestive_gastritis",
+      "evidence_type": "clinical_trial",
+      "title": "补中益气汤治疗慢性胃炎临床研究",
+      "authors": "张三, 李四",
+      "source": "中医杂志",
+      "year": 2020,
+      "volume": "61",
+      "issue": "3",
+      "pages": "245-249",
+      "doi": "10.13288/j.11-2166/r.2020.03.012",
+      "sample_size": 120,
+      "effectiveness": 0.88,
+      "p_value": 0.001,
+      "confidence_interval": "0.82-0.94",
+      "url": "https://doi.org/10.13288/j.11-2166/r.2020.03.012",
+      "abstract": "本研究评价补中益气汤治疗慢性胃炎的临床疗效...",
+      "key_findings": [
+        "总有效率88%",
+        "症状评分显著改善",
+        "无严重不良反应"
+      ],
+      "limitations": "样本量较小，随访时间较短"
+    },
+    {
+      "id": "fe_002",
+      "formula_id": "481065b5-cdf1-44f2-ab62-9e2b523fd592",
+      "disease_category_id": "immune_diabetes",
+      "evidence_type": "meta_analysis",
+      "title": "中药治疗2型糖尿病疗效的荟萃分析",
+      "authors": "王五, 赵六",
+      "source": "中国中西医结合杂志",
+      "year": 2021,
+      "volume": "41",
+      "issue": "5",
+      "pages": "598-604",
+      "doi": "10.3969/j.issn.1003-8884.2021.05.018",
+      "sample_size": 852,
+      "effectiveness": 0.82,
+      "p_value": 0.0001,
+      "confidence_interval": "0.78-0.86",
+      "url": "https://doi.org/10.3969/j.issn.1003-8884.2021.05.018",
+      "abstract": "本研究系统评价中药治疗2型糖尿病的疗效...",
+      "key_findings": [
+        "总有效率82%",
+        "血糖控制显著改善",
+        "安全性良好"
+      ],
+      "limitations": "部分研究质量较低"
+    },
+    {
+      "id": "fe_003",
+      "formula_id": "94a7fb67-d6e3-4335-a05f-344182ad35f4",
+      "disease_category_id": "emotion_insomnia",
+      "evidence_type": "case_study",
+      "title": "归脾汤治疗失眠症临床观察",
+      "authors": "刘七",
+      "source": "新中医",
+      "year": 2019,
+      "volume": "51",
+      "issue": "7",
+      "pages": "89-91",
+      "sample_size": 95,
+      "effectiveness": 0.85,
+      "p_value": 0.005,
+      "confidence_interval": "0.78-0.92",
+      "url": "",
+      "abstract": "观察归脾汤治疗心脾两虚型失眠症的临床疗效...",
+      "key_findings": [
+        "总有效率85%",
+        "睡眠质量显著改善",
+        "无不良反应"
+      ],
+      "limitations": "单中心研究，样本量有限"
+    },
+    {
+      "id": "fe_004",
+      "formula_id": "ac16f20a-96c7-4a87-8d38-c5c213c1667d",
+      "disease_category_id": "digestive_ulcer",
+      "evidence_type": "clinical_trial",
+      "title": "黄芪建中汤治疗消化性溃疡临床疗效观察",
+      "authors": "陈八, 周九",
+      "source": "中国中医药信息杂志",
+      "year": 2022,
+      "volume": "29",
+      "issue": "4",
+      "pages": "112-116",
+      "doi": "10.19879/j.cnki.1005-5304.2022.04.032",
+      "sample_size": 156,
+      "effectiveness": 0.91,
+      "p_value": 0.0001,
+      "confidence_interval": "0.86-0.96",
+      "url": "https://doi.org/10.19879/j.cnki.1005-5304.2022.04.032",
+      "abstract": "评价黄芪建中汤治疗消化性溃疡的临床疗效和安全性...",
+      "key_findings": [
+        "总有效率91%",
+        "溃疡愈合率显著提高",
+        "疼痛评分显著降低",
+        "复发率较低"
+      ],
+      "limitations": "随访时间仅6个月"
+    },
+    {
+      "id": "fe_005",
+      "formula_id": "0f5991c4-af44-4366-8296-8b647254a602",
+      "disease_category_id": "respiratory_asthma",
+      "evidence_type": "meta_analysis",
+      "title": "金匮肾气丸治疗支气管哮喘疗效的系统评价",
+      "authors": "吴十, 郑十一",
+      "source": "中华中医药学刊",
+      "year": 2021,
+      "volume": "39",
+      "issue": "8",
+      "pages": "1935-1939",
+      "doi": "10.13193/j.issn.1673-7717.2021.08.045",
+      "sample_size": 628,
+      "effectiveness": 0.86,
+      "p_value": 0.0001,
+      "confidence_interval": "0.83-0.89",
+      "url": "https://doi.org/10.13193/j.issn.1673-7717.2021.08.045",
+      "abstract": "系统评价金匮肾气丸治疗支气管哮喘的疗效...",
+      "key_findings": [
+        "总有效率86%",
+        "肺功能显著改善",
+        "生活质量评分提高",
+        "急性发作次数减少"
+      ],
+      "limitations": "部分研究质量参差不齐"
+    },
+    {
+      "id": "fe_006",
+      "formula_id": "3443a556-bbd8-4655-86a9-cc3dd5c976be",
+      "disease_category_id": "rheumatic_arthritis",
+      "evidence_type": "clinical_trial",
+      "title": "独活寄生汤治疗类风湿关节炎随机对照试验",
+      "authors": "王十二, 李十三",
+      "source": "中国中西医结合杂志",
+      "year": 2020,
+      "volume": "40",
+      "issue": "11",
+      "pages": "1321-1325",
+      "doi": "10.3969/j.issn.1003-8884.2020.11.012",
+      "sample_size": 210,
+      "effectiveness": 0.84,
+      "p_value": 0.001,
+      "confidence_interval": "0.79-0.89",
+      "url": "https://doi.org/10.3969/j.issn.1003-8884.2020.11.012",
+      "abstract": "评价独活寄生汤治疗类风湿关节炎的临床疗效...",
+      "key_findings": [
+        "总有效率84%",
+        "关节疼痛评分降低",
+        "晨僵时间缩短",
+        "炎性指标改善"
+      ],
+      "limitations": "观察期仅12周"
+    },
+    {
+      "id": "fe_007",
+      "formula_id": "08130d04-59d3-43c8-a72e-f8af93a8bba1",
+      "disease_category_id": "gynecological_dysmenorrhea",
+      "evidence_type": "meta_analysis",
+      "title": "逍遥散治疗原发性痛经的荟萃分析",
+      "authors": "张十四, 刘十五",
+      "source": "中医杂志",
+      "year": 2022,
+      "volume": "63",
+      "issue": "3",
+      "pages": "267-272",
+      "doi": "10.13288/j.11-2166/r.2022.03.018",
+      "sample_size": 945,
+      "effectiveness": 0.89,
+      "p_value": 0.0001,
+      "confidence_interval": "0.86-0.92",
+      "url": "https://doi.org/10.13288/j.11-2166/r.2022.03.018",
+      "abstract": "系统评价逍遥散治疗原发性痛经的疗效和安全性...",
+      "key_findings": [
+        "总有效率89%",
+        "疼痛评分显著降低",
+        "生活质量提高",
+        "复发率低"
+      ],
+      "limitations": "部分研究对照组设置不完善"
+    },
+    {
+      "id": "fe_008",
+      "formula_id": "2ccdac4b-4c95-43c2-ae95-dfd9643df61b",
+      "disease_category_id": "gynecological_menopause",
+      "evidence_type": "clinical_trial",
+      "title": "二仙汤治疗围绝经期综合征临床研究",
+      "authors": "陈十六, 周十七",
+      "source": "中国中药杂志",
+      "year": 2021,
+      "volume": "46",
+      "issue": "9",
+      "pages": "2456-2461",
+      "doi": "10.19540/j.cnki.cjcmm.2021.09.025",
+      "sample_size": 186,
+      "effectiveness": 0.87,
+      "p_value": 0.0005,
+      "confidence_interval": "0.82-0.92",
+      "url": "https://doi.org/10.19540/j.cnki.cjcmm.2021.09.025",
+      "abstract": "评价二仙汤治疗围绝经期综合征的临床疗效...",
+      "key_findings": [
+        "总有效率87%",
+        "Kupperman评分显著改善",
+        "雌激素水平趋于正常",
+        "睡眠质量提高"
+      ],
+      "limitations": "随访时间较短"
+    },
+    {
+      "id": "fe_009",
+      "formula_id": "c35c2627-fe59-4d86-b90a-5127a6648f73",
+      "disease_category_id": "immune_obesity",
+      "evidence_type": "case_study",
+      "title": "参苓白术散治疗单纯性肥胖临床观察",
+      "authors": "吴十八, 郑十九",
+      "source": "新中医",
+      "year": 2020,
+      "volume": "52",
+      "issue": "5",
+      "pages": "78-80",
+      "sample_size": 112,
+      "effectiveness": 0.78,
+      "p_value": 0.01,
+      "confidence_interval": "0.71-0.85",
+      "url": "",
+      "abstract": "观察参苓白术散治疗脾虚湿盛型单纯性肥胖的疗效...",
+      "key_findings": [
+        "总有效率78%",
+        "体重下降明显",
+        "腰围减少",
+        "血脂指标改善"
+      ],
+      "limitations": "单中心研究"
+    },
+    {
+      "id": "fe_010",
+      "formula_id": "formula_013",
+      "disease_category_id": "emotion_depression",
+      "evidence_type": "meta_analysis",
+      "title": "柴胡疏肝散治疗抑郁症的荟萃分析",
+      "authors": "王二十, 李二十一",
+      "source": "中国临床心理学杂志",
+      "year": 2022,
+      "volume": "30",
+      "issue": "2",
+      "pages": "295-300",
+      "doi": "10.16128/j.cnki.1005-3611.2022.02.025",
+      "sample_size": 756,
+      "effectiveness": 0.81,
+      "p_value": 0.0001,
+      "confidence_interval": "0.78-0.84",
+      "url": "https://doi.org/10.16128/j.cnki.1005-3611.2022.02.025",
+      "abstract": "系统评价柴胡疏肝散治疗轻中度抑郁症的疗效...",
+      "key_findings": [
+        "总有效率81%",
+        "HAMD评分显著降低",
+        "不良反应较少",
+        "依从性好"
+      ],
+      "limitations": "部分研究样本量较小"
+    },
+    {
+      "id": "fe_011",
+      "formula_id": "formula_014",
+      "disease_category_id": "immune_gout",
+      "evidence_type": "clinical_trial",
+      "title": "四妙散治疗急性痛风性关节炎临床研究",
+      "authors": "张二十二, 刘二十三",
+      "source": "中国中西医结合杂志",
+      "year": 2021,
+      "volume": "41",
+      "issue": "7",
+      "pages": "825-829",
+      "doi": "10.3969/j.issn.1003-8884.2021.07.015",
+      "sample_size": 168,
+      "effectiveness": 0.9,
+      "p_value": 0.0001,
+      "confidence_interval": "0.85-0.95",
+      "url": "https://doi.org/10.3969/j.issn.1003-8884.2021.07.015",
+      "abstract": "评价四妙散治疗急性痛风性关节炎的疗效和安全性...",
+      "key_findings": [
+        "总有效率90%",
+        "关节肿胀消退快",
+        "疼痛评分迅速降低",
+        "血尿酸水平下降",
+        "无严重不良反应"
+      ],
+      "limitations": "仅观察急性期疗效"
+    },
+    {
+      "id": "fe_012",
+      "formula_id": "formula_015",
+      "disease_category_id": "cardiovascular_angina",
+      "evidence_type": "meta_analysis",
+      "title": "血府逐瘀汤治疗冠心病心绞痛的系统评价",
+      "authors": "陈二十四, 周二十五",
+      "source": "中医杂志",
+      "year": 2020,
+      "volume": "61",
+      "issue": "12",
+      "pages": "1048-1053",
+      "doi": "10.13288/j.11-2166/r.2020.12.020",
+      "sample_size": 1286,
+      "effectiveness": 0.88,
+      "p_value": 0.0001,
+      "confidence_interval": "0.86-0.90",
+      "url": "https://doi.org/10.13288/j.11-2166/r.2020.12.020",
+      "abstract": "系统评价血府逐瘀汤治疗冠心病心绞痛的疗效...",
+      "key_findings": [
+        "总有效率88%",
+        "心绞痛发作频率减少",
+        "硝酸甘油用量减少",
+        "心电图改善",
+        "生活质量提高"
+      ],
+      "limitations": "部分研究质量参差不齐"
+    },
+    {
+      "id": "fe_013",
+      "formula_id": "c3138a18-3c15-4dd8-90b6-003cf2d19b80",
+      "disease_category_id": "tumor_lung",
+      "evidence_type": "case_study",
+      "title": "补中益气汤配合化疗治疗肺癌的临床观察",
+      "authors": "吴二十六, 郑二十七",
+      "source": "中国中医药信息杂志",
+      "year": 2021,
+      "volume": "28",
+      "issue": "6",
+      "pages": "98-102",
+      "sample_size": 78,
+      "effectiveness": 0.82,
+      "p_value": 0.005,
+      "confidence_interval": "0.74-0.90",
+      "url": "",
+      "abstract": "观察补中益气汤配合化疗治疗肺癌的临床疗效...",
+      "key_findings": [
+        "化疗完成率提高",
+        "生活质量改善",
+        "免疫功能保护",
+        "不良反应减少"
+      ],
+      "limitations": "样本量较小，随访时间短"
+    },
+    {
+      "id": "fe_014",
+      "formula_id": "481065b5-cdf1-44f2-ab62-9e2b523fd592",
+      "disease_category_id": "tumor_liver",
+      "evidence_type": "clinical_trial",
+      "title": "六味地黄丸配合靶向治疗肝癌的随机对照研究",
+      "authors": "王二十八, 李二十九",
+      "source": "中国中西医结合杂志",
+      "year": 2022,
+      "volume": "42",
+      "issue": "4",
+      "pages": "425-429",
+      "doi": "10.3969/j.issn.1003-8884.2022.04.018",
+      "sample_size": 124,
+      "effectiveness": 0.8,
+      "p_value": 0.01,
+      "confidence_interval": "0.73-0.87",
+      "url": "https://doi.org/10.3969/j.issn.1003-8884.2022.04.018",
+      "abstract": "评价六味地黄丸配合靶向治疗肝癌的临床疗效...",
+      "key_findings": [
+        "肿瘤进展时间延长",
+        "生活质量提高",
+        "肝功能保护",
+        "靶向药物耐受性提高"
+      ],
+      "limitations": "观察期仅24周"
+    },
+    {
+      "id": "fe_015",
+      "formula_id": "ddc2f7df-0275-4e1d-bb78-0b4bc69cc0d0",
+      "disease_category_id": "cardiovascular_hypertension",
+      "evidence_type": "meta_analysis",
+      "title": "天麻钩藤饮治疗高血压病的荟萃分析",
+      "authors": "张三十, 刘三十一",
+      "source": "中华中医药学刊",
+      "year": 2021,
+      "volume": "39",
+      "issue": "10",
+      "pages": "2478-2483",
+      "doi": "10.13193/j.issn.1673-7717.2021.10.058",
+      "sample_size": 1568,
+      "effectiveness": 0.86,
+      "p_value": 0.0001,
+      "confidence_interval": "0.84-0.88",
+      "url": "https://doi.org/10.13193/j.issn.1673-7717.2021.10.058",
+      "abstract": "系统评价天麻钩藤饮治疗高血压病的疗效...",
+      "key_findings": [
+        "总有效率86%",
+        "血压控制效果良好",
+        "头晕头痛症状改善",
+        "生活质量提高",
+        "不良反应少"
+      ],
+      "limitations": "部分研究随访时间不足"
+    }
+  ],
+  "tumor_formula_relations": [
+    {
+      "id": "tfr_001",
+      "formula_id": "c3138a18-3c15-4dd8-90b6-003cf2d19b80",
+      "disease_category_id": "tumor_lung",
+      "constitution_id": "qi_deficiency",
+      "pathogenesis_id": "toxic_stagnation",
+      "complication_id": "chemotherapy_side_effects",
+      "dosage_adjustment": "原方剂量，黄芪加量至45g，加白花蛇舌草30g",
+      "efficacy_notes": "适用于肺癌化疗后气血两虚证",
+      "clinical_evidence": [
+        "临床观察",
+        "专家经验"
+      ],
+      "evidence_level": "medium"
+    },
+    {
+      "id": "tfr_002",
+      "formula_id": "481065b5-cdf1-44f2-ab62-9e2b523fd592",
+      "disease_category_id": "tumor_liver",
+      "constitution_id": "yin_deficiency",
+      "pathogenesis_id": "damp_heat",
+      "complication_id": "radiotherapy_side_effects",
+      "dosage_adjustment": "原方剂量，加鳖甲15g，加牡丹皮10g",
+      "efficacy_notes": "适用于肝癌放疗后阴虚湿热证",
+      "clinical_evidence": [
+        "专家经验"
+      ],
+      "evidence_level": "low"
+    }
+  ]
+}

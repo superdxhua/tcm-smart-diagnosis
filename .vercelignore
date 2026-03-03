@@ -1,0 +1,25 @@
+# 排除不必要的文件
+node_modules
+.next
+.cache
+.git
+.gitignore
+.env
+.env.local
+.env.production
+dist-weapp
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+*.log
+coverage
+.vscode
+.idea
+*.md
+!README.md
+*.test.ts
+*.spec.ts
+
+# 排除后端代码
+server
+backend-deploy

@@ -1,0 +1,304 @@
+{
+  "formulas": [
+    {
+      "id": "formula_001",
+      "formula_name": "理中汤",
+      "category": "温里剂",
+      "source": "《伤寒论》",
+      "dosage": "人参9g, 白术9g, 干姜9g, 炙甘草9g",
+      "mechanism": "温中健脾",
+      "indications": [
+        "脾胃虚寒证",
+        "脘腹冷痛",
+        "喜温喜按",
+        "食少便溏",
+        "畏寒肢冷",
+        "舌淡苔白",
+        "脉沉缓"
+      ],
+      "contraindications": [
+        "胃热炽盛",
+        "阴虚火旺"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_002",
+      "formula_name": "参苓白术散",
+      "category": "补益剂",
+      "source": "《太平惠民和剂局方》",
+      "dosage": "人参15g, 白术15g, 茯苓15g, 山药15g, 莲子肉9g, 白扁豆12g, 薏苡仁9g, 砂仁6g, 桔梗6g, 甘草9g",
+      "mechanism": "益气健脾，渗湿止泻",
+      "indications": [
+        "脾虚夹湿证",
+        "饮食不化",
+        "胸脘痞闷",
+        "肠鸣泄泻",
+        "形体消瘦",
+        "面色萎黄",
+        "舌苔白腻",
+        "脉虚缓"
+      ],
+      "contraindications": [
+        "湿热内盛"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_003",
+      "formula_name": "酸枣仁汤",
+      "category": "安神剂",
+      "source": "《金匮要略》",
+      "dosage": "酸枣仁15g, 茯苓6g, 知母6g, 川芎6g, 甘草3g",
+      "mechanism": "养血安神，清热除烦",
+      "indications": [
+        "肝血不足，虚热内扰证",
+        "虚烦失眠",
+        "心悸不安",
+        "头目眩晕",
+        "咽干口燥",
+        "舌红",
+        "脉弦细"
+      ],
+      "contraindications": [
+        "实热失眠"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_004",
+      "formula_name": "半夏泻心汤",
+      "category": "和解剂",
+      "source": "《伤寒论》",
+      "dosage": "半夏12g, 黄芩9g, 干姜9g, 人参9g, 黄连3g, 大枣4枚, 甘草6g",
+      "mechanism": "寒热平调，消痞散结",
+      "indications": [
+        "寒热互结之痞证",
+        "心下痞满",
+        "恶心呕吐",
+        "肠鸣腹泻",
+        "舌苔腻微黄"
+      ],
+      "contraindications": [
+        "纯虚无邪"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_005",
+      "formula_name": "小柴胡汤",
+      "category": "和解剂",
+      "source": "《伤寒论》",
+      "dosage": "柴胡24g, 黄芩9g, 人参9g, 半夏9g, 生姜9g, 大枣4枚, 甘草9g",
+      "mechanism": "和解少阳",
+      "indications": [
+        "少阳证",
+        "寒热往来",
+        "胸胁苦满",
+        "默默不欲饮食",
+        "心烦喜呕",
+        "口苦咽干",
+        "目眩"
+      ],
+      "contraindications": [
+        "肝火炽盛"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_006",
+      "formula_name": "黄芪建中汤",
+      "category": "温里剂",
+      "source": "《金匮要略》",
+      "dosage": "黄芪9g, 桂枝9g, 白芍18g, 生姜9g, 大枣6枚, 饴糖30g, 甘草6g",
+      "mechanism": "温中补气，和里缓急",
+      "indications": [
+        "脾胃虚寒",
+        "胃脘疼痛",
+        "喜温喜按",
+        "神疲乏力",
+        "面色无华"
+      ],
+      "contraindications": [
+        "胃火炽盛"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_007",
+      "formula_name": "痛泻要方",
+      "category": "和解剂",
+      "source": "《景岳全书》引刘草窗方",
+      "dosage": "陈皮6g, 白术9g, 白芍9g, 防风6g",
+      "mechanism": "补脾柔肝，祛湿止泻",
+      "indications": [
+        "脾虚肝旺之痛泻",
+        "肠鸣腹痛",
+        "大便泄泻",
+        "泻必腹痛",
+        "舌苔薄白",
+        "脉两关不调"
+      ],
+      "contraindications": [
+        "湿热腹泻"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_008",
+      "formula_name": "香砂六君子汤",
+      "category": "补益剂",
+      "source": "《古今名医方论》",
+      "dosage": "人参9g, 白术9g, 茯苓9g, 甘草6g, 陈皮6g, 半夏6g, 木香6g, 砂仁6g",
+      "mechanism": "益气健脾，行气化痰",
+      "indications": [
+        "脾胃气虚兼痰湿证",
+        "食少便溏",
+        "胸脘痞闷",
+        "恶心呕吐",
+        "咳嗽痰多"
+      ],
+      "contraindications": [
+        "阴虚火旺"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_009",
+      "formula_name": "逍遥散",
+      "category": "和解剂",
+      "source": "《太平惠民和剂局方》",
+      "dosage": "柴胡9g, 当归9g, 白芍9g, 白术9g, 茯苓9g, 甘草4.5g, 薄荷1.5g, 生姜3片",
+      "mechanism": "疏肝解郁，养血健脾",
+      "indications": [
+        "肝郁血虚脾弱证",
+        "两胁作痛",
+        "头痛目眩",
+        "口燥咽干",
+        "神疲食少",
+        "月经不调",
+        "乳房胀痛"
+      ],
+      "contraindications": [
+        "肝火炽盛"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_010",
+      "formula_name": "四君子汤",
+      "category": "补益剂",
+      "source": "《太平惠民和剂局方》",
+      "dosage": "人参9g, 白术9g, 茯苓9g, 甘草6g",
+      "mechanism": "益气健脾",
+      "indications": [
+        "脾胃气虚证",
+        "面色萎黄",
+        "语声低微",
+        "四肢无力",
+        "食少便溏",
+        "舌淡苔白",
+        "脉虚缓"
+      ],
+      "contraindications": [
+        "阴虚火旺"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_011",
+      "formula_name": "归脾汤",
+      "category": "补益剂",
+      "source": "《济生方》",
+      "dosage": "人参9g, 白术9g, 茯苓9g, 甘草6g, 黄芪12g, 当归9g, 龙眼肉9g, 酸枣仁12g, 木香6g, 远志6g, 生姜3片, 大枣3枚",
+      "mechanism": "益气补血，健脾养心",
+      "indications": [
+        "心脾气血两虚证",
+        "心悸怔忡",
+        "健忘失眠",
+        "盗汗虚热",
+        "体倦食少",
+        "面色萎黄",
+        "舌淡苔薄白",
+        "脉细弱"
+      ],
+      "contraindications": [
+        "实热"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    },
+    {
+      "id": "formula_012",
+      "formula_name": "六味地黄丸",
+      "category": "补益剂",
+      "source": "《小儿药证直诀》",
+      "dosage": "熟地黄24g, 山茱萸12g, 山药12g, 泽泻9g, 茯苓9g, 牡丹皮9g",
+      "mechanism": "滋阴补肾",
+      "indications": [
+        "肾阴虚证",
+        "腰膝酸软",
+        "头晕目眩",
+        "耳鸣耳聋",
+        "盗汗遗精",
+        "消渴",
+        "骨蒸潮热",
+        "手足心热",
+        "口燥咽干",
+        "舌红少苔",
+        "脉沉细数"
+      ],
+      "contraindications": [
+        "脾胃虚弱"
+      ],
+      "instructions": "水煎服，每日1剂，分早晚两次温服",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "version": 1,
+      "is_active": true
+    }
+  ]
+}

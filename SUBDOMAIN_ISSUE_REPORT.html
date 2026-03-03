@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子域名响应数据为空问题专项报告</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #007bff;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #0056b3;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h4 {
+            color: #004085;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        strong, b {
+            color: #007bff;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #333;
+        }
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        blockquote {
+            border-left: 4px solid #007bff;
+            padding-left: 15px;
+            margin: 20px 0;
+            color: #666;
+            background-color: #f8f9fa;
+            padding: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .priority {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .priority-p0 {
+            background-color: #dc3545;
+        }
+        .priority-p1 {
+            background-color: #ffc107;
+            color: #333;
+        }
+        .priority-p2 {
+            background-color: #28a745;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #dee2e6;
+            margin: 30px 0;
+        }
+        .info-box {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .success-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>子域名"响应数据为空"问题专项报告</h1>
+
+<div class="info-box">
+<p><strong>报告类型</strong>：问题专项分析<br>
+<strong>生成时间</strong>：2026-01-13<br>
+<strong>问题状态</strong>：待解决<br>
+<strong>优先级</strong>：<span class="priority priority-p0">P0（高）</span></p>
+</div>
+
+<hr>
+
+<h2><span class="emoji">📋</span> 问题描述</h2>
+
+<h3>现象描述</h3>
+<p>访问子域名（如 <code>api.zhongyihskhealth.com</code> 或前端调用后端 API）时，前端显示"响应数据为空，请检查网络连接"。</p>
+
+<h3>用户疑问</h3>
+<p><strong>"ICP 备案未通过是否会导致'响应数据为空'？"</strong></p>
+
+<h3>答案</h3>
+<p><strong>否，ICP 备案未通过与"响应数据为空"没有直接关联。</strong></p>
+<ul>
+<li>ICP 备案未通过的症状：浏览器提示"网站未备案"或直接无法访问</li>
+<li>"响应数据为空"的症状：请求已到达服务器，但返回了空数据或错误</li>
+</ul>
+<p><strong>结论</strong>：这是一个<strong>后端 API 问题</strong>，而非域名备案问题。</p>
+
+<hr>
+
+<h2><span class="emoji">🔍</span> 问题分析</h2>
+
+<h3>技术架构回顾</h3>
+
+<p><strong>当前部署架构</strong>：</p>
+<pre><code>前端 (Vercel)
+  ↓
+后端 API (Render)
+  ↓
+Coze LLM 服务
+  ↓
+Supabase 数据库
+</code></pre>
+
+<p><strong>请求流程</strong>：</p>
+<pre><code>用户输入 → 前端 → Network.request → Render 后端 → LLM 服务 → 返回结果 → 前端展示
+</code></pre>
+
+<h3>关键代码分析</h3>
+
+<h4>前端请求代码（<code>src/pages/index/index.tsx</code>）</h4>
+<pre><code>const res = await Network.request({
+  url: '/api/tcm/analyze',
+  method: 'POST',
+  data: {
+    patientId: selectedPatient?.id,
+    chiefComplaint: chiefComplaint,
+    history: history,
+    pastHistory: pastHistory,
+    additionalInfo: additionalInfo || '',
+    aiInquiry: inquirySummary,
+    isFollowUp: followUpAnalysis !== null
+  }
+})
+
+console.log('健康分析响应:', res)
+
+if (res.statusCode === 200 && res.data.data) {
+  setResult(res.data.data) // ✅ 正常情况
+} else {
+  throw new Error('获取健康方案失败') // ❌ 抛出错误
+}
+</code></pre>
+
+<p><strong>前端期望的数据结构</strong>：</p>
+<pre><code>{
+  "statusCode": 200,
+  "data": {
+    "code": 200,
+    "msg": "success",
+    "data": {
+      "diagnosis": "...",
+      "differentiation": "...",
+      "prescription": {...}
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h2><span class="emoji">🎯</span> 可能的原因及验证方法</h2>
+
+<h3>原因 1：LLM 服务调用失败 <span class="emoji">⭐⭐⭐⭐⭐</span></h3>
+
+<div class="warning-box">
+<p><strong>描述</strong>：
+后端依赖 Coze LLM 服务进行智能分析，如果 LLM 服务调用失败，会导致整个分析失败。</p>
+
+<p><strong>失败场景</strong>：</p>
+<ul>
+<li>LLM 服务超时（30 秒超时）</li>
+<li>LLM 服务返回错误</li>
+<li>API Key 配置错误</li>
+<li>网络连接问题</li>
+<li>Coze SDK 配置错误</li>
+</ul>
+
+<p><strong>症状</strong>：</p>
+<ul>
+<li>后端日志显示：<code>LLM 调用失败: xxx</code></li>
+<li>前端收到错误响应：<code>{ code: 500, msg: '诊疗分析失败，请重试' }</code></li>
+<li><code>res.data.data</code> 为 <code>undefined</code> 或 <code>null</code></li>
+</ul>
+
+<p><strong>验证方法 1：查看 Render 日志</strong></p>
+</div>
+<pre><code># 登录 Render Dashboard
+# 1. 选择你的应用
+# 2. 点击 "Logs" 标签
+# 3. 查看最新的日志输出
+# 4. 搜索以下关键词：
+#    - "LLM 调用失败"
+#    - "诊疗分析失败"
+#    - "error"
+#    - "exception"
+</code></pre>
+
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>检查环境变量配置</strong><br>
+在 Render Dashboard 中检查以下环境变量是否正确配置：
+<ul>
+<li><code>COZE_WORKLOAD_IDENTITY_API_KEY</code></li>
+<li><code>COZE_INTEGRATION_BASE_URL</code></li>
+<li><code>COZE_INTEGRATION_MODEL_BASE_URL</code></li>
+</ul>
+</li>
+<li><strong>增加超时时间</strong><br>
+如果 LLM 服务响应较慢，可以增加超时时间</li>
+<li><strong>添加重试机制</strong></li>
+</ol>
+
+<h3>原因 2：后端返回的数据结构不符合预期 <span class="emoji">⭐⭐⭐⭐</span></h3>
+
+<div class="warning-box">
+<p><strong>描述</strong>：
+前端期望的数据结构是 <code>res.data.data</code>，如果后端返回的结构不符合预期，前端会认为"响应数据为空"。</p>
+
+<p><strong>症状</strong>：</p>
+<ul>
+<li>后端返回 200 OK，但 <code>res.data.data</code> 为 <code>null</code> 或 <code>undefined</code></li>
+<li>前端抛出错误：<code>获取健康方案失败</code></li>
+<li>浏览器控制台显示：<code>Cannot read properties of undefined</code></li>
+</ul>
+</div>
+
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>修复后端返回结构</strong><br>
+确保后端始终返回完整的响应结构</li>
+<li><strong>增强前端错误处理</strong><br>
+添加更健壮的错误处理逻辑</li>
+</ol>
+
+<h3>原因 3：Render 后端冷启动延迟 <span class="emoji">⭐⭐⭐</span></h3>
+
+<div class="warning-box">
+<p><strong>描述</strong>：
+Render 免费版有冷启动机制，首次访问可能需要 30-60 秒。</p>
+
+<p><strong>症状</strong>：</p>
+<ul>
+<li>首次请求超时（30 秒）</li>
+<li>后端返回 504 Gateway Timeout</li>
+<li>或返回空响应</li>
+</ul>
+</div>
+
+<p><strong>当前配置</strong>：</p>
+<pre><code>// src/network.ts
+timeout: 30000, // 30 秒超时
+</code></pre>
+
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>增加超时时间</strong><br>
+将超时时间增加到 60 秒</li>
+<li><strong>升级 Render 服务</strong>（推荐）<br>
+升级到 Standard ($7/月) 消除冷启动，或升级到 Pro Plus ($25/月) 获得更高性能</li>
+<li><strong>配置 ping 服务</strong>（临时方案）<br>
+使用 cron-job.org 每 5 分钟 ping 一次，防止休眠</li>
+</ol>
+
+<h3>原因 4：高危病重检测拦截 <span class="emoji">⭐⭐⭐⭐</span></h3>
+
+<div class="warning-box">
+<p><strong>描述</strong>：
+如果用户输入的内容被判断为"高危病重人群"，系统会拒绝生成健康方案。</p>
+
+<p><strong>症状</strong>：</p>
+<ul>
+<li>前端显示危险警示弹窗</li>
+<li>后端不返回处方信息</li>
+<li>看起来像"响应数据为空"</li>
+</ul>
+
+<p><strong>验证方法</strong>：</p>
+检查你输入的测试数据是否包含高危关键词：
+<ul>
+<li>"心肌梗死"</li>
+<li>"脑卒中"</li>
+<li>"中风"</li>
+<li>"昏迷"</li>
+<li>"休克"</li>
+<li>"呼吸困难"</li>
+<li>"大出血"</li>
+<li>"剧烈腹痛"</li>
+</ul>
+</div>
+
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>使用安全的测试数据</li>
+<li>查看前端日志</li>
+<li>查看后端日志</li>
+</ol>
+
+<h3>原因 5：权限限制导致数据被隐藏 <span class="emoji">⭐⭐⭐</span></h3>
+
+<div class="warning-box">
+<p><strong>描述</strong>：
+如果处方含有高风险药材，个人账户无法查看详细信息。</p>
+
+<p><strong>症状</strong>：</p>
+<ul>
+<li>处方详情被隐藏</li>
+<li>看起来像"响应数据为空"</li>
+</ul>
+</div>
+
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>使用机构账户测试</li>
+<li>使用低风险症状测试</li>
+<li>检查高风险配置</li>
+</ol>
+
+<hr>
+
+<h2><span class="emoji">🔧</span> 完整的诊断流程</h2>
+
+<h3>步骤 1：确认问题复现</h3>
+<p><strong>请提供以下信息</strong>：</p>
+<ol>
+<li>你访问的具体 URL 是什么？
+<ul>
+<li>开发环境：<code>http://localhost:5000</code>？</li>
+<li>生产环境：<code>https://zhongyihskhealth.com</code>？</li>
+<li>Render 临时域名：<code>https://tcm-smart-diagnosis-api.onrender.com</code>？</li>
+</ul>
+</li>
+<li>你输入的测试数据是什么？</li>
+<li>前端控制台的完整错误信息是什么？</li>
+</ol>
+
+<h3>步骤 2：查看网络请求</h3>
+<ol>
+<li>打开浏览器开发者工具（F12）</li>
+<li>切换到 Network 标签</li>
+<li>刷新页面并重现问题</li>
+<li>找到失败的请求（红色标记）</li>
+<li>点击查看详细信息</li>
+</ol>
+
+<h3>步骤 3：查看后端日志</h3>
+<p><strong>Render 生产环境</strong>：</p>
+<ol>
+<li>登录 Render Dashboard</li>
+<li>选择你的应用：<code>tcm-smart-diagnosis-api</code></li>
+<li>点击 "Logs" 标签</li>
+<li>查看最新的日志输出</li>
+<li>搜索关键词</li>
+</ol>
+
+<h3>步骤 4：测试 API 接口</h3>
+<p>使用 curl 测试 Render 后端 API：</p>
+<pre><code># 测试健康检查
+curl -v https://tcm-smart-diagnosis-api.onrender.com/api/health
+
+# 测试分析接口
+curl -v -X POST https://tcm-smart-diagnosis-api.onrender.com/api/tcm/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "chiefComplaint": "头痛",
+    "history": "三天前开始",
+    "pastHistory": ""
+  }'
+</code></pre>
+
+<hr>
+
+<h2><span class="emoji">🚀</span> 解决方案汇总</h2>
+
+<h3>立即执行（P0）</h3>
+<div class="success-box">
+<ol>
+<li><strong>添加详细的日志输出</strong><br>
+在后端和前端代码中添加详细的日志输出</li>
+<li><strong>测试 Render 后端 API</strong><br>
+使用 curl 测试 API 接口</li>
+<li><strong>查看 Render 日志</strong><br>
+登录 Render Dashboard，查看最新日志</li>
+</ol>
+</div>
+
+<h3>短期执行（P1）</h3>
+<div class="info-box">
+<ol>
+<li><strong>修复后端错误处理</strong><br>
+确保后端始终返回完整的响应结构</li>
+<li><strong>增强前端错误处理</strong><br>
+添加更健壮的错误处理逻辑</li>
+</ol>
+</div>
+
+<h3>中期执行（P2）</h3>
+<div class="info-box">
+<ol>
+<li><strong>升级 Render 服务</strong>（推荐）<br>
+升级到 Standard ($7/月) 消除冷启动，提升响应速度和稳定性</li>
+<li><strong>添加重试机制</strong><br>
+如果 LLM 服务不稳定，添加自动重试</li>
+</ol>
+</div>
+
+<hr>
+
+<h2><span class="emoji">📊</span> 优先级汇总表</h2>
+
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th>优先级</th>
+<th>预计时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加详细日志</td>
+<td><span class="priority priority-p0">P0</span></td>
+<td>10 分钟</td>
+</tr>
+<tr>
+<td>测试 Render API</td>
+<td><span class="priority priority-p0">P0</span></td>
+<td>5 分钟</td>
+</tr>
+<tr>
+<td>查看 Render 日志</td>
+<td><span class="priority priority-p0">P0</span></td>
+<td>10 分钟</td>
+</tr>
+<tr>
+<td>修复后端错误处理</td>
+<td><span class="priority priority-p1">P1</span></td>
+<td>15 分钟</td>
+</tr>
+<tr>
+<td>升级 Render 服务</td>
+<td><span class="priority priority-p2">P2</span></td>
+<td>5 分钟</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2><span class="emoji">📝</span> 需要你提供的信息</h2>
+
+<p>为了进一步诊断问题，请提供以下信息：</p>
+
+<ol>
+<li><strong>访问详情</strong>
+<ul>
+<li>你访问的具体 URL 是什么？</li>
+<li>是在扣子开发环境测试，还是在生产环境测试？</li>
+<li>使用的是哪个账户（个人账户/机构账户）？</li>
+</ul>
+</li>
+<li><strong>测试数据</strong></li>
+<li><strong>浏览器控制台</strong>
+<ul>
+<li>打开浏览器开发者工具（F12）</li>
+<li>Console 标签中的完整错误信息</li>
+<li>Network 标签中失败请求的详细信息</li>
+</ul>
+</li>
+<li><strong>Render 日志</strong>
+<ul>
+<li>Render Dashboard 中的最新日志</li>
+<li>特别关注包含 "error"、"exception"、"failed" 的日志</li>
+</ul>
+</li>
+<li><strong>curl 测试结果</strong></li>
+</ol>
+
+<hr>
+
+<h2><span class="emoji">✅</span> 总结</h2>
+
+<h3>关键发现</h3>
+<ol>
+<li><strong>ICP 备案与"响应数据为空"没有直接关联</strong></li>
+<li>这是一个<strong>后端 API 问题</strong>，而非域名备案问题</li>
+<li>最可能的原因是：<strong>LLM 服务调用失败</strong> 或 <strong>数据结构问题</strong></li>
+</ol>
+
+<h3>下一步行动</h3>
+<ol>
+<li><strong>立即执行</strong>：添加详细日志，测试 Render API，查看 Render 日志</li>
+<li><strong>提供反馈</strong>：提供上述 5 项信息</li>
+<li><strong>持续优化</strong>：根据日志信息定位问题并修复</li>
+</ol>
+
+<hr>
+
+<div class="info-box" style="text-align: center; margin-top: 50px;">
+<p><strong>报告结束</strong></p>
+<p>请按照上述步骤执行，并提供反馈信息。我会继续协助你解决问题。</p>
+</div>
+
+</body>
+</html>

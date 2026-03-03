@@ -1,0 +1,4 @@
+# 排除不需要的文件和目录
+node_modules
+*.log
+.DS_Store

@@ -1,0 +1,28 @@
+{
+  "miniprogramRoot": "./dist",
+  "projectname": "中医智能诊疗好帮手",
+  "description": "基于张仲景经方的中医智能诊疗系统",
+  "appid": "请替换为你的AppID",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "condition": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.19.4",
+  "appid": "请替换为你的AppID",
+  "projectname": "中医智能诊疗好帮手",
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}
