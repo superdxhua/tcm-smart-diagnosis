@@ -1,4 +1,4 @@
-/* 登录页面主容器 */
+/* 登录页面主容器 - 手机端竖屏模式 */
 .login-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
@@ -8,56 +8,248 @@
   padding: 24px 16px;
 }
 
-/* 登录卡片容器 - 老年人友好：大字体大输入框 */
-.login-container {
-  width: 100%;
-  max-width: 100%; /* 手机端全宽 */
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  padding: 32px 24px;
+/* ========================================
+   电脑端横屏模拟模式（模拟横屏手机显示）
+   当屏幕宽度 >= 768px 时触发
+   ======================================== */
+@media (min-width: 768px) {
+  .login-page {
+    /* 深色沉浸式背景 */
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e1b4b 100%);
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 电脑端：横屏手机容器 */
+  .login-container {
+    /* 模拟横屏手机的比例 16:9 */
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 16 / 9;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow:
+      0 0 60px rgba(0, 0, 0, 0.5),
+      0 0 100px rgba(59, 130, 246, 0.2),
+      inset 0 0 30px rgba(255, 255, 255, 0.1);
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* 横屏容器：左侧LOGO/标题区 */
+  .login-header {
+    flex: 0 0 35%;
+    text-align: center;
+    padding-right: 24px;
+    border-right: 2px solid #e5e7eb;
+    margin-bottom: 0;
+  }
+
+  .login-title {
+    font-size: 28px;
+  }
+
+  .login-subtitle {
+    font-size: 14px;
+  }
+
+  /* 横屏容器：右侧表单区 */
+  .login-form {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .form-item {
+    margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .form-input {
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+
+  .input-field {
+    font-size: 16px;
+  }
+
+  /* 密码按钮缩小 */
+  .password-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  .password-toggle-text {
+    font-size: 20px;
+  }
+
+  /* 记住密码 */
+  .remember-me {
+    margin-bottom: 12px;
+  }
+
+  .checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .remember-text {
+    font-size: 14px;
+  }
+
+  /* 登录按钮 */
+  .login-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+  }
+
+  .login-btn-text {
+    font-size: 18px;
+  }
+
+  /* 微信登录 */
+  .wechat-login-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .wechat-login-text {
+    font-size: 16px;
+  }
+
+  .wechat-login-tip {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  /* 分割线 */
+  .divider {
+    margin: 16px 0;
+  }
+
+  .divider-text {
+    font-size: 12px;
+  }
+
+  /* 底部 */
+  .login-footer {
+    margin-top: 12px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  /* 注册卡片 */
+  .register-card {
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .register-title {
+    font-size: 14px;
+  }
+
+  .register-desc {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .register-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  .register-btn-text {
+    font-size: 14px;
+  }
+
+  /* 错误信息 */
+  .error-message {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+
+  .error-text {
+    font-size: 14px;
+  }
+
+  /* 弹窗 */
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content {
+    max-width: 400px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .modal-header {
+    margin-bottom: 12px;
+  }
+
+  .modal-title {
+    font-size: 20px;
+  }
+
+  .modal-body {
+    margin-bottom: 12px;
+  }
+
+  .info-card {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .info-title {
+    font-size: 13px;
+  }
+
+  .info-text {
+    font-size: 11px;
+  }
+
+  .modal-footer {
+    gap: 8px;
+  }
+
+  .modal-btn {
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+
+  .modal-btn-text {
+    font-size: 14px;
+  }
 }
 
 /* 手机端限制最大宽度 */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .login-container {
+    width: 100%;
     max-width: 480px;
-  }
-}
-
-/* 平板端：更大宽度 */
-@media (min-width: 769px) and (max-width: 1023px) {
-  .login-container {
-    max-width: 600px;
-    padding: 40px 32px;
-  }
-}
-
-/* 笔记本电脑：进一步放大 */
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .login-container {
-    max-width: 720px;
-    padding: 48px 40px;
-    border-radius: 28px;
-  }
-}
-
-/* 台式机：彻底放大 - 老年人友好 */
-@media (min-width: 1280px) {
-  .login-container {
-    max-width: 900px;
-    padding: 56px 48px;
-    border-radius: 32px;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
-  }
-}
-
-/* 终极大屏：超宽设计 */
-@media (min-width: 1536px) {
-  .login-container {
-    max-width: 1100px;
-    padding: 64px 56px;
-    border-radius: 36px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    padding: 32px 24px;
   }
 }
 
@@ -592,7 +784,7 @@
   color: #ffffff;
 }
 
-/* 响应式调整 */
+/* 保留手机端响应式调整 */
 @media (max-width: 640px) {
   .login-container {
     padding: 24px 20px;
@@ -624,243 +816,7 @@
   }
 }
 
-@media (min-width: 768px) {
-  .login-page {
-    padding: 32px;
-  }
-
-  .login-container {
-    padding: 40px 32px;
-  }
-}
-
-/* ========================================
-   电脑端响应式设计（大屏优化）
-   ======================================== */
-
-/* 平板/小屏电脑（1024px以上） */
-@media (min-width: 1024px) {
-  .login-page {
-    padding: 48px;
-    min-height: 100vh;
-  }
-
-  /* 增大登录卡片 */
-  .login-container {
-    max-width: 560px;
-    padding: 48px 40px;
-    border-radius: 28px;
-  }
-
-  /* 增大标题 */
-  .login-title {
-    font-size: 36px;
-    margin-bottom: 12px;
-  }
-
-  .login-subtitle {
-    font-size: 18px;
-    margin-bottom: 32px;
-  }
-
-  /* 增大表单元素 */
-  .form-item {
-    margin-bottom: 28px;
-  }
-
-  .form-label {
-    font-size: 18px;
-    margin-bottom: 12px;
-  }
-
-  .form-input {
-    padding: 20px;
-    border-radius: 16px;
-  }
-
-  .input-field {
-    font-size: 20px;
-  }
-
-  /* 增大密码按钮 */
-  .password-toggle {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-  }
-
-  .password-toggle-text {
-    font-size: 28px;
-  }
-
-  /* 增大复选框 */
-  .checkbox {
-    width: 26px;
-    height: 26px;
-    border-radius: 8px;
-  }
-
-  .remember-text {
-    font-size: 18px;
-  }
-
-  /* 增大登录按钮 */
-  .login-btn {
-    padding: 22px 40px;
-    border-radius: 20px;
-    margin-top: 8px;
-  }
-
-  .login-btn-text {
-    font-size: 22px;
-  }
-
-  /* 增大微信登录按钮 */
-  .wechat-login-btn {
-    padding: 24px 40px;
-    border-radius: 20px;
-    margin-bottom: 16px;
-  }
-
-  .wechat-login-text {
-    font-size: 22px;
-  }
-
-  .wechat-login-tip {
-    font-size: 16px;
-  }
-
-  /* 分割线 */
-  .divider {
-    margin: 40px 0;
-  }
-
-  .divider-text {
-    font-size: 16px;
-  }
-
-  /* 底部提示 */
-  .footer-text {
-    font-size: 16px;
-  }
-
-  /* 注册卡片 */
-  .register-card {
-    padding: 28px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-  }
-
-  .register-title {
-    font-size: 22px;
-  }
-
-  .register-desc {
-    font-size: 17px;
-  }
-
-  .register-btn {
-    padding: 18px 40px;
-    border-radius: 16px;
-  }
-
-  .register-btn-text {
-    font-size: 18px;
-  }
-}
-
-/* 大屏电脑（1280px以上） */
-@media (min-width: 1280px) {
-  .login-page {
-    padding: 64px;
-    min-height: 100vh;
-  }
-
-  .login-container {
-    max-width: 640px;
-    padding: 56px 48px;
-    border-radius: 32px;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
-  }
-
-  .login-title {
-    font-size: 42px;
-  }
-
-  .login-subtitle {
-    font-size: 20px;
-  }
-
-  .form-label {
-    font-size: 20px;
-  }
-
-  .form-input {
-    padding: 24px;
-  }
-
-  .input-field {
-    font-size: 22px;
-  }
-
-  .login-btn {
-    padding: 26px 48px;
-  }
-
-  .login-btn-text {
-    font-size: 24px;
-  }
-
-  .wechat-login-btn {
-    padding: 28px 48px;
-  }
-
-  .wechat-login-text {
-    font-size: 24px;
-  }
-
-  /* 弹窗 */
-  .modal-content {
-    max-width: 600px;
-    padding: 32px;
-    border-radius: 24px;
-  }
-
-  .modal-title {
-    font-size: 28px;
-  }
-
-  .modal-btn {
-    padding: 18px 24px;
-    border-radius: 16px;
-  }
-
-  .modal-btn-text {
-    font-size: 18px;
-  }
-}
-
-/* 超大屏（1536px以上） */
-@media (min-width: 1536px) {
-  .login-container {
-    max-width: 720px;
-    padding: 64px 56px;
-  }
-
-  .login-title {
-    font-size: 48px;
-  }
-
-  .input-field {
-    font-size: 24px;
-  }
-
-  .login-btn-text {
-    font-size: 26px;
-  }
-}
-
-/* 电脑端鼠标悬停效果 */
+/* 鼠标悬停效果 - 仅在支持hover的设备上生效 */
 @media (hover: hover) and (pointer: fine) {
   .login-btn:hover {
     transform: translateY(-2px);
