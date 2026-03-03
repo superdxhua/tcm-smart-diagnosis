@@ -23,29 +23,35 @@ export const getDeviceType = (): DeviceInfo => {
   const screenWidth = typeof window !== 'undefined' ? window.innerWidth : 375
   const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 667
 
-  // 通过 User-Agent 判断设备类型
-  const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
-
-  // 移动设备检测
-  const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)
-
-  // 平板检测
-  const isTablet = /iPad/i.test(ua) ||
-    (/Android/i.test(ua) && !/Mobile/i.test(ua)) ||
-    (screenWidth >= 768 && screenWidth <= 1024)
-
-  // PC端检测
-  const isDesktop = !isMobile && !isTablet
-
-  // 根据屏幕宽度进行二次判断（更准确）
+  // 优先根据屏幕宽度判断设备类型（更可靠）
   let finalDeviceType: 'mobile' | 'tablet' | 'desktop' = 'mobile'
+  let isMobile = false
+  let isTablet = false
+  let isDesktop = false
 
   if (screenWidth >= 1024) {
     finalDeviceType = 'desktop'
+    isDesktop = true
+    isMobile = false
+    isTablet = false
   } else if (screenWidth >= 768) {
     finalDeviceType = 'tablet'
+    isTablet = true
+    isDesktop = false
+    isMobile = false
   } else {
     finalDeviceType = 'mobile'
+    isMobile = true
+    isDesktop = false
+    isTablet = false
+  }
+
+  // 如果屏幕宽度 >= 1024，强制为桌面端
+  // 这样可以确保在浏览器窗口较大时显示横屏模式
+  if (screenWidth >= 1024) {
+    isDesktop = true
+    isMobile = false
+    isTablet = false
   }
 
   return {
