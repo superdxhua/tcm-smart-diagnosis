@@ -10,11 +10,24 @@ export class PatientsController {
   ) {}
 
   @Get()
-  async findAll() {
+  async findAll(@Headers('authorization') authHeader: string) {
+    // 从Token中获取用户ID
+    let consultantId: string | undefined
+    try {
+      const token = authHeader?.replace('Bearer ', '');
+      if (token) {
+        const user = await this.authService.verifyToken(token);
+        consultantId = user.id
+        console.log('[PatientsController] 获取到用户ID:', consultantId)
+      }
+    } catch (error) {
+      console.error('[PatientsController] 获取用户ID失败:', error)
+    }
+
     return {
       code: 200,
       msg: 'success',
-      data: await this.patientsService.findAll()
+      data: await this.patientsService.findAll(consultantId)
     }
   }
 
@@ -38,16 +51,19 @@ export class PatientsController {
 
     // 提取用户信息
     let userRole: string | undefined
+    let consultantId: string | undefined
     try {
       const token = authHeader?.replace('Bearer ', '');
       if (token) {
         const user = await this.authService.verifyToken(token);
         userRole = user.role;
+        consultantId = user.id
         console.log('用户角色:', userRole);
+        console.log('用户ID:', consultantId);
 
         // 个人用户添加用户数量上限检查
         if (userRole === 'individual') {
-          const memberCount = await this.patientsService.countByUser();
+          const memberCount = await this.patientsService.countByUser(consultantId);
           const maxMembers = 4;
 
           if (memberCount >= maxMembers) {
@@ -72,10 +88,16 @@ export class PatientsController {
       console.error('获取账户信息失败:', error);
     }
 
+    // 将用户ID添加到请求体中
+    const memberData = {
+      ...body,
+      consultantId: consultantId
+    }
+
     return {
       code: 200,
       msg: 'success',
-      data: await this.patientsService.create(body)
+      data: await this.patientsService.create(memberData)
     }
   }
 

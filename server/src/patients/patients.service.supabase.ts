@@ -49,18 +49,34 @@ function convertToCamelCase(data: any): any {
 
 @Injectable()
 export class PatientsService {
-  async findAll() {
+  /**
+   * 获取当前用户的所有档案
+   * @param consultantId 用户的consultant_id，用于过滤数据
+   */
+  async findAll(consultantId?: string) {
     console.log('[PatientsService] 使用 Supabase SDK 查询 members')
+    console.log('[PatientsService] 当前用户ID:', consultantId)
 
     const client = getSupabaseClient()
 
     // 方法 1：尝试直接查询
     let result, error
     try {
-      const response = await client
+      let query = client
         .from('members')
         .select('*')
         .order('created_at', { ascending: false })
+
+      // 添加用户过滤：只返回当前用户添加的档案
+      if (consultantId) {
+        query = query.eq('consultant_id', consultantId)
+        console.log('[PatientsService] 已添加用户过滤条件:', consultantId)
+      } else {
+        console.log('[PatientsService] 警告：未提供用户ID，返回空数组')
+        return []
+      }
+
+      const response = await query
 
       result = response.data
       error = response.error
@@ -83,12 +99,23 @@ export class PatientsService {
     return convertToCamelCase(result || [])
   }
 
-  async countByUser() {
+  /**
+   * 统计当前用户的档案数量
+   * @param consultantId 用户的consultant_id
+   */
+  async countByUser(consultantId?: string) {
     const client = getSupabaseClient()
 
-    const { count, error } = await client
+    let query = client
       .from('members')
       .select('*', { count: 'exact', head: true })
+
+    // 添加用户过滤
+    if (consultantId) {
+      query = query.eq('consultant_id', consultantId)
+    }
+
+    const { count, error } = await query
 
     if (error) {
       console.error('[PatientsService] 计数错误:', error)
@@ -118,9 +145,15 @@ export class PatientsService {
   async create(data: any) {
     const client = getSupabaseClient()
 
+    // 如果没有提供consultantId，不允许创建
+    if (!data.consultantId) {
+      console.error('[PatientsService] 创建用户失败: 未提供consultantId')
+      throw new BadRequestException('无法创建用户，请重新登录')
+    }
+
     const insertData = {
       uuid: crypto.randomUUID(),
-      consultant_id: data.consultantId || 'default-consultant',
+      consultant_id: data.consultantId,
       name: data.name,
       gender: data.gender,
       age: data.age,
