@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:web",
+  "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist-web",
   "installCommand": "npm install --legacy-peer-deps",
   "framework": null,
-  "cache": false,
   "env": {
-    "NODE_ENV": "production",
-    "BUILD_TIME": "2026-03-03-15-45-00"
+    "NODE_ENV": "production"
   },
   "rewrites": [
     {

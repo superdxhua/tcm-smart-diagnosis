@@ -8,6 +8,7 @@
     "build:server": "cd server && npx @nestjs/cli build",
     "build:weapp": "npx weapp-tailwindcss patch && taro build --type weapp",
     "build:web": "npx weapp-tailwindcss patch || true && cross-env NODE_OPTIONS=\"--openssl-legacy-provider --max-old-space-size=4096\" taro build --type h5 --output-path dist-web",
+    "build:vercel": "npx weapp-tailwindcss patch || true && cross-env NODE_OPTIONS=\"--openssl-legacy-provider --max-old-space-size=4096\" TARO_BUILDING=true npx taro build --type h5 --output-path dist-web --no-check",
     "dev": "concurrently -n web,server -c blue,green \"npm run dev:web\" \"npm run dev:server\"",
     "dev:server": "cd server && npx @nestjs/cli start --watch",
     "dev:weapp": "taro build --type weapp --watch",
