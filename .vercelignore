@@ -23,3 +23,6 @@ coverage
 # 排除后端代码
 server
 backend-deploy
+
+# 排除 API 目录（API 已托管在独立服务器）
+api
