@@ -4,9 +4,10 @@
   "outputDirectory": "dist-web",
   "installCommand": "npm install --legacy-peer-deps",
   "framework": null,
+  "cache": false,
   "env": {
     "NODE_ENV": "production",
-    "BUILD_TIME": "2026-03-02-01-28-00"
+    "BUILD_TIME": "2026-03-03-15-45-00"
   },
   "rewrites": [
     {
