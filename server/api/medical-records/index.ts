@@ -73,8 +73,9 @@ async function createMedicalRecord(req: NextApiRequest, res: NextApiResponse, us
     const supabase = getSupabaseClient();
 
     // 转换驼峰命名为下划线命名
+    // 兼容 patientId 和 memberId 两种字段名
     const recordData: any = {
-      member_id: body.memberId,
+      member_id: body.memberId || body.patientId,
       consultant_id: user.id,
       visit_number: body.visitNumber || 1,
       chief_complaint: body.chiefComplaint,
@@ -88,6 +89,16 @@ async function createMedicalRecord(req: NextApiRequest, res: NextApiResponse, us
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
+
+    // 验证必需字段
+    if (!recordData.member_id) {
+      console.error('[MedicalRecords] Missing required field: memberId/patientId');
+      return res.status(400).json({
+        code: 400,
+        msg: 'error',
+        error: '患者ID不能为空，请确保已添加患者',
+      });
+    }
 
     const { data, error } = await supabase
       .from('medical_records')
