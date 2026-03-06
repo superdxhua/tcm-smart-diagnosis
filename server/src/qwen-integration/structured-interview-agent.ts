@@ -3,7 +3,7 @@
  * Qwen 作为六经辨证决策树的自然语言前端
  */
 
-import { SYMPTOM_NODES, SyndromePatternQuery } from '../tcm-knowledge/syndrome-pattern-db';
+import { SYMPTOM_NODES } from '../tcm-knowledge/syndrome-pattern-db';
 
 // ============================================
 // 类型定义

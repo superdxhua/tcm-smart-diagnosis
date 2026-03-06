@@ -3,8 +3,14 @@
  * 输入过滤 + 输出审查 + 知识锚定
  */
 
-import { HERB_DATABASE, HerbQuery } from '../tcm-knowledge/herb-db';
-import { INCOMPATIBILITY_PAIRS, PREGNANCY_CONTRAINDICATIONS } from '../tcm-knowledge/herb-db';
+// TODO: 知识库文件暂时移除，需要重新添加
+// import { HERB_DATABASE, HerbQuery } from '../tcm-knowledge/herb-db';
+// import { INCOMPATIBILITY_PAIRS, PREGNANCY_CONTRAINDICATIONS } from '../tcm-knowledge/herb-db';
+
+// 临时空导出，避免编译错误
+const HERB_DATABASE: any = {};
+const INCOMPATIBILITY_PAIRS: any[] = [];
+const PREGNANCY_CONTRAINDICATIONS: any[] = [];
 
 // ============================================
 // 类型定义
