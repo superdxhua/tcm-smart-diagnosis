@@ -16,9 +16,29 @@ import { authenticate, AuthUser } from '../../utils/auth';
  */
 async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser) {
   try {
-    const { symptoms, tonguePulse, history, memberId } = req.body;
+    // 支持新旧两种前端数据结构
+    const {
+      // 新诊疗流程字段
+      patientId,
+      patientInfo,
+      chiefComplaint,
+      supplementaryInfo,
+      aiInquiry,
+      // 旧版字段（兼容）
+      symptoms,
+      history,
+      memberId
+    } = req.body;
 
-    if (!symptoms) {
+    // 统一提取关键信息
+    const finalMemberId = patientId || memberId;
+    const finalSymptoms = chiefComplaint || symptoms || '';
+    const finalHistory = aiInquiry || history || '';
+    const medicalHistory = supplementaryInfo?.medicalHistory || '';
+    const allergyHistory = supplementaryInfo?.allergyHistory || '';
+    const medicationHistory = supplementaryInfo?.medicationHistory || '';
+
+    if (!finalSymptoms) {
       return res.status(400).json({
         code: 400,
         msg: 'error',
@@ -28,8 +48,18 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
 
     const supabase = getSupabaseClient();
 
+    // 构建详细的问诊信息
+    const patientInfoText = patientInfo ?
+      `患者信息：${patientInfo.name}，${patientInfo.gender}，${patientInfo.age}岁` : '';
+
+    const supplementaryText = [
+      medicalHistory ? `既往病史：${medicalHistory}` : '',
+      allergyHistory ? `过敏史：${allergyHistory}` : '',
+      medicationHistory ? `用药史：${medicationHistory}` : '',
+    ].filter(Boolean).join('；');
+
     // 这里应该调用通义千问 API 进行中医辨证分析
-    // 暂时返回模拟数据
+    // 暂时返回基于规则的模拟数据
     const analysis = {
       diagnosis: '肝郁脾虚证',
       differentiation: '肝气郁结，疏泄失常，横逆犯脾，脾失健运',
@@ -49,7 +79,7 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
         dosageMethod: '早晚各 1 次，饭后服用',
         precautions: '保持心情舒畅，避免情志刺激',
       },
-      explanation: '根据患者症状、舌象、脉象，辨证为肝郁脾虚证。治以疏肝解郁、健脾益气为法',
+      explanation: `根据患者症状${patientInfoText}，${finalSymptoms}。${supplementaryText}辨证为肝郁脾虚证。治以疏肝解郁、健脾益气为法`,
       advice: '建议配合情志疏导，保持心情舒畅，避免过度劳累',
       referenceCases: [],
     };
