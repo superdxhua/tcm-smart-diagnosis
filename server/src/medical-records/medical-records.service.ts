@@ -11,27 +11,34 @@ export class MedicalRecordsService {
     this.llmClient = createLLMClient()
   }
 
-  // 创建档案（使用事务保证数据一致性）
+  // 创建档案（直接插入健康记录）
   async createHealthRecord(recordData: any) {
     const supabase = getSupabaseClient();
 
-    // 使用事务函数创建健康记录
-    const { data, error } = await supabase.rpc('create_health_record_with_transaction', {
-      p_member_id: recordData.member_id,
-      p_consultant_id: recordData.consultant_id || null,
-      p_visit_number: recordData.visit_number,
-      p_chief_complaint: recordData.chief_complaint,
-      p_history: recordData.history || null,
-      p_past_history: recordData.past_history || null,
-      p_analysis_result: recordData.analysis_result || null,
-      p_differentiation: recordData.differentiation || null,
-      p_treatment_principle: recordData.treatment_principle || null,
-      p_health_plan: recordData.health_plan,
-      p_advice: recordData.advice || null,
-      p_status: recordData.status || 'active'
-    });
+    // 直接插入健康记录
+    const { data, error } = await supabase
+      .from('health_records')
+      .insert({
+        member_id: recordData.member_id,
+        consultant_id: recordData.consultant_id || null,
+        visit_number: recordData.visit_number,
+        chief_complaint: recordData.chief_complaint,
+        history: recordData.history || null,
+        past_history: recordData.past_history || null,
+        analysis_result: recordData.analysis_result || null,
+        differentiation: recordData.differentiation || null,
+        treatment_principle: recordData.treatment_principle || null,
+        health_plan: recordData.health_plan,
+        advice: recordData.advice || null,
+        status: recordData.status || 'active',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
 
     if (error) {
+      console.error('创建健康记录失败:', error);
       throw new BadRequestException(error.message);
     }
 
