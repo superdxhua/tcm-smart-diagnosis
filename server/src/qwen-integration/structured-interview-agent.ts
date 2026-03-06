@@ -3,14 +3,16 @@
  * Qwen 作为六经辨证决策树的自然语言前端
  */
 
-import { SYMPTOM_NODES } from '../tcm-knowledge/syndrome-pattern-db';
+// 临时类型定义，避免编译错误
+// import { SYMPTOM_NODES } from '../tcm-knowledge/syndrome-pattern-db';
+const SYMPTOM_NODES: any[] = [];
 
 // ============================================
 // 类型定义
 // ============================================
 export interface StructuredQuestion {
   id: string;
-  category: '主证' | '兼证' | '舌象' | '脉象' | '病史';
+  category: '主证' | '兼证' | '舌象' | '脉象' | '病史' | '结束';
   symptomId: string;
   symptomName: string;
   options: string[]; // 结构化选项

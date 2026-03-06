@@ -301,11 +301,11 @@ export class OutputReview {
    * 检查剂量是否超限
    */
   private static checkDosageLimit(herbName: string, dosage: string): SafetyViolation | null {
-    const herb = Object.values(HERB_DATABASE).find(
-      h => h.name === herbName || h.aliases.some(alias => alias === herbName)
+    const herb = (Object.values(HERB_DATABASE) as any[]).find(
+      (h: any) => h.name === herbName || h.aliases?.some((alias: string) => alias === herbName)
     );
 
-    if (!herb || !herb.toxicity.isToxic) return null;
+    if (!herb || !herb.toxicity?.isToxic) return null;
 
     // 提取剂量数值（简单实现）
     const dosageMatch = dosage.match(/(\d+)/);
@@ -313,16 +313,16 @@ export class OutputReview {
 
     const dosageValue = parseInt(dosageMatch[1], 10);
 
-    if (dosageValue > herb.dosage.max) {
+    if (dosageValue > (herb.dosage?.max || 0)) {
       return {
         type: 'dosage',
         severity: '严重',
-        message: `${herbName}剂量超限：${dosageValue}g > ${herb.dosage.max}g`,
+        message: `${herbName}剂量超限：${dosageValue}g > ${herb.dosage?.max}g`,
         details: {
           herbName,
           dosage: dosageValue,
-          maxDosage: herb.dosage.max,
-          toxicDosage: herb.dosage.maxToxic,
+          maxDosage: herb.dosage?.max,
+          toxicDosage: herb.dosage?.maxToxic,
         },
       };
     }
