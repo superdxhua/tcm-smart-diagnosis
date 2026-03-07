@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:h5",
+  "buildCommand": "npm run build:web",
   "installCommand": "npm install --legacy-peer-deps",
   "outputDirectory": "dist-web",
   "framework": null,

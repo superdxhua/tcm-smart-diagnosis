@@ -103,10 +103,9 @@ export interface SystemChannel {
       specialProcessing: Array<{ herb: string; method: string }>;
     };
     administration: {
-      dosagePerServing: string;
-      dailyDoses: number;
-      timing: string;
-      duration: string;
+      waterAmount: string;
+      boilingTime: string;
+      servingMethod: string;
     };
     storage: string;
   };
@@ -365,21 +364,53 @@ export class DualChannelOutputService {
         nature: fiveDimensionalOutput.diagnosis.nature,
         keySigns: fiveDimensionalOutput.diagnosis.keySigns,
         confidence: fiveDimensionalOutput.diagnosis.confidence.value,
-        evidenceLevel: fiveDimensionalOutput.diagnosis.evidenceLevel,
+        evidenceLevel: fiveDimensionalOutput.diagnosis.evidenceLevel as 'A' | 'B' | 'C',
         classicReference: fiveDimensionalOutput.diagnosis.classicReference,
       },
       formula: {
         formulaId: fiveDimensionalOutput.formula.primaryFormula.formulaId,
         formulaName: fiveDimensionalOutput.formula.primaryFormula.formulaName,
         matchScore: fiveDimensionalOutput.formula.primaryFormula.matchScore,
-        herbs: fiveDimensionalOutput.formula.primaryFormula.herbs,
-        instructions: fiveDimensionalOutput.instructions.administration,
+        herbs: fiveDimensionalOutput.formula.primaryFormula.herbs.map(h => ({
+          name: h.name,
+          dosage: h.dosage,
+          processing: h.processing,
+          safetyRating: h.safetyRating as 'A' | 'B' | 'C' | 'D',
+        })),
+        instructions: {
+          waterAmount: fiveDimensionalOutput.instructions.administration.waterAmount,
+          boilingTime: fiveDimensionalOutput.instructions.administration.boilingTime,
+          servingMethod: fiveDimensionalOutput.instructions.administration.servingMethod,
+        },
         contraindications: fiveDimensionalOutput.formula.primaryFormula.contraindications,
-        evidenceLevel: fiveDimensionalOutput.formula.primaryFormula.evidenceLevel,
+        evidenceLevel: fiveDimensionalOutput.formula.primaryFormula.evidenceLevel as 'A' | 'B' | 'C',
       },
-      instructions: fiveDimensionalOutput.instructions,
-      care: fiveDimensionalOutput.care,
-      warnings: fiveDimensionalOutput.warnings,
+      instructions: {
+        preparation: {
+          waterAmount: fiveDimensionalOutput.instructions.preparation.waterAmount,
+          boilingTime: fiveDimensionalOutput.instructions.preparation.boilingTime,
+          specialProcessing: fiveDimensionalOutput.instructions.preparation.specialProcessing || [],
+        },
+        administration: {
+          waterAmount: fiveDimensionalOutput.instructions.administration.waterAmount,
+          boilingTime: fiveDimensionalOutput.instructions.administration.boilingTime,
+          servingMethod: fiveDimensionalOutput.instructions.administration.servingMethod,
+        },
+        storage: fiveDimensionalOutput.instructions.storage,
+      },
+      care: {
+        dietaryAdvice: fiveDimensionalOutput.care.dietaryAdvice,
+        lifestyleAdvice: fiveDimensionalOutput.care.lifestyleAdvice,
+        selfMonitoring: fiveDimensionalOutput.care.selfMonitoring,
+        followUp: fiveDimensionalOutput.care.followUp,
+      },
+      warnings: {
+        riskLevel: fiveDimensionalOutput.warnings.riskLevel as '低' | '中' | '高' | '极高',
+        immediateAttention: fiveDimensionalOutput.warnings.immediateAttention,
+        contraindications: fiveDimensionalOutput.warnings.contraindications,
+        sideEffects: fiveDimensionalOutput.warnings.sideEffects,
+        emergency: fiveDimensionalOutput.warnings.emergency,
+      },
       evidenceChain,
       metadata: {
         inferenceResult,

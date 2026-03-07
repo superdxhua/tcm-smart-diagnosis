@@ -20,9 +20,9 @@ coverage
 *.test.ts
 *.spec.ts
 
-# 排除后端代码
+# 排除后端代码（后端部署在 Render）
 server
 backend-deploy
 
-# 排除 API 目录（API 已托管在独立服务器）
+# 排除 API 目录（API 部署在 Render）
 api

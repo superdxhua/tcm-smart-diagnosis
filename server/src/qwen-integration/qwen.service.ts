@@ -88,7 +88,6 @@ export class QwenIntegrationService {
         gender: '男',
         isPregnant: false,
       },
-      userDemographics: {},
     });
 
     // 6. 生成五维输出
@@ -159,7 +158,7 @@ export class QwenIntegrationService {
 
     const inferenceResult = await HybridInferenceEngine.inference({
       symptoms,
-      userContext: {
+      patientProfile: {
         age: 35,
         gender: '男',
         isPregnant: false,

@@ -7,6 +7,11 @@
 // import { SYMPTOM_NODES } from '../tcm-knowledge/syndrome-pattern-db';
 const SYMPTOM_NODES: any[] = [];
 
+// 临时 SyndromePatternQuery 替代
+const SyndromePatternQuery = {
+  calculateSyndromeProbability: (symptoms: any[]) => []
+}
+
 // ============================================
 // 类型定义
 // ============================================

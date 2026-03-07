@@ -6,5 +6,5 @@
     "deleteOutDir": true,
     "exclude": ["node_modules", "dist", ".git", "api", "_health.ts", "index.ts"]
   },
-  "webpack": true
+  "webpack": false
 }
