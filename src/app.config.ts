@@ -23,7 +23,8 @@ export default {
     'pages/medical-cases/index',
     'pages/recharge/index',
     'pages/formula-management/index',
-    'pages/formula-detail/index'
+    'pages/formula-detail/index',
+    'pages/new-diagnosis/index'
   ],
   window: {
     backgroundTextStyle: 'light',
