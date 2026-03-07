@@ -1424,6 +1424,12 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
                 >
                   <Text className="block text-sm font-medium">📊 学习</Text>
                 </View>
+                <View
+                  className="px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors"
+                  onClick={() => Taro.navigateTo({ url: '/pages/new-diagnosis/index' })}
+                >
+                  <Text className="block text-sm font-medium">🩺 新诊疗</Text>
+                </View>
                 {/* PWA 按钮 - 仅在 H5 显示 */}
                 {Taro.getEnv() === Taro.ENV_TYPE.WEB && typeof window !== 'undefined' && !window.matchMedia('(display-mode: standalone)').matches && (
                   <View
