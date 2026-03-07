@@ -1,0 +1,100 @@
+.medical-cases-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 16px;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.search-bar {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-filter {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cases-list {
+  height: calc(100vh - 300px);
+}
+
+.case-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.case-header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.case-body {
+  margin-bottom: 12px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.case-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.add-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.add-form {
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.form-item {
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.error-hint {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px;
+}

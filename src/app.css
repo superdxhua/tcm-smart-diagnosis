@@ -1,0 +1,685 @@
+@import url('tailwindcss');
+
+/* ========================================
+   PC端适配：彻底放大方案
+   核心思路：让老年人在电脑端也能轻松使用
+   ======================================== */
+
+/* 全局容器样式 */
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+/* 手机端：占满屏幕 */
+@media (max-width: 768px) {
+  .app-container {
+    max-width: 100%;
+  }
+}
+
+/* 平板/小屏电脑：放大 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-container {
+    max-width: 900px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  body {
+    background-color: #f5f5f5;
+  }
+}
+
+/* 大屏电脑：进一步放大 */
+@media (min-width: 1025px) and (max-width: 1279px) {
+  .app-container {
+    max-width: 1100px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+  }
+
+  body {
+    background-color: #f0f0f0;
+  }
+}
+
+/* 超大屏：彻底放大 */
+@media (min-width: 1280px) {
+  .app-container {
+    max-width: 1400px;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.12);
+  }
+
+  body {
+    background-color: #f5f5f5;
+  }
+}
+
+/* 终极大屏：完全放开 */
+@media (min-width: 1536px) {
+  .app-container {
+    max-width: 1600px;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.1);
+  }
+
+  body {
+    background-color: #f8f8f8;
+  }
+}
+
+/* ========================================
+   响应式布局断点（方案二）
+   标准大厂做法：根据屏幕宽度动态改变布局结构
+   ======================================== */
+
+/* 断点1：手机端（默认样式） */
+.grid-responsive {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-responsive-2 {
+  grid-template-columns: 1fr;    /* 手机端：单列布局 */
+}
+
+/* 断点2：平板/小屏电脑（768px以上） */
+@media (min-width: 768px) {
+  .grid-responsive-2 {
+    grid-template-columns: repeat(2, 1fr); /* 变成两列 */
+  }
+
+  .grid-responsive-3 {
+    grid-template-columns: repeat(2, 1fr); /* 变成两列 */
+  }
+
+  /* PC端字体放大 */
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+}
+
+/* 断点3：大屏电脑（1024px以上） */
+@media (min-width: 1024px) {
+  .grid-responsive-3 {
+    grid-template-columns: repeat(3, 1fr); /* 变成三列 */
+  }
+
+  .grid-responsive-4 {
+    grid-template-columns: repeat(3, 1fr); /* 变成三列 */
+  }
+
+  /* PC端专属：侧边栏显示 */
+  .sidebar {
+    display: block;
+  }
+
+  /* PC端专属：Hover态优化 */
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 断点4：超大屏（1280px以上） */
+@media (min-width: 1280px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(4, 1fr); /* 变成四列 */
+  }
+
+  /* PC端字体进一步放大 */
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+}
+
+/* ========================================
+   PC端专属交互优化
+   ======================================== */
+
+@media (min-width: 769px) {
+  /* Hover态：悬停时增加阴影 */
+  .hover-shadow:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Hover态：悬停时颜色变化 */
+  .hover-bg:hover {
+    background-color: #f0f0f0;
+  }
+
+  /* Hover态：悬停时透明度变化 */
+  .hover-opacity:hover {
+    opacity: 0.8;
+  }
+
+  /* Hover态：悬停时缩放 */
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  /* 按钮Hover态优化 */
+  button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  /* 链接Hover态优化 */
+  a:hover {
+    color: #1890ff;
+    text-decoration: underline;
+  }
+}
+
+/* ========================================
+   移动端基础适配
+   ======================================== */
+
+/*
+ * H5 端 rem 适配：与小程序 rpx 缩放一致
+ * 375px 屏幕：1rem = 16px，小程序 32rpx = 16px
+ */
+@media (max-width: 768px) {
+  html {
+    font-size: 4vw !important;
+  }
+}
+
+/* ========================================
+   高清屏适配
+   ======================================== */
+
+/* 高分辨率屏幕优化 - 强制字体抗锯齿 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ========================================
+   移动端交互体验优化
+   ======================================== */
+
+/* 移除点击高亮色 - 提升原生体验 */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* 允许输入框选择文本 */
+  input,
+  textarea {
+    -webkit-user-select: auto;
+    user-select: auto;
+  }
+
+  /* 移动端优化：提升可点击区域 */
+  button,
+  [role="button"],
+  .clickable {
+    min-height: 44px; /* Apple 推荐的最小触摸目标 */
+    min-width: 44px;
+  }
+
+  /* 移动端优化：优化行高 */
+  body {
+    line-height: 1.6;
+  }
+
+  /* 移动端优化：增加安全边距 */
+  .container {
+    padding: 0 16px;
+  }
+}
+
+/* ========================================
+   PC 端字体大小优化
+   ======================================== */
+@media (min-width: 769px) {
+  html {
+    font-size: 16px !important;
+  }
+
+  /* 优化所有文本元素 */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 放大基础字体 */
+  .text-xs { font-size: 0.875rem; }
+  .text-sm { font-size: 1rem; }
+  .text-base { font-size: 1.125rem; }
+  .text-lg { font-size: 1.25rem; }
+  .text-xl { font-size: 1.5rem; }
+  .text-2xl { font-size: 1.875rem; }
+  .text-3xl { font-size: 2.25rem; }
+
+  /* 优化输入框和按钮 */
+  input, textarea, button {
+    font-size: 1rem !important;
+    min-height: 2.5rem;
+  }
+
+  /* 优化间距 */
+  .p-2 { padding: 0.75rem; }
+  .p-3 { padding: 1rem; }
+  .p-4 { padding: 1.25rem; }
+  .p-6 { padding: 1.5rem; }
+
+  /* 优化圆角 */
+  .rounded-lg { border-radius: 0.75rem; }
+  .rounded-xl { border-radius: 1rem; }
+  .rounded-2xl { border-radius: 1.25rem; }
+}
+
+/* ========================================
+   通用样式重置和优化
+   ======================================== */
+
+/* 小程序页面容器高度设置，确保垂直居中生效 */
+/* stylelint-disable-next-line selector-type-no-unknown */
+page {
+  height: 100%;
+}
+
+/* H5 端组件默认样式修复 */
+taro-view-core {
+  display: block;
+}
+
+taro-text-core {
+  display: inline;
+}
+
+taro-input-core {
+  display: block;
+  width: 100%;
+}
+
+taro-input-core input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* 全局按钮样式重置 */
+taro-button-core,
+button {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+taro-button-core::after,
+button::after {
+  border: none;
+}
+
+/* PC 端优化滚动条样式 */
+@media (min-width: 769px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+  }
+
+  /* PC 端优化链接和可点击元素的视觉效果 */
+  a,
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  /* 提升文本可读性 */
+  * {
+    line-height: 1.6;
+  }
+}
+
+/* ========================================
+   移动端刘海屏和安全区域适配
+   ======================================== */
+
+/* iPhone X 及以上机型的安全区域适配 */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-left {
+    padding-left: max(0px, env(safe-area-inset-left));
+  }
+
+  .safe-area-right {
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  .safe-area-all {
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* 移动端底部固定元素适配（避免被 TabBar 遮挡） */
+@media (max-width: 768px) {
+  .fixed-bottom {
+    padding-bottom: calc(max(0px, env(safe-area-inset-bottom)) + 50px);
+  }
+}
+
+/* ========================================
+   移动端图片优化
+   ======================================== */
+
+/* 防止图片拉伸模糊 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 高分辨率屏幕下的图片显示优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* ========================================
+   移动端交互反馈优化
+   ======================================== */
+
+/* 按钮点击态 - 移动端 */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  .clickable {
+    transition: opacity 0.2s ease, transform 0.1s ease;
+  }
+
+  button:active,
+  [role="button"]:active,
+  .clickable:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+/* ========================================
+   移动端文本优化
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* 增加移动端文本行高，提升可读性 */
+  .text-readable {
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+  /* 移动端标题优化 */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3;
+    font-weight: 600;
+  }
+}
+
+/* ========================================
+   性能优化
+   ======================================== */
+
+/* 启用硬件加速 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 防止文本溢出 */
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========================================
+   桌面端登录页面横屏布局（>= 1024px）
+   强制生效，覆盖 Tailwind 类
+   ======================================== */
+@media (min-width: 1024px) {
+  /* 登录页面外层容器 - 深色渐变背景 */
+  .login-page-container {
+    display: flex !important;
+    flex-direction: row !important;
+    min-height: 100vh !important;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+  }
+
+  /* 左侧品牌区域 */
+  .login-brand-section {
+    display: flex !important;
+    width: 40% !important;
+    min-width: 40% !important;
+    max-width: 40% !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 3rem 4rem !important;
+    background: transparent !important;
+  }
+
+  /* 左侧品牌文字 */
+  .login-brand-title {
+    font-size: 3.5rem !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    line-height: 1.2 !important;
+  }
+
+  .login-brand-subtitle {
+    font-size: 1.5rem !important;
+    color: #93c5fd !important;
+    margin-top: 1.5rem !important;
+  }
+
+  /* 右侧登录表单区域 */
+  .login-form-section {
+    display: flex !important;
+    width: 60% !important;
+    min-width: 60% !important;
+    max-width: 60% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2rem !important;
+    background: transparent !important;
+  }
+
+  /* 登录卡片 */
+  .login-card {
+    width: 100% !important;
+    max-width: 600px !important;
+    background: #fff !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+  }
+
+  /* 登录卡片头部 */
+  .login-card-header {
+    padding: 2.5rem !important;
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%) !important;
+    text-align: center !important;
+  }
+
+  .login-card-title {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+  }
+
+  .login-card-subtitle {
+    font-size: 1.125rem !important;
+    color: #bfdbfe !important;
+    margin-top: 0.5rem !important;
+  }
+
+  /* 登录表单区域 */
+  .login-form {
+    padding: 2rem 3rem !important;
+  }
+
+  /* 表单标签 */
+  .login-label {
+    display: block !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 1.125rem !important;
+  }
+
+  /* 输入框 */
+  .login-input {
+    width: 100% !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 1.125rem !important;
+    background: #f9fafb !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  /* 登录按钮 */
+  .login-button {
+    width: 100% !important;
+    padding: 1.25rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 500 !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    border-radius: 1rem !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+  }
+
+  .login-button:hover {
+    background: #1d4ed8 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3) !important;
+  }
+
+  /* 微信登录按钮 */
+  .login-wechat-button {
+    width: 100% !important;
+    padding: 1.25rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 500 !important;
+    background: #22c55e !important;
+    color: #fff !important;
+    border-radius: 1rem !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  /* 注册提示卡片 */
+  .login-register-card {
+    padding: 1.5rem !important;
+    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%) !important;
+    border-radius: 1rem !important;
+  }
+
+  .login-register-title {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #1e3a8a !important;
+  }
+
+  .login-register-text {
+    font-size: 1.125rem !important;
+    color: #4b5563 !important;
+  }
+
+  .login-register-button {
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    border-radius: 0.5rem !important;
+  }
+
+  /* 隐藏移动端标题 */
+  .login-mobile-title {
+    display: none !important;
+  }
+
+  /* 显示桌面端背景装饰 */
+  .login-desktop-decor {
+    display: block !important;
+  }
+
+  /* 桌面端品牌介绍项目 */
+  .login-feature-item {
+    display: flex !important;
+    align-items: center !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 1.125rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .login-feature-icon {
+    font-size: 1.5rem !important;
+    margin-right: 1rem !important;
+  }
+
+  /* 底部提示文字 */
+  .login-footer {
+    padding: 1rem !important;
+    text-align: center !important;
+    background: #f9fafb !important;
+    font-size: 0.875rem !important;
+    color: #6b7280 !important;
+  }
+}
