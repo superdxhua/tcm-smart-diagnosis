@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:h5",
+  "installCommand": "npm install --legacy-peer-deps",
+  "outputDirectory": "dist-web",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://tcm-smart-diagnosis.onrender.com/api/:path*"
+    }
+  ]
+}
