@@ -131,7 +131,20 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
     currentStep = 'handle_db_result';
     if (recordError) {
       console.error('[TCM/Analyze] 保存健康档案失败:', JSON.stringify(recordError, null, 2));
-      // 继续返回分析结果，不阻断流程
+      // 返回数据库错误给前端
+      return res.status(500).json({
+        code: 500,
+        msg: '保存健康档案失败',
+        failedStep: 'save_to_db',
+        errorDetail: recordError.message || JSON.stringify(recordError),
+        errorCode: recordError.code || '',
+        errorHint: recordError.hint || '',
+        dbError: recordError,
+        envCheck: {
+          hasSupabaseUrl: !!(process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL),
+          hasSupabaseKey: !!(process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+        }
+      });
     } else {
       console.log('[TCM/Analyze] 健康档案保存成功:', recordData);
       analysis.healthRecordId = recordData;
