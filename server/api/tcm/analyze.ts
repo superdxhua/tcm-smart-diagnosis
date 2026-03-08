@@ -84,6 +84,38 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       referenceCases: [],
     };
 
+    // 保存健康档案到数据库
+    try {
+      const memberIdForRecord = finalMemberId || user.id;
+
+      // 使用 RPC 函数保存健康档案
+      const { data: recordData, error: recordError } = await supabase.rpc(
+        'create_health_record_with_transaction',
+        {
+          p_member_id: memberIdForRecord,
+          p_consultant_id: user.id,
+          p_chief_complaint: finalSymptoms,
+          p_history: finalHistory,
+          p_past_history: medicalHistory,
+          p_differentiation: analysis.differentiation,
+          p_treatment_principle: analysis.treatmentPrinciple,
+          p_health_plan: JSON.stringify(analysis.prescription),
+          p_advice: analysis.advice
+        }
+      );
+
+      if (recordError) {
+        console.error('[TCM/Analyze] 保存健康档案失败:', recordError);
+        // 继续返回分析结果，不阻断流程
+      } else {
+        console.log('[TCM/Analyze] 健康档案保存成功:', recordData);
+        analysis.healthRecordId = recordData;
+      }
+    } catch (saveError) {
+      console.error('[TCM/Analyze] 保存健康档案异常:', saveError);
+      // 继续返回分析结果，不阻断流程
+    }
+
     return res.status(200).json({
       code: 200,
       msg: 'success',
