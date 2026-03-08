@@ -3,6 +3,7 @@ import { LLMClient, Config } from 'coze-coding-dev-sdk';
 /**
  * 创建 LLM 客户端 helper 函数
  * 统一处理 API Key 格式，确保所有服务使用正确的认证方式
+ * 关键修复：通过 customHeaders 传递 Authorization，避免 SDK 误解析 Token
  */
 export function createLLMClient(customHeaders?: Record<string, string>): LLMClient {
   // API Key 优先级：COZE_WORKLOAD_IDENTITY_API_KEY > COZE_API_KEY
@@ -36,20 +37,32 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
   console.log('Model Base URL:', modelBaseUrl);
   console.log('CustomHeaders keys:', customHeaders ? Object.keys(customHeaders).join(', ') : 'none');
 
-  // 创建配置，显式设置 API Key
+  // 关键修复：通过 Authorization Header 传递 API Key，绕过 SDK 的 Token 解析
+  // Coze PAT 格式为 cztei_xxx，不需要 Bearer 前缀（SDK 会自动添加）
+  const authHeaders: Record<string, string> = {
+    'Authorization': apiKey || '',
+  };
+
+  // 合并自定义 headers
+  const mergedHeaders = { ...authHeaders, ...customHeaders };
+
+  console.log('【LLM Helper】Authorization Header 已设置:', authHeaders['Authorization'] ? `${authHeaders['Authorization'].substring(0, 20)}...` : '空');
+
+  // 创建配置（API Key 设为空，让 Header 生效）
   const config = new Config({
-    apiKey: apiKey,
+    apiKey: '', // 清空 API Key，完全通过 Header 认证
     baseUrl: baseUrl,
     modelBaseUrl: modelBaseUrl,
   });
 
-  // 创建 LLM 客户端
-  return new LLMClient(config, customHeaders);
+  // 创建 LLM 客户端，传入合并后的 Headers
+  return new LLMClient(config, mergedHeaders);
 }
 
 /**
  * 创建 Config 对象 helper 函数
  * 用于需要 Config 的其他 SDK 客户端（如 SearchClient、S3Storage）
+ * 返回配置和自定义 Headers（用于绕过 SDK 的 Token 解析）
  */
 export function createConfig(): Config {
   let apiKey: string | undefined;
@@ -70,9 +83,32 @@ export function createConfig(): Config {
   const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn';
   const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://integration.coze.cn/api/v3';
 
-  return new Config({
-    apiKey: apiKey,
+  // 通过 Header 传递 API Key
+  const config = new Config({
+    apiKey: '', // 清空 API Key
     baseUrl: baseUrl,
     modelBaseUrl: modelBaseUrl,
   });
+
+  return config;
+}
+
+/**
+ * 获取认证 Headers（用于手动传递 Authorization）
+ */
+export function getAuthHeaders(): Record<string, string> {
+  let apiKey: string | undefined;
+
+  const workloadApiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
+  const cozeApiKey = process.env.COZE_API_KEY;
+
+  if (workloadApiKey) {
+    apiKey = workloadApiKey;
+  } else if (cozeApiKey) {
+    apiKey = cozeApiKey;
+  }
+
+  return {
+    'Authorization': apiKey || '',
+  };
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LLMClient, Config, SearchClient, S3Storage, HeaderUtils } from 'coze-coding-dev-sdk';
 import { getSupabaseClient } from '@/storage/database/supabase-client';
-import { createLLMClient, createConfig } from '../utils/llm-helper';
+import { createLLMClient, createConfig, getAuthHeaders } from '../utils/llm-helper';
 
 @Injectable()
 export class MedicalAiService {
@@ -16,9 +16,14 @@ export class MedicalAiService {
 
     // 使用统一的 helper 函数创建客户端
     const config = createConfig();
+    const authHeaders = getAuthHeaders();
+
+    // 创建 LLM 客户端（内部已处理 Headers）
     this.client = createLLMClient();
-    this.searchClient = new SearchClient(config);
-    console.log('LLMClient 和 SearchClient 初始化成功');
+
+    // 创建 SearchClient 并传入认证 Headers
+    this.searchClient = new SearchClient(config, authHeaders);
+    console.log('LLMClient 和 SearchClient 初始化成功（已注入 Authorization Header）');
 
     // 初始化对象存储
     try {
@@ -642,12 +647,18 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
 
       console.log('Step 7: 创建带有 customHeaders 的 LLM 客户端');
 
-      // 🚨 修复：使用 createConfig 创建正确的配置（包含 API Key）
+      // 使用 createConfig 创建配置（API Key 已清空，通过 Header 传递）
       const config = createConfig();
 
-      // 创建带有 customHeaders 的客户端
-      const clientWithHeaders = new LLMClient(config, this.customHeaders);
-      console.log('LLM 客户端创建成功（带 customHeaders）');
+      // 获取认证 Headers 并合并 customHeaders
+      const authHeaders = getAuthHeaders();
+      const mergedHeaders = { ...authHeaders, ...this.customHeaders };
+
+      console.log('【关键修复】Authorization Header 已合并:', authHeaders['Authorization'] ? `${authHeaders['Authorization'].substring(0, 20)}...` : '空');
+
+      // 创建带有 mergedHeaders 的客户端
+      const clientWithHeaders = new LLMClient(config, mergedHeaders);
+      console.log('LLM 客户端创建成功（带 mergedHeaders）');
 
       console.log('Step 8: 调用 LLM API');
       // 调用 LLM 进行对话（指定模型）
