@@ -184,12 +184,77 @@ export default function RecordDetailPage() {
       } else {
         throw new Error(res.data.msg || '保存失败')
       }
-    } catch (error) {
-      console.error('保存失败:', error)
-      Taro.showToast({
-        title: '保存失败',
-        icon: 'none'
-      })
+    } catch (error: any) {
+      console.error('========================================');
+      console.error('=== [病历保存失败 - 详细调试信息] ===');
+      console.error('========================================');
+
+      // 1. 打印完整的错误对象
+      console.error('完整错误对象:', error);
+
+      // 2. 打印错误类型
+      console.error('错误类型:', error.constructor.name);
+      console.error('错误消息:', error.message);
+
+      // 3. 如果有响应对象，打印响应详情
+      if (error.response) {
+        console.error('--- 响应对象 ---');
+        console.error('响应状态:', error.response.status);
+        console.error('响应状态文本:', error.response.statusText);
+        console.error('响应头:', error.response.headers);
+        console.error('响应数据:', error.response.data);
+
+        // 尝试解析后端返回的错误信息
+        try {
+          const errorData = typeof error.response.data === 'string'
+            ? JSON.parse(error.response.data)
+            : error.response.data;
+          console.error('解析后的错误数据:', errorData);
+
+          // 弹窗显示后端返回的错误信息
+          const errorMsg = errorData?.msg || errorData?.error || errorData?.message || JSON.stringify(errorData);
+          Taro.showModal({
+            title: '保存失败',
+            content: `后端错误: ${errorMsg}`,
+            showCancel: false
+          });
+        } catch (parseErr) {
+          console.error('解析响应数据失败:', parseErr);
+          Taro.showModal({
+            title: '保存失败',
+            content: `错误: ${error.message}\n响应: ${error.response.data}`,
+            showCancel: false
+          });
+        }
+      } else if (error.request) {
+        // 4. 如果有请求对象但没有响应（网络错误）
+        console.error('--- 请求对象（无响应） ---');
+        console.error('请求信息:', error.request);
+        console.error('这通常意味着网络请求没有到达服务器');
+
+        Taro.showModal({
+          title: '保存失败',
+          content: `网络错误: 请求已发出但没有收到响应\n错误: ${error.message}`,
+          showCancel: false
+        });
+      } else {
+        // 5. 其他错误
+        console.error('--- 其他错误 ---');
+        Taro.showModal({
+          title: '保存失败',
+          content: `错误: ${error.message || JSON.stringify(error)}`,
+          showCancel: false
+        });
+      }
+
+      // 6. 打印堆栈信息
+      if (error.stack) {
+        console.error('错误堆栈:', error.stack);
+      }
+
+      console.error('========================================');
+      console.error('=== [调试信息结束] ===');
+      console.error('========================================');
     } finally {
       setLoading(false)
     }
