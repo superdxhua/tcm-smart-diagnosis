@@ -129,13 +129,24 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       data: analysis,
     });
   } catch (error: any) {
-    console.error('[TCM/Analyze] Unexpected error:', JSON.stringify(error, null, 2));
-    const errorMessage = error?.message || error?.error?.message || '服务器错误';
+    console.error('==========================================');
+    console.error('[TCM/Analyze] 诊疗分析详细错误:');
+    console.error('错误信息:', error?.message || error);
+    console.error('错误堆栈:', error?.stack || '无堆栈信息');
+    console.error('==========================================');
+
+    // 返回详细的错误信息给前端
     return res.status(500).json({
       code: 500,
-      msg: 'error',
-      error: errorMessage,
-      details: error?.toString(),
+      msg: '诊疗分析失败',
+      errorDetail: error?.message || error?.toString() || '未知错误',
+      errorStack: error?.stack || '',
+      envCheck: {
+        hasSupabaseUrl: !!(process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL),
+        hasSupabaseKey: !!(process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+        urlValue: process.env.COZE_SUPABASE_URL ? '***已设置***' : '未设置',
+        keyValue: process.env.COZE_SUPABASE_ANON_KEY ? '***已设置***' : '未设置'
+      }
     });
   }
 }
