@@ -4,13 +4,16 @@
 import { createClient } from '@supabase/supabase-js';
 
 // 从环境变量获取 Supabase 配置
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// 支持多种环境变量命名：SUPABASE_URL、COZE_SUPABASE_URL、NEXT_PUBLIC_SUPABASE_URL
+const supabaseUrl = process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Supabase 环境变量未配置:');
   console.error('SUPABASE_URL:', supabaseUrl);
+  console.error('COZE_SUPABASE_URL:', process.env.COZE_SUPABASE_URL);
   console.error('SUPABASE_ANON_KEY:', supabaseAnonKey ? '***已设置***' : '未设置');
+  console.error('COZE_SUPABASE_ANON_KEY:', process.env.COZE_SUPABASE_ANON_KEY ? '***已设置***' : '未设置');
 }
 
 // 创建 Supabase 客户端（确保传入有效的 URL 和 Key）
