@@ -7,7 +7,11 @@
   "rewrites": [
     {
       "source": "/api/tcm/:path*",
-      "destination": "/api/tcm/:path*"
+      "destination": "https://tcm-smart-diagnosis.onrender.com/api/tcm/:path*"
+    },
+    {
+      "source": "/api/medical-ai/:path*",
+      "destination": "https://tcm-smart-diagnosis.onrender.com/api/medical-ai/:path*"
     },
     {
       "source": "/api/:path*",
