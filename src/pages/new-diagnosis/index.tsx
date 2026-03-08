@@ -503,8 +503,53 @@ const NewDiagnosisPage = () => {
           </View>
 
           <View className="action-buttons">
-            <Button className="btn-save" onClick={() => {
-              Taro.showToast({ title: '保存成功', icon: 'success' })
+            <Button className="btn-save" onClick={async () => {
+              if (!diagnosisResult) {
+                Taro.showToast({ title: '没有可保存的内容', icon: 'none' })
+                return
+              }
+
+              Taro.showLoading({ title: '保存中...' })
+
+              try {
+                const res = await Network.request({
+                  url: '/api/health-records',
+                  method: 'POST',
+                  data: {
+                    memberId: selectedPatient?.id,
+                    chiefComplaint: chiefComplaint,
+                    history: JSON.stringify({
+                      symptomDuration,
+                      symptomDescription,
+                      concurrentSymptoms,
+                      possibleCause,
+                      medicalHistory,
+                      allergyHistory,
+                      currentMedications,
+                      familyHistory,
+                      aiQuestions,
+                      aiAnswers
+                    }),
+                    analysisResult: JSON.stringify(diagnosisResult),
+                    differentiation: diagnosisResult.differentiation,
+                    treatmentPrinciple: diagnosisResult.treatmentPrinciple,
+                    healthPlan: JSON.stringify(diagnosisResult.prescription),
+                    advice: diagnosisResult.advice
+                  }
+                })
+
+                Taro.hideLoading()
+
+                if (res.data && res.data.code === 200) {
+                  Taro.showToast({ title: '保存成功', icon: 'success' })
+                } else {
+                  Taro.showToast({ title: res.data?.message || '保存失败', icon: 'none' })
+                }
+              } catch (err) {
+                Taro.hideLoading()
+                console.error('保存病历失败:', err)
+                Taro.showToast({ title: '保存失败', icon: 'none' })
+              }
             }}>保存到病历</Button>
             <Button className="btn-restart" onClick={() => {
               setCurrentStep('select-patient')
