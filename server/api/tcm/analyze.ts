@@ -15,6 +15,9 @@ import { authenticate, AuthUser } from '../../utils/auth';
  * POST /api/tcm/analyze
  */
 async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser) {
+  console.log('[TCM/Analyze] 收到请求, user:', user?.id);
+  console.log('[TCM/Analyze] 请求体:', JSON.stringify(req.body, null, 2));
+
   try {
     // 支持新旧两种前端数据结构
     const {
@@ -85,8 +88,10 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
     };
 
     // 保存健康档案到数据库
+    console.log('[TCM/Analyze] 开始保存健康档案...');
     try {
       const memberIdForRecord = finalMemberId || user.id;
+      console.log('[TCM/Analyze] 使用的 memberId:', memberIdForRecord);
 
       // 使用 RPC 函数保存健康档案
       const { data: recordData, error: recordError } = await supabase.rpc(
@@ -104,15 +109,17 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
         }
       );
 
+      console.log('[TCM/Analyze] RPC 返回结果:', { recordData, recordError });
+
       if (recordError) {
-        console.error('[TCM/Analyze] 保存健康档案失败:', recordError);
+        console.error('[TCM/Analyze] 保存健康档案失败:', JSON.stringify(recordError, null, 2));
         // 继续返回分析结果，不阻断流程
       } else {
         console.log('[TCM/Analyze] 健康档案保存成功:', recordData);
         analysis.healthRecordId = recordData;
       }
-    } catch (saveError) {
-      console.error('[TCM/Analyze] 保存健康档案异常:', saveError);
+    } catch (saveError: any) {
+      console.error('[TCM/Analyze] 保存健康档案异常:', JSON.stringify(saveError, null, 2));
       // 继续返回分析结果，不阻断流程
     }
 

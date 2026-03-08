@@ -205,15 +205,26 @@ const NewDiagnosisPage = () => {
         data: diagnosisData
       })
 
+      // ========== 调试：打印完整的响应详情 ==========
+      console.log('========== [健康分析响应调试] ==========');
+      console.log('健康分析响应原始对象:', res);
+      console.log('健康分析响应状态码:', res.statusCode);
+      console.log('健康分析响应详情:', JSON.stringify(res.data, null, 2));
+      console.log('========== [调试结束] ==========');
+
       if (res.data && res.data.code === 200) {
         setDiagnosisResult(res.data.data)
         setCurrentStep('result')
         Taro.showToast({ title: '分析完成', icon: 'success' })
       } else {
+        console.error('健康分析失败详情:', JSON.stringify(res.data, null, 2));
         Taro.showToast({ title: res.data?.message || '分析失败', icon: 'none' })
       }
-    } catch (err) {
-      console.error('提交分析失败:', err)
+    } catch (err: any) {
+      console.error('========== [健康分析错误调试] ==========');
+      console.error('提交分析失败:', err);
+      console.error('错误详情:', JSON.stringify(err, null, 2));
+      console.error('========== [调试结束] ==========');
       Taro.showToast({ title: '分析失败', icon: 'none' })
     } finally {
       setIsAnalyzing(false)
