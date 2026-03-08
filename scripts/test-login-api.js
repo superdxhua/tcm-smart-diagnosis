@@ -23,7 +23,7 @@ function log(message, color = colors.reset) {
 
 function testLogin() {
   return new Promise((resolve, reject) => {
-    const url = 'https://api.zhongyihskhealth.com/api/auth/login';
+    const url = 'https://tcm-smart-diagnosis.onrender.com/api/auth/login';
     const data = JSON.stringify({
       username: 'test@example.com',
       password: 'password123',
@@ -114,7 +114,7 @@ async function main() {
 
   log('📋 测试配置:', colors.blue);
   log(`  - 小程序域名: https://www.zhongyihskhealth.com`, colors.blue);
-  log(`  - 后端 API: https://api.zhongyihskhealth.com`, colors.blue);
+  log(`  - 后端 API: https://tcm-smart-diagnosis.onrender.com`, colors.blue);
   log(`  - 登录接口: /api/auth/login`, colors.blue);
 
   try {

@@ -77,7 +77,7 @@ async function main() {
   log('API 测试工具', colors.blue);
   log('=========================================\n', colors.blue);
 
-  const apiBaseUrl = process.env.PROJECT_DOMAIN || 'https://api.zhongyihskhealth.com';
+  const apiBaseUrl = process.env.PROJECT_DOMAIN || 'https://tcm-smart-diagnosis.onrender.com';
 
   log(`🔗 API 基础 URL: ${apiBaseUrl}\n`, colors.blue);
 
