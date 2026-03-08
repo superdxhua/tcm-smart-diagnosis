@@ -86,11 +86,13 @@ async function createHealthRecord(req: NextApiRequest, res: NextApiResponse, use
       .single();
 
     if (error) {
-      console.error('[HealthRecords] Failed to create record:', error);
+      console.error('[HealthRecords] ❌ 创建记录失败:', error);
+      console.error('[HealthRecords] 错误详情:', JSON.stringify(error));
       return res.status(500).json({
         code: 500,
         msg: 'error',
-        error: '创建失败',
+        error: error.message || '创建失败',
+        details: error.details || error.hint || null,
       });
     }
 
@@ -99,12 +101,14 @@ async function createHealthRecord(req: NextApiRequest, res: NextApiResponse, use
       msg: '档案创建成功',
       data,
     });
-  } catch (error) {
-    console.error('[HealthRecords] Unexpected error:', error);
+  } catch (error: any) {
+    console.error('[HealthRecords] ❌ 创建记录时发生意外错误:', error);
+    console.error('[HealthRecords] 错误堆栈:', error.stack);
     return res.status(500).json({
       code: 500,
       msg: 'error',
-      error: '服务器错误',
+      error: error.message || '服务器错误',
+      stack: error.stack,
     });
   }
 }
@@ -171,11 +175,19 @@ async function analyzeFollowUp(req: NextApiRequest, res: NextApiResponse, user: 
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // 调试日志
+  console.log('=== [BACKEND] 🔥 API 接口被调用了！Method:', req.method);
+  console.log('=== [BACKEND] 🔥 接收到的 Body:', JSON.stringify(req.body));
+  console.log('=== [BACKEND] 🔥 Query:', req.query);
+
   // 认证用户（GET 请求不需要认证）
   let user: AuthUser | undefined;
   if (req.method !== 'GET') {
+    console.log('=== [BACKEND] 开始认证用户 ===');
     user = await authenticate(req, res);
+    console.log('=== [BACKEND] 认证结果 user:', user);
     if (!user) {
+      console.log('=== [BACKEND] 认证失败，返回错误 ===');
       return; // authenticate 已经返回了错误响应
     }
   }
@@ -184,11 +196,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { analyzeFollowup } = req.query;
 
   if (req.method === 'GET' && memberId) {
+    console.log('=== [BACKEND] 调用 getMemberHealthRecords ===');
     return getMemberHealthRecords(req, res);
   } else if (req.method === 'POST') {
     if (analyzeFollowup) {
+      console.log('=== [BACKEND] 调用 analyzeFollowUp ===');
       return analyzeFollowUp(req, res, user!);
     }
+    console.log('=== [BACKEND] 调用 createHealthRecord ===');
     return createHealthRecord(req, res, user!);
   } else {
     res.setHeader('Allow', ['GET', 'POST']);

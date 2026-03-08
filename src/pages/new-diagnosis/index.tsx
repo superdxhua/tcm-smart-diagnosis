@@ -504,51 +504,140 @@ const NewDiagnosisPage = () => {
 
           <View className="action-buttons">
             <Button className="btn-save" onClick={async () => {
+              console.log('=== [DEBUG] 1. 按钮点击事件触发 ===')
+              console.log('=== [DEBUG] selectedPatient:', selectedPatient)
+              console.log('=== [DEBUG] chiefComplaint:', chiefComplaint)
+
               if (!diagnosisResult) {
+                console.log('=== [DEBUG] 2. diagnosisResult 为空，退出 ===')
                 Taro.showToast({ title: '没有可保存的内容', icon: 'none' })
                 return
               }
 
+              console.log('=== [DEBUG] 3. 开始组装数据 ===')
+              const dataToSave = {
+                memberId: selectedPatient?.id,
+                chiefComplaint: chiefComplaint,
+                history: JSON.stringify({
+                  symptomDuration,
+                  symptomDescription,
+                  concurrentSymptoms,
+                  possibleCause,
+                  medicalHistory,
+                  allergyHistory,
+                  currentMedications,
+                  familyHistory,
+                  aiQuestions,
+                  aiAnswers
+                }),
+                analysisResult: JSON.stringify(diagnosisResult),
+                differentiation: diagnosisResult.differentiation,
+                treatmentPrinciple: diagnosisResult.treatmentPrinciple,
+                healthPlan: JSON.stringify(diagnosisResult.prescription),
+                advice: diagnosisResult.advice
+              }
+              console.log('=== [DEBUG] 4. 准备发送的数据:', JSON.stringify(dataToSave))
+
               Taro.showLoading({ title: '保存中...' })
 
               try {
+                console.log('=== [DEBUG] 5. 开始调用 API ===')
+                const apiUrl = '/api/health-records'
+                console.log('=== [DEBUG] 6. 请求地址:', apiUrl)
+
                 const res = await Network.request({
-                  url: '/api/health-records',
+                  url: apiUrl,
                   method: 'POST',
-                  data: {
-                    memberId: selectedPatient?.id,
-                    chiefComplaint: chiefComplaint,
-                    history: JSON.stringify({
-                      symptomDuration,
-                      symptomDescription,
-                      concurrentSymptoms,
-                      possibleCause,
-                      medicalHistory,
-                      allergyHistory,
-                      currentMedications,
-                      familyHistory,
-                      aiQuestions,
-                      aiAnswers
-                    }),
-                    analysisResult: JSON.stringify(diagnosisResult),
-                    differentiation: diagnosisResult.differentiation,
-                    treatmentPrinciple: diagnosisResult.treatmentPrinciple,
-                    healthPlan: JSON.stringify(diagnosisResult.prescription),
-                    advice: diagnosisResult.advice
-                  }
+                  data: dataToSave
                 })
+
+                console.log('=== [DEBUG] 7. API 返回结果:', res)
+                console.log('=== [DEBUG] 8. 状态码:', res.statusCode)
 
                 Taro.hideLoading()
 
                 if (res.data && res.data.code === 200) {
+                  console.log('=== [DEBUG] 9. 保存成功 ===')
                   Taro.showToast({ title: '保存成功', icon: 'success' })
                 } else {
+                  console.log('=== [DEBUG] 10. 保存失败，错误信息:', res.data?.message)
                   Taro.showToast({ title: res.data?.message || '保存失败', icon: 'none' })
                 }
-              } catch (err) {
+              } catch (err: any) {
                 Taro.hideLoading()
-                console.error('保存病历失败:', err)
-                Taro.showToast({ title: '保存失败', icon: 'none' })
+
+                // ========== 详细错误调试开始 ==========
+                console.error('========================================');
+                console.error('=== [病历保存失败 - 详细调试信息] ===');
+                console.error('========================================');
+
+                // 1. 打印完整的错误对象
+                console.error('完整错误对象:', err);
+
+                // 2. 打印错误类型
+                console.error('错误类型:', err.constructor.name);
+                console.error('错误消息:', err.message);
+
+                // 3. 如果有响应对象，打印响应详情
+                if (err.response) {
+                  console.error('--- 响应对象 ---');
+                  console.error('响应状态:', err.response.status);
+                  console.error('响应状态文本:', err.response.statusText);
+                  console.error('响应头:', err.response.headers);
+                  console.error('响应数据:', err.response.data);
+
+                  // 尝试解析后端返回的错误信息
+                  try {
+                    const errorData = typeof err.response.data === 'string'
+                      ? JSON.parse(err.response.data)
+                      : err.response.data;
+                    console.error('解析后的错误数据:', errorData);
+
+                    // 弹窗显示后端返回的错误信息
+                    const errorMsg = errorData?.msg || errorData?.error || errorData?.message || JSON.stringify(errorData);
+                    Taro.showModal({
+                      title: '保存失败',
+                      content: `后端错误: ${errorMsg}`,
+                      showCancel: false
+                    });
+                  } catch (parseErr) {
+                    console.error('解析响应数据失败:', parseErr);
+                    Taro.showModal({
+                      title: '保存失败',
+                      content: `错误: ${err.message}\n响应: ${err.response.data}`,
+                      showCancel: false
+                    });
+                  }
+                } else if (err.request) {
+                  // 4. 如果有请求对象但没有响应（网络错误）
+                  console.error('--- 请求对象（无响应）---');
+                  console.error('请求信息:', err.request);
+                  console.error('这通常意味着网络请求没有到达服务器');
+
+                  Taro.showModal({
+                    title: '保存失败',
+                    content: `网络错误: 请求已发出但没有收到响应\n错误: ${err.message}`,
+                    showCancel: false
+                  });
+                } else {
+                  // 5. 其他错误
+                  console.error('--- 其他错误 ---');
+                  Taro.showModal({
+                    title: '保存失败',
+                    content: `错误: ${err.message || JSON.stringify(err)}`,
+                    showCancel: false
+                  });
+                }
+
+                // 6. 打印堆栈信息
+                if (err.stack) {
+                  console.error('错误堆栈:', err.stack);
+                }
+
+                console.error('========================================');
+                console.error('=== [调试信息结束] ===');
+                console.error('========================================');
+                // ========== 详细错误调试结束 ==========
               }
             }}>保存到病历</Button>
             <Button className="btn-restart" onClick={() => {
