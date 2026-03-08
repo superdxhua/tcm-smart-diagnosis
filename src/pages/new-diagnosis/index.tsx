@@ -180,6 +180,62 @@ const NewDiagnosisPage = () => {
 
   // 提交诊疗分析 - 使用 Network 模块自动处理认证
   const handleSubmitAnalysis = async () => {
+    // ========== 函数入口调试 ==========
+    console.log('========================================');
+    console.log('>>> handleSubmitAnalysis 函数被调用');
+    console.log('>>> selectedPatient:', selectedPatient);
+    console.log('>>> chiefComplaint:', chiefComplaint);
+    console.log('>>> aiQuestions:', aiQuestions);
+    console.log('>>> aiAnswers:', aiAnswers);
+    console.log('========================================');
+
+    // ========== 构建对话历史（关键修复：将 Q&A 转换为 messages 格式）==========
+    const messages: Array<{ role: string; content: string }> = [];
+
+    // 添加系统消息
+    messages.push({
+      role: 'system',
+      content: `你是一位经验丰富的中医专家，负责通过问询收集患者的症状信息。
+
+【用户基本信息】
+姓名：${selectedPatient?.name || '未知'}
+主诉：${chiefComplaint}
+
+【既往史】
+${medicalHistory ? `既往病史：${medicalHistory}` : ''}
+${allergyHistory ? `过敏史：${allergyHistory}` : ''}
+${currentMedications ? `当前用药：${currentMedications}` : ''}
+
+请根据以上信息进行智能问询，每次只问一个关键问题。`
+    });
+
+    // 添加用户的主诉作为第一条用户消息
+    messages.push({
+      role: 'user',
+      content: chiefComplaint
+    });
+
+    // 添加 AI 问询的 Q&A 对话历史
+    aiQuestions.forEach((question, index) => {
+      const answer = aiAnswers[index] || '';
+
+      // 添加 AI 的问题
+      messages.push({
+        role: 'assistant',
+        content: question
+      });
+
+      // 添加用户的回答（如果有回答）
+      if (answer.trim()) {
+        messages.push({
+          role: 'user',
+          content: answer
+        });
+      }
+    });
+
+    console.log('>>> 构建的对话历史 messages:', JSON.stringify(messages, null, 2));
+
     setIsAnalyzing(true)
     try {
       const diagnosisData = {
@@ -196,6 +252,8 @@ const NewDiagnosisPage = () => {
         familyHistory,
         aiQuestions,
         aiAnswers,
+        // ========== 关键：将对话历史传给后端 ==========
+        aiInquiry: JSON.stringify(messages),
         timestamp: new Date().toISOString()
       }
 
@@ -473,8 +531,18 @@ const NewDiagnosisPage = () => {
 
       <View className="btn-group">
         <Button className="btn-prev" onClick={() => setCurrentStep('supplement')}>上一步</Button>
-        <Button className="btn-submit" onClick={handleSubmitAnalysis}>
-          {isAnalyzing ? '分析中...' : '提交分析'}
+        <Button
+          className="btn-submit"
+          onClick={() => {
+            console.log('>>> 点击了【结束问询并生成方案】按钮，准备发送请求');
+            console.log('>>> 当前状态: isAnalyzing=', isAnalyzing);
+            console.log('>>> 患者ID:', selectedPatient?.id);
+            console.log('>>> 患者姓名:', selectedPatient?.name);
+            console.log('>>> 问答数量:', aiQuestions.length);
+            handleSubmitAnalysis();
+          }}
+        >
+          {isAnalyzing ? '生成中...' : '结束问询并生成方案'}
         </Button>
       </View>
     </View>
