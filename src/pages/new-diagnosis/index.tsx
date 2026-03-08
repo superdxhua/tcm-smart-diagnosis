@@ -205,46 +205,32 @@ const NewDiagnosisPage = () => {
         data: diagnosisData
       })
 
-      // ========== 调试：打印完整的响应详情 ==========
-      console.log('========== [健康分析响应调试] ==========');
-      console.log('健康分析响应原始对象:', res);
-      console.log('健康分析响应状态码:', res.statusCode);
-      console.log('res.data 内容:', res.data);
-      console.log('res.data.code:', res.data?.code);
-      console.log('res.data.data 内容:', res.data?.data);
-      console.log('========== [调试结束] ==========');
+      // ========== 暴力调试：直接打印后端返回的所有数据 ==========
+      console.log('========================================');
+      console.log('★★★ 后端返回的完整数据 ★★★');
+      console.log('res:', res);
+      console.log('res.data:', res.data);
+      console.log('JSON.stringify(res.data):', JSON.stringify(res.data, null, 2));
+      console.log('========================================');
 
-      // 增强的错误处理和数据解析
-      if (!res.data) {
-        console.error('错误：res.data 为空');
-        Taro.showToast({ title: '响应数据为空', icon: 'none' });
-        return;
-      }
+      // 强制弹窗显示数据
+      Taro.showModal({
+        title: '后端返回数据',
+        content: JSON.stringify(res.data, null, 2),
+        showCancel: false
+      });
 
-      if (res.data.code === 200) {
-        const resultData = res.data.data;
-        console.log('解析到的结果数据:', resultData);
-
-        if (!resultData) {
-          console.error('错误：resultData 为空');
-          Taro.showToast({ title: '返回数据为空', icon: 'none' });
-          return;
-        }
-
-        setDiagnosisResult(resultData);
-        setCurrentStep('result');
-        Taro.showToast({ title: '分析完成', icon: 'success' });
-      } else {
-        console.error('健康分析失败详情:', JSON.stringify(res.data, null, 2));
-        Taro.showToast({ title: res.data?.message || '分析失败', icon: 'none' });
-      }
+      // 直接设置结果，不管什么结构
+      setDiagnosisResult(res.data);
+      setCurrentStep('result');
+      Taro.showToast({ title: '已收到响应', icon: 'success' });
     } catch (err: any) {
-      console.error('========== [健康分析错误调试] ==========');
-      console.error('提交分析失败:', err);
-      console.error('错误详情:', err?.message || JSON.stringify(err, null, 2));
-      console.error('错误堆栈:', err?.stack || '无堆栈信息');
-      console.error('========== [调试结束] ==========');
-      Taro.showToast({ title: '分析失败: ' + (err?.message || '未知错误'), icon: 'none' });
+      console.error('========================================');
+      console.error('★★★ 请求彻底崩了 ★★★');
+      console.error('错误:', err);
+      console.error('错误信息:', err?.message || JSON.stringify(err, null, 2));
+      console.error('========================================');
+      Taro.showToast({ title: '请求失败: ' + (err?.message || '未知错误'), icon: 'none' });
     } finally {
       setIsAnalyzing(false)
     }
