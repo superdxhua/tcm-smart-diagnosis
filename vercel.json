@@ -12,6 +12,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://tcm-smart-diagnosis.onrender.com/api/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
