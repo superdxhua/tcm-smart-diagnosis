@@ -1919,11 +1919,6 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
             <Text className="block text-xs text-gray-500">
               {chiefComplaint.length}/500 字
             </Text>
-            {chiefComplaint.length < 10 && (
-              <Text className="block text-xs text-orange-500">
-                请至少输入 10 个字
-              </Text>
-            )}
           </View>
         </View>
       )}
