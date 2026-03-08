@@ -573,6 +573,7 @@ const NewDiagnosisPage = () => {
 
                 // 1. 打印完整的错误对象
                 console.error('完整错误对象:', err);
+                console.error('错误JSON:', JSON.stringify(err, null, 2));
 
                 // 2. 打印错误类型
                 console.error('错误类型:', err.constructor.name);
@@ -585,6 +586,7 @@ const NewDiagnosisPage = () => {
                   console.error('响应状态文本:', err.response.statusText);
                   console.error('响应头:', err.response.headers);
                   console.error('响应数据:', err.response.data);
+                  console.error('响应数据JSON:', JSON.stringify(err.response.data, null, 2));
 
                   // 尝试解析后端返回的错误信息
                   try {
@@ -592,9 +594,10 @@ const NewDiagnosisPage = () => {
                       ? JSON.parse(err.response.data)
                       : err.response.data;
                     console.error('解析后的错误数据:', errorData);
+                    console.error('解析后的错误数据JSON:', JSON.stringify(errorData, null, 2));
 
                     // 弹窗显示后端返回的错误信息
-                    const errorMsg = errorData?.msg || errorData?.error || errorData?.message || JSON.stringify(errorData);
+                    const errorMsg = errorData?.msg || errorData?.error || errorData?.message || errorData?.fullError || JSON.stringify(errorData);
                     Taro.showModal({
                       title: '保存失败',
                       content: `后端错误: ${errorMsg}`,
@@ -612,6 +615,7 @@ const NewDiagnosisPage = () => {
                   // 4. 如果有请求对象但没有响应（网络错误）
                   console.error('--- 请求对象（无响应）---');
                   console.error('请求信息:', err.request);
+                  console.error('请求信息JSON:', JSON.stringify(err.request, null, 2));
                   console.error('这通常意味着网络请求没有到达服务器');
 
                   Taro.showModal({
@@ -622,6 +626,7 @@ const NewDiagnosisPage = () => {
                 } else {
                   // 5. 其他错误
                   console.error('--- 其他错误 ---');
+                  console.error('其他错误JSON:', JSON.stringify(err, null, 2));
                   Taro.showModal({
                     title: '保存失败',
                     content: `错误: ${err.message || JSON.stringify(err)}`,
