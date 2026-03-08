@@ -480,8 +480,9 @@ ${item.content ? `   内容：${item.content.substring(0, 500)}` : ''}
       console.log('最新消息:', messages[messages.length - 1]);
 
       console.log('Step 1: 检查环境变量');
-      // 检查环境变量是否配置（使用正确的环境变量名称）
-      const apiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
+      // 检查环境变量是否配置（支持多种环境变量名称）
+      // 优先级：COZE_WORKLOAD_IDENTITY_API_KEY > COZE_API_KEY
+      const apiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
       const baseUrl = process.env.COZE_INTEGRATION_BASE_URL;
       const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL;
 
