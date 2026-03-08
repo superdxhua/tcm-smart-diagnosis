@@ -11,37 +11,41 @@ export class MedicalRecordsService {
     this.llmClient = createLLMClient()
   }
 
-  // 创建档案（直接插入健康记录）
+  // 创建档案（使用 RPC 函数）
   async createHealthRecord(recordData: any) {
     const supabase = getSupabaseClient();
 
-    // 直接插入健康记录
-    const { data, error } = await supabase
-      .from('health_records')
-      .insert({
-        member_id: recordData.member_id,
-        consultant_id: recordData.consultant_id || null,
-        visit_number: recordData.visit_number,
-        chief_complaint: recordData.chief_complaint,
-        history: recordData.history || null,
-        past_history: recordData.past_history || null,
-        analysis_result: recordData.analysis_result || null,
-        differentiation: recordData.differentiation || null,
-        treatment_principle: recordData.treatment_principle || null,
-        health_plan: recordData.health_plan,
-        advice: recordData.advice || null,
-        status: recordData.status || 'active',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .select()
-      .single();
+    // 构建 RPC 函数参数，必须使用 p_ 前缀
+    const params = {
+      p_member_id: recordData.member_id,
+      p_consultant_id: recordData.consultant_id || null,
+      p_visit_number: recordData.visit_number,
+      p_chief_complaint: recordData.chief_complaint,
+      p_history: recordData.history || null,
+      p_past_history: recordData.past_history || null,
+      p_analysis_result: recordData.analysis_result || null,
+      p_differentiation: recordData.differentiation || null,
+      p_treatment_principle: recordData.treatment_principle || null,
+      p_health_plan: recordData.health_plan,
+      p_advice: recordData.advice || null,
+      p_status: recordData.status || 'active',
+    };
+
+    console.log('=== [RPC] 调用 create_health_record_with_transaction ===');
+    console.log('RPC 参数:', JSON.stringify(params, null, 2));
+
+    // 调用 RPC 函数
+    const { data, error } = await supabase.rpc(
+      'create_health_record_with_transaction',
+      params
+    );
 
     if (error) {
-      console.error('创建健康记录失败:', error);
+      console.error('创建健康记录失败 (RPC):', error);
       throw new BadRequestException(error.message);
     }
 
+    console.log('RPC 返回数据:', data);
     return data;
   }
 
