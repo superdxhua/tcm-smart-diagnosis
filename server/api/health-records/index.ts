@@ -81,33 +81,38 @@ async function createHealthRecord(req: NextApiRequest, res: NextApiResponse, use
 
     console.log('=== [BACKEND] RPC 参数:', JSON.stringify(params));
 
-    // 调用 Supabase RPC 函数
+    // 1. 打印即将发送给 Supabase 的参数，确认格式
+    console.log('--- [后端调试] 发送给 Supabase 的参数:', JSON.stringify(params, null, 2));
+
+    // 2. 调用 RPC
     const { data, error } = await supabase.rpc(
       'create_health_record_with_transaction',
       params
     );
 
+    // 3. 如果有错误，必须把完整的 error 对象打印出来
     if (error) {
-      console.error('[BACKEND] ❌ RPC 调用失败:', error);
-      console.error('[BACKEND] 错误代码:', error.code);
-      console.error('[BACKEND] 错误详情:', error.details);
-      console.error('[BACKEND] 错误提示:', error.hint);
+      console.error('--- [后端调试] Supabase 返回的错误:', JSON.stringify(error, null, 2));
+      console.error('--- [后端调试] 错误代码:', error.code);
+      console.error('--- [后端调试] 错误消息:', error.message);
+      console.error('--- [后端调试] 错误详情:', error.details);
+      console.error('--- [后端调试] 错误提示:', error.hint);
+
+      // 同时把错误详情返回给前端，方便我们在浏览器看
       return res.status(400).json({
-        code: 400,
-        msg: 'error',
-        error: error.message,
-        details: error.details,
-        hint: error.hint,
+        success: false,
+        message: error.message,
+        details: error.details || 'No details',
+        hint: error.hint || 'No hint',
+        code: error.code,
+        fullError: JSON.stringify(error)
       });
     }
 
-    console.log('[BACKEND] ✅ RPC 返回数据:', data);
+    // 4. 成功也要打印
+    console.log('--- [后端调试] Supabase 返回成功, ID:', data);
 
-    return res.status(201).json({
-      code: 200,
-      msg: '档案创建成功',
-      data,
-    });
+    return res.status(200).json({ success: true, data });
   } catch (error: any) {
     console.error('[BACKEND] ❌ 创建记录时发生意外错误:', error);
     console.error('[BACKEND] 错误堆栈:', error.stack);
