@@ -199,6 +199,13 @@ const NewDiagnosisPage = () => {
         timestamp: new Date().toISOString()
       }
 
+      // ========== 调试：打印最终请求地址 ==========
+      const requestUrl = 'https://tcm-smart-diagnosis.onrender.com/api/tcm/analyze';
+      console.log('【最终请求地址】:', requestUrl);
+      console.log('【发送的数据】:', JSON.stringify(diagnosisData, null, 2));
+      console.log('【PROJECT_DOMAIN环境变量】:', PROJECT_DOMAIN);
+      console.log('========================================');
+
       const res = await Network.request({
         url: '/api/tcm/analyze',
         method: 'POST',
