@@ -61,40 +61,47 @@ async function createHealthRecord(req: NextApiRequest, res: NextApiResponse, use
     const body = req.body;
     const supabase = getSupabaseClient();
 
-    // 转换驼峰命名为下划线命名
-    const recordData: any = {
-      member_id: body.memberId,
-      consultant_id: body.consultantId || user.id,
-      visit_number: body.visitNumber,
-      chief_complaint: body.chiefComplaint,
-      history: body.history,
-      past_history: body.pastHistory,
-      analysis_result: body.analysisResult,
-      differentiation: body.differentiation,
-      treatment_principle: body.treatmentPrinciple,
-      health_plan: body.healthPlan,
-      advice: body.advice,
-      status: body.status || 'active',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+    console.log('=== [BACKEND] 前端发送的数据:', JSON.stringify(body));
+
+    // 显式映射参数名：从驼峰转为下划线 + p_ 前缀
+    const params = {
+      p_member_id: body.memberId,
+      p_consultant_id: body.consultantId || user?.id || 'default-consultant',
+      p_visit_number: body.visitNumber || 1,
+      p_chief_complaint: body.chiefComplaint,
+      p_history: body.history || null,
+      p_past_history: body.pastHistory || null,
+      p_analysis_result: body.analysisResult || null,
+      p_differentiation: body.differentiation || null,
+      p_treatment_principle: body.treatmentPrinciple || null,
+      p_health_plan: body.healthPlan || '',
+      p_advice: body.advice || null,
+      p_status: body.status || 'active',
     };
 
-    const { data, error } = await supabase
-      .from('health_records')
-      .insert(recordData)
-      .select()
-      .single();
+    console.log('=== [BACKEND] RPC 参数:', JSON.stringify(params));
+
+    // 调用 Supabase RPC 函数
+    const { data, error } = await supabase.rpc(
+      'create_health_record_with_transaction',
+      params
+    );
 
     if (error) {
-      console.error('[HealthRecords] ❌ 创建记录失败:', error);
-      console.error('[HealthRecords] 错误详情:', JSON.stringify(error));
-      return res.status(500).json({
-        code: 500,
+      console.error('[BACKEND] ❌ RPC 调用失败:', error);
+      console.error('[BACKEND] 错误代码:', error.code);
+      console.error('[BACKEND] 错误详情:', error.details);
+      console.error('[BACKEND] 错误提示:', error.hint);
+      return res.status(400).json({
+        code: 400,
         msg: 'error',
-        error: error.message || '创建失败',
-        details: error.details || error.hint || null,
+        error: error.message,
+        details: error.details,
+        hint: error.hint,
       });
     }
+
+    console.log('[BACKEND] ✅ RPC 返回数据:', data);
 
     return res.status(201).json({
       code: 200,
@@ -102,8 +109,8 @@ async function createHealthRecord(req: NextApiRequest, res: NextApiResponse, use
       data,
     });
   } catch (error: any) {
-    console.error('[HealthRecords] ❌ 创建记录时发生意外错误:', error);
-    console.error('[HealthRecords] 错误堆栈:', error.stack);
+    console.error('[BACKEND] ❌ 创建记录时发生意外错误:', error);
+    console.error('[BACKEND] 错误堆栈:', error.stack);
     return res.status(500).json({
       code: 500,
       msg: 'error',
