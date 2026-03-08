@@ -6,6 +6,10 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/api/tcm/:path*",
+      "destination": "/api/tcm/:path*"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://tcm-smart-diagnosis.onrender.com/api/:path*"
     }
