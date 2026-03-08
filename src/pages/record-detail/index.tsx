@@ -162,8 +162,9 @@ export default function RecordDetailPage() {
 
       console.log('响应状态码:', res.statusCode)
       console.log('响应数据:', res.data)
+      console.log('响应数据JSON:', JSON.stringify(res.data, null, 2))
 
-      if (res.statusCode === 200) {
+      if (res.statusCode === 200 || res.statusCode === 201) {
         const savedRecord = res.data.data
 
         Taro.showToast({
@@ -182,7 +183,10 @@ export default function RecordDetailPage() {
           }, 1000)
         }
       } else {
-        throw new Error(res.data.msg || '保存失败')
+        // 打印后端返回的具体错误信息
+        console.error('后端返回的具体错误信息:', res.data)
+        console.error('后端返回的具体错误信息JSON:', JSON.stringify(res.data, null, 2))
+        throw new Error(res.data?.message || res.data?.msg || res.data?.error || '保存失败')
       }
     } catch (error: any) {
       console.error('========================================');
