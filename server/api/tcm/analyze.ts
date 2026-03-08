@@ -128,12 +128,14 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       msg: 'success',
       data: analysis,
     });
-  } catch (error) {
-    console.error('[TCM/Analyze] Unexpected error:', error);
+  } catch (error: any) {
+    console.error('[TCM/Analyze] Unexpected error:', JSON.stringify(error, null, 2));
+    const errorMessage = error?.message || error?.error?.message || '服务器错误';
     return res.status(500).json({
       code: 500,
       msg: 'error',
-      error: '服务器错误',
+      error: errorMessage,
+      details: error?.toString(),
     });
   }
 }
