@@ -15,10 +15,14 @@ import { authenticate, AuthUser } from '../../utils/auth';
  * POST /api/tcm/analyze
  */
 async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser) {
-  console.log('[TCM/Analyze] 收到请求, user:', user?.id);
+  console.log('[TCM/Analyze] ========== 开始处理请求 ==========');
+  console.log('[TCM/Analyze] user:', user?.id);
   console.log('[TCM/Analyze] 请求体:', JSON.stringify(req.body, null, 2));
 
+  let currentStep = 'start';
+
   try {
+    currentStep = 'parse_body';
     // 支持新旧两种前端数据结构
     const {
       // 新诊疗流程字段
@@ -33,6 +37,7 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       memberId
     } = req.body;
 
+    currentStep = 'extract_fields';
     // 统一提取关键信息
     const finalMemberId = patientId || memberId;
     const finalSymptoms = chiefComplaint || symptoms || '';
@@ -41,6 +46,7 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
     const allergyHistory = supplementaryInfo?.allergyHistory || '';
     const medicationHistory = supplementaryInfo?.medicationHistory || '';
 
+    currentStep = 'validate_symptoms';
     if (!finalSymptoms) {
       return res.status(400).json({
         code: 400,
@@ -49,8 +55,11 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       });
     }
 
+    currentStep = 'get_supabase';
     const supabase = getSupabaseClient();
+    console.log('[TCM/Analyze] Supabase 客户端已获取');
 
+    currentStep = 'build_prompt';
     // 构建详细的问诊信息
     const patientInfoText = patientInfo ?
       `患者信息：${patientInfo.name}，${patientInfo.gender}，${patientInfo.age}岁` : '';
@@ -61,6 +70,7 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       medicationHistory ? `用药史：${medicationHistory}` : '',
     ].filter(Boolean).join('；');
 
+    currentStep = 'generate_analysis';
     // 这里应该调用通义千问 API 进行中医辨证分析
     // 暂时返回基于规则的模拟数据
     const analysis = {
@@ -86,43 +96,48 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
       advice: '建议配合情志疏导，保持心情舒畅，避免过度劳累',
       referenceCases: [],
     };
+    console.log('[TCM/Analyze] 分析结果已生成:', JSON.stringify(analysis, null, 2));
 
+    currentStep = 'save_to_db';
     // 保存健康档案到数据库
     console.log('[TCM/Analyze] 开始保存健康档案...');
-    try {
-      const memberIdForRecord = finalMemberId || user.id;
-      console.log('[TCM/Analyze] 使用的 memberId:', memberIdForRecord);
+    console.log('[TCM/Analyze] finalMemberId:', finalMemberId);
+    console.log('[TCM/Analyze] user.id:', user.id);
 
-      // 使用 RPC 函数保存健康档案
-      const { data: recordData, error: recordError } = await supabase.rpc(
-        'create_health_record_with_transaction',
-        {
-          p_member_id: memberIdForRecord,
-          p_consultant_id: user.id,
-          p_chief_complaint: finalSymptoms,
-          p_history: finalHistory,
-          p_past_history: medicalHistory,
-          p_differentiation: analysis.differentiation,
-          p_treatment_principle: analysis.treatmentPrinciple,
-          p_health_plan: JSON.stringify(analysis.prescription),
-          p_advice: analysis.advice
-        }
-      );
+    const memberIdForRecord = finalMemberId || user.id;
+    console.log('[TCM/Analyze] 使用的 memberId:', memberIdForRecord);
 
-      console.log('[TCM/Analyze] RPC 返回结果:', { recordData, recordError });
-
-      if (recordError) {
-        console.error('[TCM/Analyze] 保存健康档案失败:', JSON.stringify(recordError, null, 2));
-        // 继续返回分析结果，不阻断流程
-      } else {
-        console.log('[TCM/Analyze] 健康档案保存成功:', recordData);
-        analysis.healthRecordId = recordData;
+    // 使用 RPC 函数保存健康档案
+    const { data: recordData, error: recordError } = await supabase.rpc(
+      'create_health_record_with_transaction',
+      {
+        p_member_id: memberIdForRecord,
+        p_consultant_id: user.id,
+        p_visit_number: 1,
+        p_chief_complaint: finalSymptoms,
+        p_history: finalHistory || null,
+        p_past_history: medicalHistory || null,
+        p_analysis_result: null,
+        p_differentiation: analysis.differentiation,
+        p_treatment_principle: analysis.treatmentPrinciple,
+        p_health_plan: JSON.stringify(analysis.prescription),
+        p_advice: analysis.advice,
+        p_status: 'active'
       }
-    } catch (saveError: any) {
-      console.error('[TCM/Analyze] 保存健康档案异常:', JSON.stringify(saveError, null, 2));
+    );
+
+    console.log('[TCM/Analyze] RPC 返回结果:', { recordData, recordError });
+
+    currentStep = 'handle_db_result';
+    if (recordError) {
+      console.error('[TCM/Analyze] 保存健康档案失败:', JSON.stringify(recordError, null, 2));
       // 继续返回分析结果，不阻断流程
+    } else {
+      console.log('[TCM/Analyze] 健康档案保存成功:', recordData);
+      analysis.healthRecordId = recordData;
     }
 
+    currentStep = 'return_response';
     return res.status(200).json({
       code: 200,
       msg: 'success',
@@ -130,7 +145,8 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
     });
   } catch (error: any) {
     console.error('==========================================');
-    console.error('[TCM/Analyze] 诊疗分析详细错误:');
+    console.error('[TCM/Analyze] ========== 诊疗分析错误 ==========');
+    console.error('失败步骤 (currentStep):', currentStep);
     console.error('错误信息:', error?.message || error);
     console.error('错误堆栈:', error?.stack || '无堆栈信息');
     console.error('==========================================');
@@ -139,6 +155,7 @@ async function analyze(req: NextApiRequest, res: NextApiResponse, user: AuthUser
     return res.status(500).json({
       code: 500,
       msg: '诊疗分析失败',
+      failedStep: currentStep,
       errorDetail: error?.message || error?.toString() || '未知错误',
       errorStack: error?.stack || '',
       envCheck: {
