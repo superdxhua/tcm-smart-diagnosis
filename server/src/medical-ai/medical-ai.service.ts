@@ -488,8 +488,9 @@ ${item.content ? `   内容：${item.content.substring(0, 500)}` : ''}
       // 检查环境变量是否配置（支持多种环境变量名称）
       // 优先级：COZE_WORKLOAD_IDENTITY_API_KEY > COZE_API_KEY
       const apiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
-      const baseUrl = process.env.COZE_INTEGRATION_BASE_URL;
-      const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL;
+      // 添加默认值，确保环境变量未配置时也能工作
+      const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn';
+      const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://integration.coze.cn/api/v3';
 
       console.log('=== 环境变量检查 ===');
       console.log('API Key:', apiKey ? `${apiKey.substring(0, 20)}...` : '未配置');
@@ -498,7 +499,7 @@ ${item.content ? `   内容：${item.content.substring(0, 500)}` : ''}
       console.log('Config apiKey:', (this as any).client?.config?.apiKey ? '已配置' : '未配置');
 
       console.log('Step 2: 检查 API 密钥是否有效');
-      if (!apiKey || !baseUrl || apiKey === 'your-coze-api-key-here' || baseUrl === 'your-base-url-here') {
+      if (!apiKey || apiKey === 'your-coze-api-key-here') {
         console.warn('⚠️ Coze API 密钥未配置，使用降级方案');
         console.warn('API Key:', apiKey ? '已配置' : '未配置');
         console.warn('Base URL:', baseUrl);
