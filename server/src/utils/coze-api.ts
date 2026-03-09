@@ -3,9 +3,9 @@
  * 使用 Fetch API 直接调用 Coze API
  * 项目使用 coze-coding-dev-sdk，直接调用大模型服务，不需要 bot_id
  * 官方确认的 API 地址: https://integration.coze.cn/api/v3/chat
+ * 认证方式: Bearer Token (COZE_WORKLOAD_IDENTITY_API_KEY)
+ * 模型参数: COZE_MODEL_NAME (如 qwen-max)
  */
-
-import { LLMClient, Config } from 'coze-coding-dev-sdk';
 
 /**
  * 调用 Coze API（原生 Fetch）
