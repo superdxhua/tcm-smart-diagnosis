@@ -486,11 +486,17 @@ ${item.content ? `   内容：${item.content.substring(0, 500)}` : ''}
 
       console.log('Step 1: 检查环境变量');
       // 检查环境变量是否配置（支持多种环境变量名称）
-      // 优先级：COZE_WORKLOAD_IDENTITY_API_KEY > COZE_API_KEY
-      const apiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
-      // 添加默认值，确保环境变量未配置时也能工作
-      const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn';
-      const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://integration.coze.cn/api/v3';
+      // 优先级：Render 上配置的变量名优先
+      const apiKey = process.env.COZE_API_KEY || process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
+      // 优先读取 Render 上配置的 COZE_API_BASE_URL，默认兜底用 api.coze.cn
+      const baseUrl = process.env.COZE_API_BASE_URL
+                   || process.env.COZE_INTEGRATION_BASE_URL
+                   || process.env.COZE_MODEL_BASE_URL
+                   || 'https://api.coze.cn';
+      const modelBaseUrl = process.env.COZE_API_BASE_URL
+                        || process.env.COZE_INTEGRATION_MODEL_BASE_URL
+                        || process.env.COZE_MODEL_BASE_URL
+                        || 'https://api.coze.cn';
 
       console.log('=== 环境变量检查 ===');
       console.log('API Key:', apiKey ? `${apiKey.substring(0, 20)}...` : '未配置');

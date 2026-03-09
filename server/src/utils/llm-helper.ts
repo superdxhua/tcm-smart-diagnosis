@@ -6,20 +6,20 @@ import { LLMClient, Config } from 'coze-coding-dev-sdk';
  * 关键修复：通过 customHeaders 传递 Authorization，避免 SDK 误解析 Token
  */
 export function createLLMClient(customHeaders?: Record<string, string>): LLMClient {
-  // API Key 优先级：COZE_WORKLOAD_IDENTITY_API_KEY > COZE_API_KEY
+  // API Key 优先级：COZE_API_KEY > COZE_WORKLOAD_IDENTITY_API_KEY
   let apiKey: string | undefined;
 
-  const workloadApiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
   const cozeApiKey = process.env.COZE_API_KEY;
+  const workloadApiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
   const clientId = process.env.COZE_WORKLOAD_IDENTITY_CLIENT_ID;
   const clientSecret = process.env.COZE_WORKLOAD_IDENTITY_CLIENT_SECRET;
 
-  if (workloadApiKey) {
-    apiKey = workloadApiKey;
-    console.log('【LLM Helper】使用 COZE_WORKLOAD_IDENTITY_API_KEY');
-  } else if (cozeApiKey) {
+  if (cozeApiKey) {
     apiKey = cozeApiKey;
     console.log('【LLM Helper】使用 COZE_API_KEY');
+  } else if (workloadApiKey) {
+    apiKey = workloadApiKey;
+    console.log('【LLM Helper】使用 COZE_WORKLOAD_IDENTITY_API_KEY');
   } else if (clientId && clientSecret) {
     apiKey = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
     console.log('【LLM Helper】使用 Client ID/Secret 认证');
@@ -27,9 +27,15 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
     console.warn('【LLM Helper】警告：未找到有效的认证凭据');
   }
 
-  // Base URL 优先级：环境变量 > 默认值
-  const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn';
-  const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://integration.coze.cn/api/v3';
+  // Base URL 优先级：Render 上配置的变量名优先，默认兜底用 api.coze.cn
+  const baseUrl = process.env.COZE_API_BASE_URL
+               || process.env.COZE_INTEGRATION_BASE_URL
+               || process.env.COZE_MODEL_BASE_URL
+               || 'https://api.coze.cn';
+  const modelBaseUrl = process.env.COZE_API_BASE_URL
+                    || process.env.COZE_INTEGRATION_MODEL_BASE_URL
+                    || process.env.COZE_MODEL_BASE_URL
+                    || 'https://api.coze.cn';
 
   console.log('【LLM Helper】创建 LLM 客户端');
   console.log('API Key length:', apiKey ? apiKey.length : 0);
@@ -67,21 +73,28 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
 export function createConfig(): Config {
   let apiKey: string | undefined;
 
-  const workloadApiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
   const cozeApiKey = process.env.COZE_API_KEY;
+  const workloadApiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
   const clientId = process.env.COZE_WORKLOAD_IDENTITY_CLIENT_ID;
   const clientSecret = process.env.COZE_WORKLOAD_IDENTITY_CLIENT_SECRET;
 
-  if (workloadApiKey) {
-    apiKey = workloadApiKey;
-  } else if (cozeApiKey) {
+  if (cozeApiKey) {
     apiKey = cozeApiKey;
+  } else if (workloadApiKey) {
+    apiKey = workloadApiKey;
   } else if (clientId && clientSecret) {
     apiKey = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
   }
 
-  const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn';
-  const modelBaseUrl = process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://integration.coze.cn/api/v3';
+  // Base URL 优先级：Render 上配置的变量名优先，默认兜底用 api.coze.cn
+  const baseUrl = process.env.COZE_API_BASE_URL
+               || process.env.COZE_INTEGRATION_BASE_URL
+               || process.env.COZE_MODEL_BASE_URL
+               || 'https://api.coze.cn';
+  const modelBaseUrl = process.env.COZE_API_BASE_URL
+                    || process.env.COZE_INTEGRATION_MODEL_BASE_URL
+                    || process.env.COZE_MODEL_BASE_URL
+                    || 'https://api.coze.cn';
 
   // 通过 Header 传递 API Key
   const config = new Config({
@@ -97,16 +110,8 @@ export function createConfig(): Config {
  * 获取认证 Headers（用于手动传递 Authorization）
  */
 export function getAuthHeaders(): Record<string, string> {
-  let apiKey: string | undefined;
-
-  const workloadApiKey = process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
-  const cozeApiKey = process.env.COZE_API_KEY;
-
-  if (workloadApiKey) {
-    apiKey = workloadApiKey;
-  } else if (cozeApiKey) {
-    apiKey = cozeApiKey;
-  }
+  // 优先级：COZE_API_KEY > COZE_WORKLOAD_IDENTITY_API_KEY
+  const apiKey = process.env.COZE_API_KEY || process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
 
   return {
     'Authorization': apiKey || '',
