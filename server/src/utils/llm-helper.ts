@@ -37,8 +37,8 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
                     || process.env.COZE_MODEL_BASE_URL
                     || 'https://api.coze.cn';
 
-  // 模型名称：从环境变量读取，默认使用豆包模型
-  const modelName = process.env.COZE_MODEL_NAME || 'doubao-seed-2-0-lite-260215';
+  // 模型名称：从环境变量读取，默认使用 qwen-max
+  const modelName = process.env.COZE_MODEL_NAME || 'qwen-max';
 
   console.log('【LLM Helper】创建 LLM 客户端');
   console.log('API Key length:', apiKey ? apiKey.length : 0);
@@ -126,5 +126,5 @@ export function getAuthHeaders(): Record<string, string> {
  * 获取模型名称（从环境变量读取）
  */
 export function getModelName(): string {
-  return process.env.COZE_MODEL_NAME || 'doubao-seed-2-0-lite-260215';
+  return process.env.COZE_MODEL_NAME || 'qwen-max';
 }
