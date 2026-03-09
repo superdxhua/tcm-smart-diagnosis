@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LLMClient, Config, SearchClient, S3Storage, HeaderUtils } from 'coze-coding-dev-sdk';
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { createLLMClient, createConfig, getAuthHeaders, getModelName } from '../utils/llm-helper';
+import { callCozeChat, getCozeConfig } from '../utils/coze-api';
 
 @Injectable()
 export class MedicalAiService {
@@ -656,32 +657,17 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
       console.log('Message count:', llmMessages.length);
       console.log('CustomHeaders:', Object.keys(this.customHeaders).join(', '));
 
-      console.log('Step 7: 创建带有 customHeaders 的 LLM 客户端');
+      console.log('Step 7: 使用原生 Fetch 调用 Coze API');
 
-      // 使用 createConfig 创建配置（API Key 已清空，通过 Header 传递）
-      const config = createConfig();
+      // 打印 Coze 配置信息
+      console.log('Coze 配置:', getCozeConfig());
 
-      // 获取认证 Headers 并合并 customHeaders
-      const authHeaders = getAuthHeaders();
-      const mergedHeaders = { ...authHeaders, ...this.customHeaders };
+      console.log('Step 8: 调用 Coze API');
+      // 使用原生 Fetch 调用 Coze API
+      const aiContent = await callCozeChat(llmMessages);
 
-      console.log('【关键修复】Authorization Header 已合并:', authHeaders['Authorization'] ? `${authHeaders['Authorization'].substring(0, 20)}...` : '空');
-
-      // 创建带有 mergedHeaders 的客户端
-      const clientWithHeaders = new LLMClient(config, mergedHeaders);
-      console.log('LLM 客户端创建成功（带 mergedHeaders）');
-
-      console.log('Step 8: 调用 LLM API');
-      // 调用 LLM 进行对话（从环境变量读取模型名称）
-      const modelName = getModelName();
-      console.log('使用的模型:', modelName);
-      const response = await clientWithHeaders.invoke(llmMessages, {
-        model: modelName,
-        temperature: 0.7,
-      });
-
-      console.log('AI 回复长度:', response.content.length);
-      console.log('AI 回复内容:', response.content);
+      console.log('AI 回复长度:', aiContent.length);
+      console.log('AI 回复内容:', aiContent);
 
       // 🚨🚨 Step 9: 智能重复检测（增强版）
       // 检测方式：
@@ -689,7 +675,7 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
       // 2. 包含关系（问题包含在已问问题中）
       // 3. 语义相似度（使用关键词和意图分析）
       // 4. 问询类型重复（不要重复问同一类型的问题）
-      const newQuestion = response.content.trim();
+      const newQuestion = aiContent.trim();
 
       console.log('=== 智能重复检测开始 ===');
       console.log('新问题:', newQuestion);
@@ -821,7 +807,7 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
 
       console.log('✅ 通过重复检测');
       return {
-        content: response.content,
+        content: aiContent,
         role: 'assistant',
       };
     } catch (error) {
