@@ -31,11 +31,19 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   }
 
   // 自动判断 Token 类型并选择正确的 API 地址
+  // 工作负载 Token (cztei_ 开头) 尝试使用 Open API 路径
   const isWorkloadToken = token.startsWith('cztei_');
-  const baseUrl = isWorkloadToken ? 'https://integration.coze.cn' : envBaseUrl;
+
+  // 方案 A：使用 Open API 路径（工作负载 Token 有时也能访问）
+  const openApiUrl = 'https://api.coze.cn/open_api/v2/chat';
+  // 方案 B：使用 integration 工作负载路径
+  const workloadUrl = 'https://integration.coze.cn/api/v3/workload/chat';
+
+  // 工作负载 Token 使用 Open API 路径测试
+  const apiUrl = openApiUrl;
 
   console.log('【自动修正】Token 类型:', isWorkloadToken ? '工作负载 (cztei_)' : '标准');
-  console.log('【自动修正】最终 Base URL:', baseUrl);
+  console.log('【最终修正】请求地址:', apiUrl);
 
   // 生成临时用户 ID
   const userId = 'user_' + Date.now();
@@ -52,11 +60,15 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   console.log('用户问题:', lastMsg.content);
   console.log('历史消息数量:', history.length);
 
-  // 工作负载 Token 使用 /api/v3/chat（官方 SDK 常用路径）
-  const apiUrl = isWorkloadToken
-    ? `${baseUrl}/api/v3/chat`
-    : `${baseUrl}/open_api/v2/chat`;
-  console.log('请求地址:', apiUrl);
+  // 打印完整的请求 Body，便于调试
+  const requestBody = {
+    bot_id: botId,
+    user_id: userId,
+    query: lastMsg.content,
+    chat_history: history,
+    stream: false
+  };
+  console.log('请求 Body:', JSON.stringify(requestBody));
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -68,13 +80,7 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers,
-    body: JSON.stringify({
-      bot_id: botId,
-      user_id: userId,
-      query: lastMsg.content,
-      chat_history: history,
-      stream: false
-    })
+    body: JSON.stringify(requestBody)
   });
 
   // 如果状态码不对，打印响应文本
