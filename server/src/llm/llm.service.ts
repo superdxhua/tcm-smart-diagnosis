@@ -1,16 +1,15 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { LLMClient, Config, Message, S3Storage } from 'coze-coding-dev-sdk';
 import { UploadService } from '../upload/upload.service';
-import { createLLMClient, createConfig } from '../utils/llm-helper';
+import { createConfig } from '../utils/llm-helper';
+import { callCozeChat } from '../utils/coze-api';
+import { S3Storage } from 'coze-coding-dev-sdk';
 
 @Injectable()
 export class LLMService {
-  private llmClient: LLMClient;
   private storage: S3Storage;
 
   constructor(private readonly uploadService: UploadService) {
-    const config = createConfig();
-    this.llmClient = createLLMClient();
+    createConfig(); // 初始化配置
 
     this.storage = new S3Storage({
       bucketName: process.env.COZE_BUCKET_NAME,
@@ -23,7 +22,7 @@ export class LLMService {
     console.log('千问大模型查询搜索:', query);
 
     try {
-      const messages: Message[] = [
+      const messages = [
         {
           role: 'system',
           content: `你是一个专业的中医诊疗助手。请根据用户的问题，提供准确、专业的中医相关答案。
@@ -39,13 +38,10 @@ export class LLMService {
         },
       ];
 
-      const response = await this.llmClient.invoke(messages, {
-        // 千问大模型（通过 SDK 配置）
-        temperature: 0.7,
-      });
+      const response = await callCozeChat(messages);
 
-      console.log('LLM 响应:', response.content);
-      return response.content;
+      console.log('LLM 响应:', response);
+      return response;
     } catch (error) {
       console.error('LLM 查询失败:', error);
       throw new BadRequestException('查询失败: ' + error.message);
@@ -58,37 +54,23 @@ export class LLMService {
 
     try {
       const defaultPrompt = prompt || '请详细描述这张图片的内容，特别关注与中医诊断相关的信息（如舌苔、面色等）。';
-      
-      const messages: Message[] = [
+
+      // 构建消息，将图片 URL 嵌入到文本中（Coze API 支持这种格式）
+      const messages = [
         {
           role: 'system',
           content: '你是一个专业的中医诊断助手。请分析图片内容，提供专业的中医诊断建议。',
         },
         {
           role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: defaultPrompt,
-            },
-            {
-              type: 'image_url',
-              image_url: {
-                url: imageUrl,
-                detail: 'high',
-              },
-            },
-          ],
+          content: `${defaultPrompt}\n\n图片地址：${imageUrl}`,
         },
       ];
 
-      const response = await this.llmClient.invoke(messages, {
-        // 千问视觉大模型（通过 SDK 配置）
-        temperature: 0.7,
-      });
+      const response = await callCozeChat(messages);
 
-      console.log('图片识别结果:', response.content);
-      return response.content;
+      console.log('图片识别结果:', response);
+      return response;
     } catch (error) {
       console.error('图片识别失败:', error);
       throw new BadRequestException('图片识别失败: ' + error.message);
@@ -107,7 +89,7 @@ export class LLMService {
       console.log('文档读取成功，内容长度:', fileContent.length);
 
       // 使用 LLM 提取文档关键信息
-      const messages: Message[] = [
+      const messages = [
         {
           role: 'system',
           content: `你是一个专业的文档分析助手。请分析提供的文档内容，提取关键信息。
@@ -123,13 +105,10 @@ export class LLMService {
         },
       ];
 
-      const response = await this.llmClient.invoke(messages, {
-        model: 'qwen-plus',
-        temperature: 0.5,
-      });
+      const response = await callCozeChat(messages);
 
-      console.log('文档分析结果:', response.content);
-      return response.content;
+      console.log('文档分析结果:', response);
+      return response;
     } catch (error) {
       console.error('文档内容读取失败:', error);
       throw new BadRequestException('文档内容读取失败: ' + error.message);
@@ -174,7 +153,7 @@ export class LLMService {
 
 请提供诊疗方案。`;
 
-      const messages: Message[] = [
+      const messages = [
         {
           role: 'system',
           content: systemPrompt,
@@ -185,16 +164,13 @@ export class LLMService {
         },
       ];
 
-      const response = await this.llmClient.invoke(messages, {
-        // 千问大模型（通过 SDK 配置）
-        temperature: 0.7,
-      });
+      const response = await callCozeChat(messages);
 
-      console.log('中医诊疗分析结果:', response.content);
+      console.log('中医诊疗分析结果:', response);
 
       // 尝试解析 JSON
       try {
-        const jsonMatch = response.content.match(/\{[\s\S]*\}/);
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           return JSON.parse(jsonMatch[0]);
         }
@@ -213,7 +189,7 @@ export class LLMService {
           dosageMethod: '待定',
           precautions: '待定',
         },
-        explanation: response.content,
+        explanation: response,
         advice: '请根据具体情况就医',
       };
     } catch (error) {
@@ -249,7 +225,7 @@ export class LLMService {
 请以专业、准确、友好的语气回答医生的问题。`;
 
       // 构建消息历史
-      const messages: Message[] = [
+      const messages = [
         {
           role: 'system',
           content: systemPrompt,
@@ -268,7 +244,7 @@ export class LLMService {
       const recentHistory = conversationHistory.slice(-10);
       for (const msg of recentHistory) {
         messages.push({
-          role: msg.role as 'user' | 'assistant',
+          role: msg.role,
           content: msg.content,
         });
       }
@@ -281,16 +257,13 @@ export class LLMService {
 
       console.log('发送给 LLM 的消息数量:', messages.length);
 
-      // 调用 LLM
-      const response = await this.llmClient.invoke(messages, {
-        // 千问大模型（通过 SDK 配置）
-        temperature: 0.7,
-      });
+      // 调用 LLM（使用统一的 callCozeChat 函数）
+      const response = await callCozeChat(messages);
 
-      console.log('AI 对话响应:', response.content);
+      console.log('AI 对话响应:', response);
 
       return {
-        content: response.content,
+        content: response,
       };
     } catch (error) {
       console.error('AI 对话失败:', error);
