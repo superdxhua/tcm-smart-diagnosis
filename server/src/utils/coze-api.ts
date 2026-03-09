@@ -45,44 +45,60 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
     'Authorization': `Bearer ${token}`
   };
 
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(requestBody)
-  });
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(requestBody)
+    });
 
-  // 如果状态码不对，打印响应文本
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error('API 错误响应状态:', response.status);
-    console.error('API 错误响应文本:', errorText);
-    throw new Error(`API Error: ${response.status} - ${errorText.substring(0, 200)}`);
-  }
+    // 打印状态码
+    console.log('API 状态码:', response.status);
 
-  // 解析结果
-  const data = await response.json();
-  console.log('Coze API 响应:', JSON.stringify(data));
-
-  // 检查错误码
-  if (data.code !== 0 && data.code !== undefined) {
-    throw new Error(`Coze API Error: ${data.msg} (code: ${data.code})`);
-  }
-
-  // 返回 AI 的回复内容
-  // 官方格式: data.choices[0].message.content
-  const choice = data.choices?.[0];
-  if (!choice?.message?.content) {
-    // 备用格式兼容
-    const aiMessage = data.messages?.[0];
-    if (aiMessage?.content) {
-      console.log('AI 回复长度:', aiMessage.content.length);
-      return aiMessage.content;
+    // 如果状态码不对，打印响应文本
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API 错误响应状态:', response.status);
+      console.error('API 错误响应文本:', errorText);
+      throw new Error(`API Error: ${response.status} - ${errorText.substring(0, 500)}`);
     }
-    throw new Error('Coze API 返回空消息');
-  }
 
-  console.log('AI 回复长度:', choice.message.content.length);
-  return choice.message.content;
+    // 解析结果
+    const data = await response.json();
+    console.log('API 返回数据:', JSON.stringify(data));
+
+    // 检查错误码
+    if (data.code !== 0 && data.code !== undefined) {
+      console.error('Coze API 错误码:', data.code);
+      console.error('Coze API 错误信息:', data.msg);
+      throw new Error(`Coze API Error: ${data.msg} (code: ${data.code})`);
+    }
+
+    // 返回 AI 的回复内容
+    // 官方格式: data.choices[0].message.content
+    const choice = data.choices?.[0];
+    if (!choice?.message?.content) {
+      // 备用格式兼容
+      const aiMessage = data.messages?.[0];
+      if (aiMessage?.content) {
+        console.log('AI 回复长度:', aiMessage.content.length);
+        return aiMessage.content;
+      }
+      console.error('API 返回数据为空:', data);
+      throw new Error('Coze API 返回空消息');
+    }
+
+    console.log('AI 回复长度:', choice.message.content.length);
+    return choice.message.content;
+  } catch (error) {
+    console.error('=== 请求失败详细信息 ===');
+    console.error('错误对象:', error);
+    if (error instanceof Error) {
+      console.error('错误信息:', error.message);
+      console.error('错误堆栈:', error.stack);
+    }
+    throw error;
+  }
 }
 
 /**
