@@ -1,6 +1,7 @@
 /**
  * Coze API 原生调用 helper
  * 使用 Fetch API 直接调用 Coze API，不再依赖 LangChain/SDK
+ * cztei 开头的 Token 是工作负载 Token，必须使用 integration.coze.cn
  */
 
 import { LLMClient, Config } from 'coze-coding-dev-sdk';
@@ -14,7 +15,8 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   // 读取环境变量
   const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
   const botId = process.env.COZE_BOT_ID;
-  const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://api.coze.cn';
+  // 工作负载 Token 必须使用 integration.coze.cn
+  const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn';
 
   console.log('=== Coze API 原生调用 ===');
   console.log('Token:', token ? `${token.substring(0, 20)}...` : '未配置');
@@ -44,8 +46,8 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   console.log('用户问题:', lastMsg.content);
   console.log('历史消息数量:', history.length);
 
-  // 发送请求
-  const apiUrl = `${baseUrl}/open_api/v2/chat`;
+  // 工作负载 Token 使用 integration.coze.cn/v3/chat
+  const apiUrl = `${baseUrl}/v3/chat`;
   console.log('请求地址:', apiUrl);
 
   const response = await fetch(apiUrl, {
@@ -56,7 +58,7 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
     },
     body: JSON.stringify({
       bot_id: botId,
-      user: userId,
+      user_id: userId,
       query: lastMsg.content,
       chat_history: history,
       stream: false
@@ -88,7 +90,7 @@ export function getCozeConfig() {
   return {
     token: process.env.COZE_WORKLOAD_IDENTITY_API_KEY ? `${process.env.COZE_WORKLOAD_IDENTITY_API_KEY.substring(0, 20)}...` : '未配置',
     botId: process.env.COZE_BOT_ID || '未配置',
-    baseUrl: process.env.COZE_INTEGRATION_BASE_URL || 'https://api.coze.cn',
-    modelBaseUrl: process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://api.coze.cn/open_api/v2',
+    baseUrl: process.env.COZE_INTEGRATION_BASE_URL || 'https://integration.coze.cn',
+    modelBaseUrl: process.env.COZE_INTEGRATION_MODEL_BASE_URL || 'https://integration.coze.cn/api/v3',
   };
 }
