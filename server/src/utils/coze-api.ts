@@ -52,9 +52,9 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   console.log('用户问题:', lastMsg.content);
   console.log('历史消息数量:', history.length);
 
-  // 工作负载 Token 使用 /api/v3/workload/chat 或 /v3/chat
+  // 工作负载 Token 使用 /api/v3/chat（官方 SDK 常用路径）
   const apiUrl = isWorkloadToken
-    ? `${baseUrl}/api/v3/workload/chat`
+    ? `${baseUrl}/api/v3/chat`
     : `${baseUrl}/open_api/v2/chat`;
   console.log('请求地址:', apiUrl);
 
@@ -76,6 +76,14 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
       stream: false
     })
   });
+
+  // 如果状态码不对，打印响应文本
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('API 错误响应状态:', response.status);
+    console.error('API 错误响应文本:', errorText);
+    throw new Error(`API Error: ${response.status} - ${errorText.substring(0, 200)}`);
+  }
 
   // 解析结果
   const data = await response.json();
