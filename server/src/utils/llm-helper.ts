@@ -27,23 +27,18 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
     console.warn('【LLM Helper】警告：未找到有效的认证凭据');
   }
 
-  // Base URL 优先级：Render 上配置的变量名优先，默认兜底用 api.coze.cn
-  const baseUrl = process.env.COZE_API_BASE_URL
-               || process.env.COZE_INTEGRATION_BASE_URL
-               || process.env.COZE_MODEL_BASE_URL
-               || 'https://api.coze.cn';
-  const modelBaseUrl = process.env.COZE_API_BASE_URL
-                    || process.env.COZE_INTEGRATION_MODEL_BASE_URL
-                    || process.env.COZE_MODEL_BASE_URL
-                    || 'https://api.coze.cn';
+  // Base URL：强制使用 integration 地址，不再依赖环境变量兜底
+  // 用户已配置 COZE_API_BASE_URL=https://integration.coze.cn
+  const baseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
+  const modelBaseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
 
   // 模型名称：从环境变量读取，默认使用 qwen-max
   const modelName = process.env.COZE_MODEL_NAME || 'qwen-max';
 
   console.log('【LLM Helper】创建 LLM 客户端');
   console.log('API Key length:', apiKey ? apiKey.length : 0);
-  console.log('Base URL:', baseUrl);
-  console.log('Model Base URL:', modelBaseUrl);
+  console.log('【强制设置】Base URL:', baseUrl);
+  console.log('【强制设置】Model Base URL:', modelBaseUrl);
   console.log('Model Name:', modelName);
   console.log('CustomHeaders keys:', customHeaders ? Object.keys(customHeaders).join(', ') : 'none');
 
@@ -90,15 +85,11 @@ export function createConfig(): Config {
     apiKey = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
   }
 
-  // Base URL 优先级：Render 上配置的变量名优先，默认兜底用 api.coze.cn
-  const baseUrl = process.env.COZE_API_BASE_URL
-               || process.env.COZE_INTEGRATION_BASE_URL
-               || process.env.COZE_MODEL_BASE_URL
-               || 'https://api.coze.cn';
-  const modelBaseUrl = process.env.COZE_API_BASE_URL
-                    || process.env.COZE_INTEGRATION_MODEL_BASE_URL
-                    || process.env.COZE_MODEL_BASE_URL
-                    || 'https://api.coze.cn';
+  // Base URL：强制使用 integration 地址，不再依赖环境变量兜底
+  const baseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
+  const modelBaseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
+
+  console.log('【强制设置】createConfig Base URL:', baseUrl);
 
   // 通过 Header 传递 API Key
   const config = new Config({
