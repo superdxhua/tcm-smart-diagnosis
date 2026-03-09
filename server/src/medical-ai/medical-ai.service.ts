@@ -3,6 +3,7 @@ import { LLMClient, Config, SearchClient, S3Storage, HeaderUtils } from 'coze-co
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { createLLMClient, createConfig, getAuthHeaders, getModelName } from '../utils/llm-helper';
 import { callCozeChat, getCozeConfig } from '../utils/coze-api';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class MedicalAiService {
@@ -1110,6 +1111,85 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
     } catch (error) {
       console.error('分析附件失败:', error);
       throw new Error(`分析附件失败：${error.message}`);
+    }
+  }
+
+  /**
+   * 生成健康方案
+   * 根据问询历史生成完整的中医调理方案
+   */
+  async generateHealthPlan(params: {
+    consultationHistory: Array<{ role: string; content: string }>;
+    userInfo: {
+      patientName?: string;
+      age?: number;
+      gender?: string;
+      chiefComplaint?: string;
+    };
+  }): Promise<{
+    success: boolean;
+    plan: string;
+    diagnosis?: string;
+    recommendations?: {
+      diet: string[];
+      lifestyle: string[];
+      exercise: string[];
+    };
+  }> {
+    try {
+      console.log('=== 开始生成健康方案 ===');
+      console.log('用户信息:', JSON.stringify(params.userInfo));
+      console.log('问询历史长度:', params.consultationHistory.length);
+
+      // 构建系统提示
+      const systemPrompt = `你是一位经验丰富的中医专家。根据以下问询记录，为用户生成详细的中医健康调理方案。
+
+**用户基本信息：**
+- 姓名：${params.userInfo.patientName || '未提供'}
+- 年龄：${params.userInfo.age || '未提供'}
+- 性别：${params.userInfo.gender || '未提供'}
+- 主诉：${params.userInfo.chiefComplaint || '未提供'}
+
+**问询历史：**
+${params.consultationHistory.map((msg, i) => `${msg.role === 'user' ? '用户' : '医生'}：${msg.content}`).join('\n')}
+
+请输出包含以下内容的方案（JSON 格式）：
+{
+  "diagnosis": "中医辨证结论",
+  "pathogenesis": "病因病机分析",
+  "recommendations": {
+    "diet": ["饮食建议1", "饮食建议2"],
+    "lifestyle": ["起居建议1", "起居建议2"],
+    "exercise": ["运动建议1", "运动建议2"]
+  },
+  "prescription": "推荐方剂（如有需要）",
+  "warnings": ["注意事项1", "注意事项2"]
+}`;
+
+      // 调用 Coze API 生成方案
+      const planContent = await callCozeChat([
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: '请根据以上问询记录生成健康调理方案' }
+      ]);
+
+      console.log('方案生成成功，长度:', planContent.length);
+
+      // 解析 AI 返回的 JSON
+      const planData = this.parseAIResponse(planContent);
+
+      return {
+        success: true,
+        plan: planContent,
+        diagnosis: planData.diagnosis || '辨证结论待定',
+        recommendations: planData.recommendations || {
+          diet: ['饮食建议待生成'],
+          lifestyle: ['起居建议待生成'],
+          exercise: ['运动建议待生成']
+        }
+      };
+    } catch (error) {
+      console.error('生成健康方案失败:', error);
+      throw new Error(`生成健康方案失败：${error.message}`);
     }
   }
 }
