@@ -1,7 +1,8 @@
 /**
  * Coze API 原生调用 helper
- * 使用 Fetch API 直接调用 Coze API，不再依赖 LangChain/SDK
- * 自动根据 Token 类型选择正确的 API 地址
+ * 使用 Fetch API 直接调用 Coze API
+ * 项目使用 coze-coding-dev-sdk，直接调用大模型服务，不需要 bot_id
+ * 官方确认的 API 地址: https://integration.coze.cn/api/v3/chat
  */
 
 import { LLMClient, Config } from 'coze-coding-dev-sdk';
@@ -14,68 +15,35 @@ import { LLMClient, Config } from 'coze-coding-dev-sdk';
 export async function callCozeChat(messages: Array<{ role: string; content: string }>): Promise<string> {
   // 读取环境变量
   const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
-  const botId = process.env.COZE_BOT_ID;
-  const envBaseUrl = process.env.COZE_INTEGRATION_BASE_URL || 'https://api.coze.cn';
+  const modelName = process.env.COZE_MODEL_NAME || 'qwen-max';
 
   console.log('=== Coze API 原生调用 ===');
   console.log('Token:', token ? `${token.substring(0, 20)}...` : '未配置');
-  console.log('Bot ID:', botId);
-  console.log('环境变量 Base URL:', envBaseUrl);
+  console.log('模型名称:', modelName);
 
   if (!token) {
     throw new Error('COZE_WORKLOAD_IDENTITY_API_KEY 未配置');
   }
 
-  if (!botId) {
-    throw new Error('COZE_BOT_ID 未配置');
-  }
+  // 官方确认的正确 API 地址
+  const apiUrl = 'https://integration.coze.cn/api/v3/chat';
+  console.log('请求地址:', apiUrl);
 
-  // 自动判断 Token 类型并选择正确的 API 地址
-  // 工作负载 Token (cztei_ 开头) 尝试使用 Open API 路径
-  const isWorkloadToken = token.startsWith('cztei_');
+  console.log('用户问题:', messages[messages.length - 1].content);
+  console.log('历史消息数量:', messages.length - 1);
 
-  // 方案 A：使用 Open API 路径（工作负载 Token 有时也能访问）
-  const openApiUrl = 'https://api.coze.cn/open_api/v2/chat';
-  // 方案 B：使用 integration 工作负载路径
-  const workloadUrl = 'https://integration.coze.cn/api/v3/workload/chat';
-
-  // 工作负载 Token 使用 Open API 路径测试
-  const apiUrl = openApiUrl;
-
-  console.log('【自动修正】Token 类型:', isWorkloadToken ? '工作负载 (cztei_)' : '标准');
-  console.log('【最终修正】请求地址:', apiUrl);
-
-  // 生成临时用户 ID
-  const userId = 'user_' + Date.now();
-
-  // 将 OpenAI 格式的 messages 转换为 Coze 格式
-  // Coze 需要 query (最后一条消息) 和 chat_history (历史消息)
-  const lastMsg = messages[messages.length - 1];
-  const history = messages.slice(0, -1).map(m => ({
-    role: m.role,
-    content: m.content,
-    type: 'text' // Coze 需要这个字段
-  }));
-
-  console.log('用户问题:', lastMsg.content);
-  console.log('历史消息数量:', history.length);
-
-  // 打印完整的请求 Body，便于调试
+  // 构建 OpenAI 格式的请求体（官方确认格式）
   const requestBody = {
-    bot_id: botId,
-    user_id: userId,
-    query: lastMsg.content,
-    chat_history: history,
+    model: modelName,
+    messages: messages,
     stream: false
   };
   console.log('请求 Body:', JSON.stringify(requestBody));
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
   };
-
-  // 工作负载 Token 尝试使用 Bearer 认证
-  headers['Authorization'] = `Bearer ${token}`;
 
   const response = await fetch(apiUrl, {
     method: 'POST',
@@ -95,18 +63,26 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
   const data = await response.json();
   console.log('Coze API 响应:', JSON.stringify(data));
 
-  if (data.code !== 0) {
+  // 检查错误码
+  if (data.code !== 0 && data.code !== undefined) {
     throw new Error(`Coze API Error: ${data.msg} (code: ${data.code})`);
   }
 
   // 返回 AI 的回复内容
-  const aiMessage = data.messages?.[0];
-  if (!aiMessage) {
+  // 官方格式: data.choices[0].message.content
+  const choice = data.choices?.[0];
+  if (!choice?.message?.content) {
+    // 备用格式兼容
+    const aiMessage = data.messages?.[0];
+    if (aiMessage?.content) {
+      console.log('AI 回复长度:', aiMessage.content.length);
+      return aiMessage.content;
+    }
     throw new Error('Coze API 返回空消息');
   }
 
-  console.log('AI 回复长度:', aiMessage.content?.length || 0);
-  return aiMessage.content;
+  console.log('AI 回复长度:', choice.message.content.length);
+  return choice.message.content;
 }
 
 /**
@@ -114,13 +90,10 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
  */
 export function getCozeConfig() {
   const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
-  const isWorkloadToken = token?.startsWith('cztei_') || false;
 
   return {
     token: token ? `${token.substring(0, 20)}...` : '未配置',
-    botId: process.env.COZE_BOT_ID || '未配置',
-    envBaseUrl: process.env.COZE_INTEGRATION_BASE_URL || 'https://api.coze.cn',
-    isWorkloadToken,
-    autoSelectedBaseUrl: isWorkloadToken ? 'https://integration.coze.cn' : (process.env.COZE_INTEGRATION_BASE_URL || 'https://api.coze.cn'),
+    modelName: process.env.COZE_MODEL_NAME || 'qwen-max',
+    apiUrl: 'https://integration.coze.cn/api/v3/chat',
   };
 }
