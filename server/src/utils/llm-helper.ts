@@ -37,10 +37,14 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
                     || process.env.COZE_MODEL_BASE_URL
                     || 'https://api.coze.cn';
 
+  // 模型名称：从环境变量读取，默认使用豆包模型
+  const modelName = process.env.COZE_MODEL_NAME || 'doubao-seed-2-0-lite-260215';
+
   console.log('【LLM Helper】创建 LLM 客户端');
   console.log('API Key length:', apiKey ? apiKey.length : 0);
   console.log('Base URL:', baseUrl);
   console.log('Model Base URL:', modelBaseUrl);
+  console.log('Model Name:', modelName);
   console.log('CustomHeaders keys:', customHeaders ? Object.keys(customHeaders).join(', ') : 'none');
 
   // 关键修复：通过 Authorization Header 传递 API Key，绕过 SDK 的 Token 解析
@@ -116,4 +120,11 @@ export function getAuthHeaders(): Record<string, string> {
   return {
     'Authorization': apiKey || '',
   };
+}
+
+/**
+ * 获取模型名称（从环境变量读取）
+ */
+export function getModelName(): string {
+  return process.env.COZE_MODEL_NAME || 'doubao-seed-2-0-lite-260215';
 }

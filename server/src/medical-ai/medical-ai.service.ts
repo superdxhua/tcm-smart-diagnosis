@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LLMClient, Config, SearchClient, S3Storage, HeaderUtils } from 'coze-coding-dev-sdk';
 import { getSupabaseClient } from '@/storage/database/supabase-client';
-import { createLLMClient, createConfig, getAuthHeaders } from '../utils/llm-helper';
+import { createLLMClient, createConfig, getAuthHeaders, getModelName } from '../utils/llm-helper';
 
 @Injectable()
 export class MedicalAiService {
@@ -154,8 +154,9 @@ export class MedicalAiService {
     ];
 
     try {
+      const modelName = getModelName();
       const response = await this.client.invoke(messages, {
-        // 千问大模型（通过 SDK 配置）
+        model: modelName,
         temperature: 0.7,
       });
 
@@ -212,8 +213,9 @@ ${params.pulse ? `脉象：${params.pulse}` : ''}
     ];
 
     try {
+      const modelName = getModelName();
       const response = await this.client.invoke(messages, {
-        // 千问大模型（通过 SDK 配置）
+        model: modelName,
         temperature: 0.7,
       });
 
@@ -274,8 +276,9 @@ ${params.gender ? `性别：${params.gender}` : ''}
     ];
 
     try {
+      const modelName = getModelName();
       const response = await this.client.invoke(messages, {
-        // 千问大模型（通过 SDK 配置）
+        model: modelName,
         temperature: 0.7,
       });
 
@@ -451,8 +454,9 @@ ${item.content ? `   内容：${item.content.substring(0, 500)}` : ''}
         ];
 
         // 使用千问大模型进行总结（通过 model 参数指定）
+        const modelName = getModelName();
         const llmResponse = await this.client.invoke(messages, {
-          // 千问大模型（通过 SDK 配置）
+          model: modelName,
           temperature: 0.3, // 降低随机性，提高总结准确性
         });
 
@@ -668,9 +672,11 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
       console.log('LLM 客户端创建成功（带 mergedHeaders）');
 
       console.log('Step 8: 调用 LLM API');
-      // 调用 LLM 进行对话（指定模型）
+      // 调用 LLM 进行对话（从环境变量读取模型名称）
+      const modelName = getModelName();
+      console.log('使用的模型:', modelName);
       const response = await clientWithHeaders.invoke(llmMessages, {
-        model: 'doubao-seed-2-0-lite-260215',
+        model: modelName,
         temperature: 0.7,
       });
 
@@ -1100,7 +1106,9 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
       console.log('调用大模型进行图片分析...');
 
       // 调用大模型进行识图（支持图片 URL）
+      const modelName = getModelName();
       const response = await this.client.invoke(messages, {
+        model: modelName,
         temperature: 0.3, // 降低随机性，提高准确性
       });
 
