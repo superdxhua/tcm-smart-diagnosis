@@ -16,29 +16,24 @@ type SDKMessage = {
 
 /**
  * 创建 LLM 客户端
- * 使用 SAT Token 或 Workload Token
+ * 强制使用 https://api.coze.cn（SAT Token 专用）
  */
 function createLLMClient(): LLMClient {
-  // 读取 Token
-  const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
+  // 读取 Token（优先使用 COZE_API_KEY）
+  const token = process.env.COZE_API_KEY || process.env.COZE_WORKLOAD_IDENTITY_API_KEY;
 
   if (!token) {
-    throw new Error('COZE_WORKLOAD_IDENTITY_API_KEY 未配置');
+    throw new Error('COZE_API_KEY 未配置');
   }
 
-  // 根据 Token 类型选择正确的 Base URL
-  let baseUrl = 'https://api.coze.cn';
-  if (token.startsWith('cztei_')) {
-    // Workload Token 使用 integration 地址
-    baseUrl = 'https://integration.coze.cn';
-  }
-
+  // 【关键修改】强制使用 api.coze.cn，不再根据 Token 类型选择
+  const baseUrl = 'https://api.coze.cn';
   const modelName = process.env.COZE_MODEL_NAME || 'qwen-max';
   const modelBaseUrl = baseUrl;
 
   console.log('【SDK】创建 LLM 客户端');
   console.log('【SDK】Token:', token.substring(0, 20) + '...');
-  console.log('【SDK】Base URL:', baseUrl);
+  console.log('【SDK】Base URL（强制使用）:', baseUrl);
   console.log('【SDK】Model Base URL:', modelBaseUrl);
   console.log('【SDK】Model Name:', modelName);
 
