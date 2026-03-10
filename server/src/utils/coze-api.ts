@@ -2,10 +2,30 @@
  * Coze API 原生调用 helper
  * 使用 Fetch API 直接调用 Coze API
  * 项目使用 coze-coding-dev-sdk，直接调用大模型服务，不需要 bot_id
- * 官方确认的 API 地址: https://integration.coze.cn/api/v3/chat
- * 认证方式: Bearer Token (COZE_WORKLOAD_IDENTITY_API_KEY)
+ * 支持两种 Token 类型:
+ *   - SAT Token (sat_...): 永久有效，使用 api.coze.cn
+ *   - Workload Token (cztei_...): 工作负载 Token，使用 integration.coze.cn
  * 模型参数: COZE_MODEL_NAME (如 qwen-max)
  */
+
+/**
+ * 根据 Token 类型选择正确的 API 地址
+ */
+function getApiUrlByToken(token: string): string {
+  if (token.startsWith('sat_')) {
+    // SAT Token 使用主 API 地址
+    console.log('【Token 类型】SAT Token (sat_), 使用主 API');
+    return 'https://api.coze.cn/api/v3/chat';
+  } else if (token.startsWith('cztei_')) {
+    // Workload Token 使用 integration 地址
+    console.log('【Token 类型】Workload Token (cztei_), 使用 integration API');
+    return 'https://integration.coze.cn/api/v3/chat';
+  } else {
+    // 默认使用 integration 地址
+    console.log('【Token 类型】未知，使用 integration API');
+    return 'https://integration.coze.cn/api/v3/chat';
+  }
+}
 
 /**
  * 调用 Coze API（原生 Fetch）
@@ -25,8 +45,8 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
     throw new Error('COZE_WORKLOAD_IDENTITY_API_KEY 未配置');
   }
 
-  // 官方确认的正确 API 地址
-  const apiUrl = 'https://integration.coze.cn/api/v3/chat';
+  // 根据 Token 类型选择正确的 API 地址
+  const apiUrl = getApiUrlByToken(token);
   console.log('请求地址:', apiUrl);
 
   console.log('用户问题:', messages[messages.length - 1].content);
@@ -106,10 +126,11 @@ export async function callCozeChat(messages: Array<{ role: string; content: stri
  */
 export function getCozeConfig() {
   const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
+  const apiUrl = token ? getApiUrlByToken(token) : '未配置';
 
   return {
     token: token ? `${token.substring(0, 20)}...` : '未配置',
     modelName: process.env.COZE_MODEL_NAME || 'qwen-max',
-    apiUrl: 'https://integration.coze.cn/api/v3/chat',
+    apiUrl: apiUrl,
   };
 }
