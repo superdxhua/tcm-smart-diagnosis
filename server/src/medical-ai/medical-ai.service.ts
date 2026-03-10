@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LLMClient, Config, SearchClient, S3Storage, HeaderUtils } from 'coze-coding-dev-sdk';
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { createLLMClient, createConfig, getAuthHeaders, getModelName } from '../utils/llm-helper';
-import { callCozeChat, getCozeConfig } from '../utils/coze-api';
+import { callCozeAI } from '../utils/coze-api-helper';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -661,11 +661,12 @@ ${missingInfo.length > 0 ? missingInfo.map((info, i) => `${i + 1}. ${info}`).joi
       console.log('Step 7: 使用原生 Fetch 调用 Coze API');
 
       // 打印 Coze 配置信息
+      const { getCozeConfig } = await import('../utils/coze-api');
       console.log('Coze 配置:', getCozeConfig());
 
       console.log('Step 8: 调用 Coze API');
-      // 使用原生 Fetch 调用 Coze API
-      const aiContent = await callCozeChat(llmMessages);
+      // 使用官方 SDK 调用 Coze API
+      const aiContent = await callCozeAI(llmMessages);
 
       console.log('AI 回复长度:', aiContent.length);
       console.log('AI 回复内容:', aiContent);
@@ -1166,8 +1167,8 @@ ${params.consultationHistory.map((msg, i) => `${msg.role === 'user' ? '用户' :
   "warnings": ["注意事项1", "注意事项2"]
 }`;
 
-      // 调用 Coze API 生成方案
-      const planContent = await callCozeChat([
+      // 调用 Coze API 生成方案（使用官方 SDK）
+      const planContent = await callCozeAI([
         { role: 'system', content: systemPrompt },
         { role: 'user', content: '请根据以上问询记录生成健康调理方案' }
       ]);

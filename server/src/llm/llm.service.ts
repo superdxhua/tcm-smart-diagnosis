@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { UploadService } from '../upload/upload.service';
 import { createConfig } from '../utils/llm-helper';
-import { callCozeChat } from '../utils/coze-api';
+import { callCozeAI } from '../utils/coze-api-helper';
 import { S3Storage } from 'coze-coding-dev-sdk';
 
 @Injectable()
@@ -38,7 +38,7 @@ export class LLMService {
         },
       ];
 
-      const response = await callCozeChat(messages);
+      const response = await callCozeAI(messages);
 
       console.log('LLM 响应:', response);
       return response;
@@ -67,7 +67,7 @@ export class LLMService {
         },
       ];
 
-      const response = await callCozeChat(messages);
+      const response = await callCozeAI(messages);
 
       console.log('图片识别结果:', response);
       return response;
@@ -105,7 +105,7 @@ export class LLMService {
         },
       ];
 
-      const response = await callCozeChat(messages);
+      const response = await callCozeAI(messages);
 
       console.log('文档分析结果:', response);
       return response;
@@ -164,7 +164,7 @@ export class LLMService {
         },
       ];
 
-      const response = await callCozeChat(messages);
+      const response = await callCozeAI(messages);
 
       console.log('中医诊疗分析结果:', response);
 
@@ -258,7 +258,7 @@ export class LLMService {
       console.log('发送给 LLM 的消息数量:', messages.length);
 
       // 调用 LLM（使用统一的 callCozeChat 函数）
-      const response = await callCozeChat(messages);
+      const response = await callCozeAI(messages);
 
       console.log('AI 对话响应:', response);
 
