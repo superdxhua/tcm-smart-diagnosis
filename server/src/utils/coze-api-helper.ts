@@ -4,7 +4,15 @@
  * 不需要 bot_id，使用 model 参数
  */
 
-import { LLMClient, Config } from 'coze-coding-dev-sdk';
+import { LLMClient, Config, Message } from 'coze-coding-dev-sdk';
+
+/**
+ * SDK 消息类型（使用字面量类型）
+ */
+type SDKMessage = {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+};
 
 /**
  * 创建 LLM 客户端
@@ -46,18 +54,24 @@ function createLLMClient(): LLMClient {
 
 /**
  * 调用 Coze AI（大模型服务）
- * @param messages OpenAI 格式的消息数组
+ * @param messages OpenAI 格式的消息数组（支持任意 role 字符串）
  * @returns AI 回复内容
  */
 export async function callCozeAI(messages: Array<{ role: string; content: string }>): Promise<string> {
   console.log('=== [官方 SDK] 调用 Coze AI ===');
   console.log('消息数量:', messages.length);
 
+  // 转换为 SDK 需要的类型（使用类型断言）
+  const sdkMessages: SDKMessage[] = messages.map(msg => ({
+    role: msg.role as 'system' | 'user' | 'assistant',
+    content: msg.content
+  }));
+
   const llmClient = createLLMClient();
 
   try {
     // 直接调用 SDK，不需要额外的 bot_id 参数
-    const response = await llmClient.invoke(messages, {
+    const response = await llmClient.invoke(sdkMessages as Message[], {
       temperature: 0.7,
     });
 
