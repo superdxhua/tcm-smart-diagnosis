@@ -27,10 +27,9 @@ export function createLLMClient(customHeaders?: Record<string, string>): LLMClie
     console.warn('【LLM Helper】警告：未找到有效的认证凭据');
   }
 
-  // Base URL：强制使用 integration 地址，不再依赖环境变量兜底
-  // 用户已配置 COZE_API_BASE_URL=https://integration.coze.cn
-  const baseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
-  const modelBaseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
+  // Base URL：强制使用 api.coze.cn（SAT Token 专用）
+  const baseUrl = process.env.COZE_API_BASE_URL || 'https://api.coze.cn';
+  const modelBaseUrl = process.env.COZE_API_BASE_URL || 'https://api.coze.cn';
 
   // 模型名称：从环境变量读取，默认使用 qwen-max
   const modelName = process.env.COZE_MODEL_NAME || 'qwen-max';
@@ -85,9 +84,9 @@ export function createConfig(): Config {
     apiKey = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
   }
 
-  // Base URL：强制使用 integration 地址，不再依赖环境变量兜底
-  const baseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
-  const modelBaseUrl = process.env.COZE_API_BASE_URL || 'https://integration.coze.cn';
+  // Base URL：强制使用 api.coze.cn（SAT Token 专用）
+  const baseUrl = process.env.COZE_API_BASE_URL || 'https://api.coze.cn';
+  const modelBaseUrl = process.env.COZE_API_BASE_URL || 'https://api.coze.cn';
 
   console.log('【强制设置】createConfig Base URL:', baseUrl);
 

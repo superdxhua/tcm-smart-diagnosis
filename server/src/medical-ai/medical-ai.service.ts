@@ -44,10 +44,19 @@ export class MedicalAiService {
 
   /**
    * 设置自定义请求头（从 Controller 调用）
+   * 关键修复：动态更新 LLMClient
    */
   setCustomHeaders(headers: Record<string, string>) {
     this.customHeaders = headers;
     console.log('CustomHeaders 已设置:', Object.keys(headers).join(', '));
+
+    // 重新创建 LLMClient 以使用新的 Headers
+    try {
+      this.client = createLLMClient(this.customHeaders);
+      console.log('LLMClient 已重新初始化，使用新的 CustomHeaders');
+    } catch (error) {
+      console.error('重新初始化 LLMClient 失败:', error);
+    }
   }
 
   /**

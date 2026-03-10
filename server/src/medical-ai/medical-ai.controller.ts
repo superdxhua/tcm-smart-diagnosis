@@ -33,6 +33,13 @@ export class MedicalAiController {
       throw new BadRequestException('用户信息缺失');
     }
 
+    // 关键修复：提取并设置 customHeaders
+    const rawCustomHeaders = HeaderUtils.extractForwardHeaders(req.headers);
+    const customHeaders = Object.fromEntries(
+      Object.entries(rawCustomHeaders).filter(([key]) => key.toLowerCase() !== 'authorization')
+    );
+    this.medicalAiService.setCustomHeaders(customHeaders);
+
     const result = await this.medicalAiService.recommendPrescription({
       ...body,
       userRole,
