@@ -25,7 +25,7 @@ export default function AiTcmPage() {
     setLoading(true)
     try {
       const res = await Taro.request({
-        url: 'https://您的域名/api/ai-tcm/inquiry', // 注意：这里填您的真实域名
+        url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
           basicInfo: { patientId: id }, // 简化版，实际应传更多信息
@@ -55,7 +55,7 @@ export default function AiTcmPage() {
 
     try {
       const res = await Taro.request({
-        url: 'https://您的域名/api/ai-tcm/inquiry',
+        url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
           basicInfo: { patientId },
