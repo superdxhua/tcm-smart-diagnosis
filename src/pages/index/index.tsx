@@ -2030,98 +2030,64 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
         </View>
       )}
 
-      {/* AI 智能问询 - 第四步 */}
+            {/* 第四步：AI 智能问询（全新改版，移除旧版） */}
       {currentStep === 4 && (
-        <View className="bg-white rounded-xl p-6 mb-6 shadow-md border-2 border-gray-100">
-          <Text className="block text-2xl font-semibold text-gray-900 mb-4">
-            第四步：AI 智能问询 <Text className="text-blue-500">（逐个问题）</Text>
-          </Text>
-          <Text className="block text-base text-gray-600 mb-5">
-            AI 专家将逐个问题问询您，每个问题回答后会根据您的回答决定是否继续问询
-          </Text>
-
-          {/* AI 问询对话区域 */}
-          <View className="bg-gray-50 rounded-xl p-5 mb-4 min-h-[450px] max-h-[600px] overflow-y-auto border-2 border-gray-200">
-            {aiInquiryMessages.length === 0 && (
-              <View className="flex items-center justify-center h-full">
-                <Text className="block text-gray-500 text-center text-lg">
-                  点击&ldquo;开始问询&rdquo;启动 AI 智能问询
-                </Text>
-              </View>
-            )}
-
-            {/* 过滤掉 system 消息，只显示实际的对话 */}
-            {aiInquiryMessages
-              .filter(msg => msg.role !== 'system')
-              .map((msg, index) => (
-              <View key={index} className={`mb-5 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
-                {/* 显示角色标签 */}
-                <Text className={`block text-sm mb-2 ${msg.role === 'user' ? 'text-right text-gray-500' : 'text-left text-blue-600'}`}>
-                  {msg.role === 'user' ? '您' : 'AI 专家'}
-                </Text>
-                <View
-                  className={`inline-block px-5 py-4 rounded-2xl max-w-[90%] ${
-                    msg.role === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-md'
-                      : 'bg-white text-gray-800 border-2 border-gray-200 rounded-bl-md shadow-sm'
-                  }`}
-                >
-                  <Text className="block text-lg leading-relaxed whitespace-pre-wrap">
-                    {msg.content}
-                  </Text>
-                </View>
-              </View>
-            ))}
-
-            {isAiInquiring && (
-              <View className="mb-5 text-left">
-                <Text className="block text-sm mb-2 text-blue-600">AI 专家</Text>
-                <View className="inline-block px-5 py-4 rounded-2xl bg-white border-2 border-gray-200 text-gray-800 rounded-bl-md shadow-sm">
-                  <View className="flex items-center space-x-2">
-                    <View className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></View>
-                    <View className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></View>
-                    <View className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></View>
-                    <Text className="block text-base text-gray-500 ml-2">正在思考...</Text>
-                  </View>
-                </View>
-              </View>
-            )}
+        <View className="bg-white rounded-xl p-6 mb-6 shadow-lg border-2 border-green-200">
+          {/* 标题 */}
+          <View className="mb-6 text-center">
+            <Text className="block text-2xl font-bold text-gray-900 mb-2">
+              第四步：AI 智能问询
+            </Text>
+            <Text className="block text-sm text-gray-500">
+              基于经方决策树，开启精准辨证
+            </Text>
           </View>
 
-          {/* 用户输入框 */}
-          <View className="flex gap-3 mb-4">
-            <View className="flex-1 bg-gray-50 rounded-xl px-5 py-4 border-2 border-gray-200">
-              <Input
-                className="w-full bg-transparent text-lg"
-                placeholder="请回答 AI 的问题..."
-                value={inquiryInput}
-                onInput={(e) => setInquiryInput(e.detail.value)}
-                disabled={isAiInquiring || aiInquiryMessages.length === 0}
-              />
-            </View>
-            <View
-              className={`px-8 py-4 rounded-xl ${isAiInquiring || !inquiryInput.trim() ? 'bg-gray-300' : 'bg-blue-600'}`}
-              onClick={handleSendInquiryAnswer}
-            >
-              <Text className="block text-lg font-medium text-white">发送</Text>
-            </View>
-          </View>
-
-          {/* 结束问询按钮 */}
-          {aiInquiryMessages.length > 0 && !isAiInquiring && (
-            <View
-              className="bg-gray-100 rounded-xl py-4"
-              onClick={handleEndInquiry}
-            >
-              <Text className="block text-base text-gray-600 text-center">
-                结束问询，直接进入下一步
+          {/* 核心入口：经方 AI */}
+          <View 
+            className="p-8 bg-gradient-to-br from-green-50 via-teal-50 to-blue-50 rounded-2xl border-2 border-green-300 shadow-md cursor-pointer hover:shadow-xl transition-all active:scale-98"
+            onClick={() => Taro.navigateTo({ url: '/pages/ai-tcm/index' })}
+          >
+            <View className="flex flex-col items-center">
+              {/* 图标 */}
+              <View className="w-20 h-20 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                <Text className="text-4xl">🚀</Text>
+              </View>
+              
+              {/* 标题 */}
+              <Text className="block text-2xl font-bold text-green-800 mb-3">
+                经方 AI 智能诊疗
               </Text>
+              
+              {/* 描述 */}
+              <Text className="block text-base text-green-600 text-center leading-relaxed mb-6">
+                系统已读取您的信息，将由 AI 专家主导问诊。
+              </Text>
+
+              {/* 按钮 */}
+              <View className="px-10 py-4 bg-green-600 rounded-xl shadow-md">
+                <Text className="block text-xl font-bold text-white">
+                  立即开始 →
+                </Text>
+              </View>
             </View>
-          )}
+          </View>
+
+          {/* 提示信息 */}
+          <View className="mt-6 px-4">
+            <View className="flex items-start gap-3 bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <Text className="text-xl">💡</Text>
+              <View className="flex-1">
+                <Text className="block text-sm text-blue-800 leading-relaxed">
+                  新版问诊采用《伤寒论》条文推理引擎，问询过程由 AI 动态决策，更精准、更高效。
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
       )}
 
-      {/* 步骤导航按钮 - 完全响应式设计 */}
+      {/* 步骤导航按钮（保留原有逻辑） */}
       {currentStep < 5 && !result && (
         <View className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
           {/* 上一步按钮 */}
@@ -2137,47 +2103,25 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
           )}
 
           {/* 下一步按钮 */}
-          {currentStep < 4 && (
-            <View
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl py-4 sm:py-5 transition-all cursor-pointer shadow-md"
-              onClick={handleNextStep}
-              style={{
-                opacity:
-                  (currentStep === 1 && !selectedPatient) ||
-                  (currentStep === 2 && !chiefComplaint.trim())
-                    ? 0.5
-                    : 1
-              }}
-            >
-              <Text className="block text-base sm:text-lg font-bold text-white text-center">
-                下一步 →
-              </Text>
-            </View>
-          )}
-
-          {/* 第四步的特殊按钮：开始问询 */}
-          {currentStep === 4 && (
-            <View
-              className={`flex-1 rounded-xl py-4 sm:py-5 hover:opacity-90 transition-all cursor-pointer shadow-md ${
-                aiInquiryMessages.length === 0
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
-                  : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
-              }`}
-              onClick={aiInquiryMessages.length === 0 ? handleStartAiInquiry : handleNextStep}
-              style={{ opacity: isAiInquiring ? 0.5 : 1 }}
-            >
-              <Text className="block text-base sm:text-lg font-bold text-white text-center">
-                {isAiInquiring
-                  ? '🤖 问询中...'
-                  : aiInquiryMessages.length === 0
-                  ? '🎤 开始问询'
-                  : '✅ 完成问询'}
-              </Text>
-            </View>
-          )}
+          <View
+            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl py-4 sm:py-5 transition-all cursor-pointer shadow-md"
+            onClick={handleNextStep}
+            style={{
+              opacity:
+                (currentStep === 1 && !selectedPatient) ||
+                (currentStep === 2 && !chiefComplaint.trim())
+                  ? 0.5
+                  : 1
+            }}
+          >
+            <Text className="block text-base sm:text-lg font-bold text-white text-center">
+              下一步 →
+            </Text>
+          </View>
         </View>
       )}
 
+      {/* 错误提示（必须保留） */}
       {error && (
         <View className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4 sm:p-5 mb-6 border-2 border-red-300 shadow-md">
           <View className="flex items-center gap-2">
@@ -2189,7 +2133,7 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
         </View>
       )}
 
-      {/* 第五步：获取健康方案按钮 */}
+       {/* 第五步：获取健康方案按钮 */}
       {currentStep === 5 && !result && (
         <View
           className={`bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-xl py-6 sm:py-8 mb-6 shadow-lg transition-all ${loading ? 'opacity-50' : 'cursor-pointer'}`}
