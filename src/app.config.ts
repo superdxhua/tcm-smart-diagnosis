@@ -1,5 +1,6 @@
 export default {
   pages: [
+    'pages/ai-tcm/index',
     'pages/index/index',
     'pages/official/index',
     'pages/login/index',
