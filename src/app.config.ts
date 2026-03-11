@@ -1,6 +1,5 @@
 export default {
   pages: [
-    'pages/ai-tcm/index',
     'pages/index/index',
     'pages/official/index',
     'pages/login/index',
@@ -26,6 +25,7 @@ export default {
     'pages/formula-management/index',
     'pages/formula-detail/index',
     'pages/new-diagnosis/index'
+    'pages/ai-tcm/index',
   ],
   window: {
     backgroundTextStyle: 'light',
