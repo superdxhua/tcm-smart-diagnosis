@@ -8,37 +8,62 @@ export default function AiTcmPage() {
   const [inputValue, setInputValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [patientId, setPatientId] = useState('')
+  const [patientInfo, setPatientInfo] = useState<any>({})
+  const [contextInfo, setContextInfo] = useState('')
 
-  // 1. 页面加载时，获取参数
+  // 1. 页面加载时，获取参数并立即开始问询
   useEffect(() => {
     const instance = Taro.getCurrentInstance()
     const params = instance.router?.params
-    if (params?.patientId) {
-      setPatientId(params.patientId)
-      // 开始第一次问询
-      startInquiry(params.patientId)
+    
+    if (params) {
+      // 接收所有参数
+      const info = {
+        id: params.patientId || '',
+        name: params.name || '',
+        age: params.age || '',
+        gender: params.gender || ''
+      }
+      
+      setPatientInfo(info)
+      setPatientId(info.id)
+
+      // 组装上下文信息（主诉、既往史、补充信息）
+      const context = `主诉：${params.chiefComplaint || '无'}；既往史：${params.pastHistory || '无'}；补充信息：${params.additionalInfo || '无'}`
+      setContextInfo(context)
+
+      // 立刻发起问询
+      startInquiry(info, context)
     }
   }, [])
 
   // 2. 发起问询
-  const startInquiry = async (id: string) => {
+  const startInquiry = async (info: any, context: string) => {
     setLoading(true)
+    // 添加一个“正在思考”的提示
+    setMessages([{ role: 'assistant', content: 'AI 专家正在分析您的信息，请稍候...' }])
+
     try {
       const res = await Taro.request({
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          basicInfo: { patientId: id }, // 简化版，实际应传更多信息
-          supplementaryInfo: '',
+          basicInfo: info,
+          supplementaryInfo: context,
           dialogHistory: []
         }
       })
       
-      if (res.data.code === 200) {
-        setMessages([{ role: 'assistant', content: res.data.data }])
+      if (res.statusCode === 200 && res.data) {
+        const aiContent = res.data.data || res.data
+        setMessages([{ role: 'assistant', content: aiContent }])
+      } else {
+        throw new Error('AI 返回数据格式错误')
       }
-    } catch (e) {
-      Taro.showToast({ title: '网络错误', icon: 'none' })
+    } catch (e: any) {
+      console.error(e)
+      setMessages([{ role: 'assistant', content: `连接失败：${e.message || '请检查网络'}` }])
+      Taro.showToast({ title: '连接失败', icon: 'none' })
     } finally {
       setLoading(false)
     }
@@ -58,14 +83,15 @@ export default function AiTcmPage() {
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          basicInfo: { patientId },
-          supplementaryInfo: '',
+          basicInfo: patientInfo,
+          supplementaryInfo: contextInfo,
           dialogHistory: newMessages
         }
       })
 
-      if (res.data.code === 200) {
-        setMessages([...newMessages, { role: 'assistant', content: res.data.data }])
+      if (res.statusCode === 200 && res.data) {
+        const aiContent = res.data.data || res.data
+        setMessages([...newMessages, { role: 'assistant', content: aiContent }])
       }
     } catch (e) {
       Taro.showToast({ title: '发送失败', icon: 'none' })
