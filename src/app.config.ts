@@ -24,7 +24,8 @@ export default {
     'pages/recharge/index',
     'pages/formula-management/index',
     'pages/formula-detail/index',
-    'pages/new-diagnosis/index'
+    'pages/new-diagnosis/index',
+    'pages/ai-tcm/index'
      ],
   window: {
     backgroundTextStyle: 'light',
