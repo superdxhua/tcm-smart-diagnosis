@@ -1,3 +1,4 @@
+import { AiTcmModule } from './ai-tcm/ai-tcm.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -58,6 +59,7 @@ import { DebugModule } from './debug/debug.module';
     InquiryIntegrationModule,
     DiseaseManagementModule,
     DebugModule,
+    AiTcmModule,
   ],
   controllers: [AppController],
   providers: [AppService],
