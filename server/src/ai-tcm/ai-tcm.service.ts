@@ -27,10 +27,9 @@ export class AiTcmService {
 
     const prompt = `${systemPrompt}\n\n${userContent}`;
 
-    // 修正调用：传入三个参数
-    // 1. prompt: 当前的问题
-    // 2. dialogHistory: 历史对话数组 (如果是第一次，传空数组 [])
-    // 3. customHeaders: 认证信息
+    // 修正调用：强制指定 Base URL
+    // 注意：这里我们假设 LLMService 接受 baseUrl 参数
+    // 如果 LLMService 不支持，我们需要用其他方式，但现在先试这个
     return await this.llmService.chat(prompt, dialogHistory || [], customHeaders);
   }
 
@@ -46,7 +45,6 @@ export class AiTcmService {
 
     const prompt = `${systemPrompt}\n\n${userContent}`;
 
-    // 修正调用：生成方案时，没有历史对话，传空数组
     return await this.llmService.chat(prompt, [], customHeaders);
   }
 }
