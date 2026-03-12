@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { LLMService } from '../llm/llm.service'; // 引入项目已有的 LLMService
+import { LLMClient } from 'coze-coding-dev-sdk'; // 引入 SDK 的底层客户端
 
 @Injectable()
 export class AiTcmService {
-  constructor(private readonly llmService: LLMService) {} // 注入依赖
-
+  
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
 【核心指令：构建智能问诊决策树】
@@ -25,13 +24,17 @@ export class AiTcmService {
 当前对话历史：${JSON.stringify(dialogHistory)}
 请根据以上信息，提出下一个关键的问诊问题。`;
 
+    // 构建 messages 数组
     const messages = [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userContent }
     ];
 
-    // 直接调用已有的 LLMService，传入 customHeaders
-    return await this.llmService.chat(messages, customHeaders);
+    // 创建 LLMClient 实例
+    const llmClient = new LLMClient(customHeaders);
+    
+    // 调用 chat 方法，传入 messages 数组
+    return await llmClient.chat(messages);
   }
 
   async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string, customHeaders: any) {
@@ -49,6 +52,8 @@ export class AiTcmService {
       { role: 'user', content: userContent }
     ];
 
-    return await this.llmService.chat(messages, customHeaders);
+    const llmClient = new LLMClient(customHeaders);
+    
+    return await llmClient.chat(messages);
   }
 }
