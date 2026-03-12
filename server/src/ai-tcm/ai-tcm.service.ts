@@ -44,8 +44,8 @@ export class AiTcmService {
     const token = process.env.COZE_API_KEY;
 
     const payload = {
-      user_id: 'user_' + Date.now(),
-      additional_messages: [
+      model: 'qwen-max',
+      messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userContent }
       ]
