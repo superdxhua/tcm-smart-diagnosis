@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { LLMService } from '../llm/llm.service';
+import axios from 'axios';
 
 @Injectable()
 export class AiTcmService {
-  constructor(private readonly llmService: LLMService) {}
+  // 直接定义常量，不再依赖复杂的配置
+  private readonly COZE_API_URL = 'https://api.coze.cn/open_api/v2/chat';
 
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
@@ -25,12 +26,12 @@ export class AiTcmService {
 当前对话历史：${JSON.stringify(dialogHistory)}
 请根据以上信息，提出下一个关键的问诊问题。`;
 
-    const prompt = `${systemPrompt}\n\n${userContent}`;
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userContent }
+    ];
 
-    // 修正调用：强制指定 Base URL
-    // 注意：这里我们假设 LLMService 接受 baseUrl 参数
-    // 如果 LLMService 不支持，我们需要用其他方式，但现在先试这个
-    return await this.llmService.chat(prompt, dialogHistory || [], customHeaders);
+    return await this.callCozeAPI(messages, customHeaders);
   }
 
   async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string, customHeaders: any) {
@@ -43,8 +44,53 @@ export class AiTcmService {
 问诊记录：${inquiryTranscript}
 请输出 JSON 格式的诊疗方案，包含：diagnosis, differentiation, prescription, composition, advice。`;
 
-    const prompt = `${systemPrompt}\n\n${userContent}`;
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userContent }
+    ];
 
-    return await this.llmService.chat(prompt, [], customHeaders);
+    return await this.callCozeAPI(messages, customHeaders);
+  }
+
+  private async callCozeAPI(messages: any[], customHeaders: any) {
+    // 从 customHeaders 中提取 Token
+    // customHeaders 里通常包含 Authorization: Bearer xxx
+    // 我们需要把 Bearer 去掉，只保留 Token
+    let token = '';
+    if (customHeaders && customHeaders['authorization']) {
+      token = customHeaders['authorization'].replace('Bearer ', '');
+    }
+
+    if (!token) {
+      throw new Error('Token not found in headers');
+    }
+
+    const payload = {
+      model: 'qwen-max',
+      messages: messages
+    };
+
+    try {
+      const response = await axios.post(this.COZE_API_URL, payload, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('Coze API response status:', response.status);
+
+      const messages = response.data?.data?.messages;
+
+      if (messages && messages.length > 0) {
+        return messages[0].content;
+      } else {
+        console.error('Invalid response structure:', JSON.stringify(response.data));
+        throw new Error('AI returned empty content');
+      }
+    } catch (error) {
+      console.error('Coze API call failed:', error);
+      throw new Error('AI service unavailable');
+    }
   }
 }
