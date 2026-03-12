@@ -3,7 +3,6 @@ import axios from 'axios';
 
 @Injectable()
 export class AiTcmService {
-  // 直接定义常量，不再依赖复杂的配置
   private readonly COZE_API_URL = 'https://api.coze.cn/open_api/v2/chat';
 
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
@@ -53,16 +52,14 @@ export class AiTcmService {
   }
 
   private async callCozeAPI(messages: any[], customHeaders: any) {
-    // 从 customHeaders 中提取 Token
-    // customHeaders 里通常包含 Authorization: Bearer xxx
-    // 我们需要把 Bearer 去掉，只保留 Token
     let token = '';
     if (customHeaders && customHeaders['authorization']) {
       token = customHeaders['authorization'].replace('Bearer ', '');
     }
 
     if (!token) {
-      throw new Error('Token not found in headers');
+      console.error('Token not found in headers');
+      throw new Error('Token not found');
     }
 
     const payload = {
@@ -78,16 +75,27 @@ export class AiTcmService {
         }
       });
 
-      console.log('Coze API response status:', response.status);
+      // 打印完整的返回数据，帮助调试
+      console.log('=== Coze API Raw Response ===');
+      console.log(JSON.stringify(response.data, null, 2));
 
-      const messages = response.data?.data?.messages;
-
-      if (messages && messages.length > 0) {
-        return messages[0].content;
-      } else {
-        console.error('Invalid response structure:', JSON.stringify(response.data));
-        throw new Error('AI returned empty content');
+      // 尝试解析数据
+      if (response.data && response.data.code === 0 && response.data.data) {
+        const messages = response.data.data.messages;
+        if (messages && messages.length > 0) {
+          return messages[0].content;
+        }
       }
+      
+      // 如果上面的解析失败，尝试其他可能的格式
+      if (response.data && response.data.choices) {
+         return response.data.choices[0].message.content;
+      }
+
+      // 如果都失败了，抛出异常
+      console.error('Unhandled response format');
+      throw new Error('Invalid response format');
+
     } catch (error) {
       console.error('Coze API call failed:', error);
       throw new Error('AI service unavailable');
