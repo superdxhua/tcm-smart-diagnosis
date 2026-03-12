@@ -42,14 +42,17 @@ export default function AiTcmPage() {
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          basicInfo: info,
-          supplementaryInfo: context,
-          dialogHistory: []
+          // 彻底移除 bot_id
+          // 修正 Token 前缀为 cztei_
+          messages: [
+            { role: 'system', content: '你是一位精通《伤寒论》的经方中医师。' },
+            { role: 'user', content: `患者信息：${JSON.stringify(info)}。${context}` }
+          ]
         },
         header: {
           'content-type': 'application/json',
-          // 已填入您的新 Token
-          'Authorization': 'Bearer sat_t2xVdz8cqGjJnNsmlPw3gS5MLgvkUqsDC573Sv4M8NFEFEhbiQ8bvcobAlL5Gzxe'
+          // 使用您刚才确认的 Token (cztei_ 开头)
+          'Authorization': 'Bearer cztei_hSTunaxZfPSE9KODEx6LVX2krJDXRwZzgORGvzHOhZC7MfeviVKT7pFWYIbH3sQ6L'
         }
       })
       
@@ -81,13 +84,14 @@ export default function AiTcmPage() {
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          basicInfo: patientInfo,
-          supplementaryInfo: contextInfo,
-          dialogHistory: newMessages
+          // 彻底移除 bot_id
+          messages: [
+             ...newMessages
+          ]
         },
         header: {
           'content-type': 'application/json',
-          'Authorization': 'Bearer sat_t2xVdz8cqGjJnNsmlPw3gS5MLgvkUqsDC573Sv4M8NFEFEhbiQ8bvcobAlL5Gzxe'
+          'Authorization': 'Bearer cztei_hSTunaxZfPSE9KODEx6LVX2krJDXRwZzgORGvzHOhZC7MfeviVKT7pFWYIbH3sQ6L'
         }
       })
 
