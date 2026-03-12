@@ -3,7 +3,6 @@ import axios from 'axios';
 
 @Injectable()
 export class AiTcmService {
-  // 核心方法：智能问询
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[]) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
 【核心指令：构建智能问诊决策树】
@@ -27,7 +26,6 @@ export class AiTcmService {
     return await this.callCozeAPI(systemPrompt, userContent);
   }
 
-  // 核心方法：生成方案
   async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
 请根据以下信息进行辨证论治，输出标准的 JSON 格式。`;
@@ -41,10 +39,9 @@ export class AiTcmService {
     return await this.callCozeAPI(systemPrompt, userContent);
   }
 
-  // 底层方法：调用 Coze API
   private async callCozeAPI(systemPrompt: string, userContent: string) {
     const url = 'https://api.coze.cn/open_api/v2/chat';
-    const token = process.env.COZE_API_KEY; // 从环境变量读取 Token
+    const token = process.env.COZE_API_KEY;
 
     const payload = {
       model: 'qwen-max',
@@ -62,11 +59,19 @@ export class AiTcmService {
         }
       });
       
-      // 返回 AI 的回复内容
-      return response.data.messages[0].content;
+      console.log('Coze API response status:', response.status);
+
+      const messages = response.data?.data?.messages;
+
+      if (messages && messages.length > 0) {
+        return messages[0].content;
+      } else {
+        console.error('Invalid response structure:', JSON.stringify(response.data));
+        throw new Error('AI returned empty content');
+      }
     } catch (error) {
-      console.error('Coze API 调用失败:', error);
-      throw new Error('AI 服务暂时不可用');
+      console.error('Coze API call failed:', error);
+      throw new Error('AI service unavailable');
     }
   }
 }
