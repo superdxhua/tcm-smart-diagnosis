@@ -45,6 +45,11 @@ export default function AiTcmPage() {
           basicInfo: info,
           supplementaryInfo: context,
           dialogHistory: []
+        },
+        header: {
+          'content-type': 'application/json',
+          // 已填入您的新 Token
+          'Authorization': 'Bearer sat_t2xVdz8cqGjJnNsmlPw3gS5MLgvkUqsDC573Sv4M8NFEFEhbiQ8bvcobAlL5Gzxe'
         }
       })
       
@@ -79,6 +84,10 @@ export default function AiTcmPage() {
           basicInfo: patientInfo,
           supplementaryInfo: contextInfo,
           dialogHistory: newMessages
+        },
+        header: {
+          'content-type': 'application/json',
+          'Authorization': 'Bearer sat_t2xVdz8cqGjJnNsmlPw3gS5MLgvkUqsDC573Sv4M8NFEFEhbiQ8bvcobAlL5Gzxe'
         }
       })
 
