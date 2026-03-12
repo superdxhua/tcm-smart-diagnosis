@@ -2028,9 +2028,43 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
             )}
           </View>
         </View>
+            )}
+
+      {/* 步骤导航按钮（第1、2、3步通用） */}
+      {currentStep < 4 && !result && (
+        <View className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+          {/* 上一步按钮 */}
+          {currentStep > 1 && (
+            <View
+              className="flex-1 bg-gray-200 hover:bg-gray-300 rounded-xl py-4 sm:py-5 transition-colors cursor-pointer shadow-sm"
+              onClick={handlePrevStep}
+            >
+              <Text className="block text-base sm:text-lg font-bold text-gray-700 text-center">
+                ← 上一步
+              </Text>
+            </View>
+          )}
+
+          {/* 下一步按钮 */}
+          <View
+            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl py-4 sm:py-5 transition-all cursor-pointer shadow-md"
+            onClick={handleNextStep}
+            style={{
+              opacity:
+                (currentStep === 1 && !selectedPatient) ||
+                (currentStep === 2 && !chiefComplaint.trim())
+                  ? 0.5
+                  : 1
+            }}
+          >
+            <Text className="block text-base sm:text-lg font-bold text-white text-center">
+              下一步 →
+            </Text>
+          </View>
+        </View>
       )}
 
-                  {/* 第四步：AI 智能问询（全新改版，移除旧版） */}
+      {/* 第四步：AI 智能问询（全新改版，移除旧版） */}
       {currentStep === 4 && (
         <View className="bg-white rounded-xl p-6 mb-6 shadow-lg border-2 border-green-200">
           {/* 标题 */}
