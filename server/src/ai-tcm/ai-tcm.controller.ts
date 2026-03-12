@@ -1,33 +1,44 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Headers } from '@nestjs/common';
 import { AiTcmService } from './ai-tcm.service';
 
 @Controller('ai-tcm')
 export class AiTcmController {
-  constructor(private readonly aiTcmService: AiTcmService) {}
+  constructor(private readonly service: AiTcmService) {}
 
-  // 接口 A：智能问询
   @Post('inquiry')
   async inquiry(
-    @Body() body: { basicInfo: any, supplementaryInfo: string, dialogHistory: any[] }
+    @Body() body: any,
+    @Headers() headers: any, // 获取所有请求头
   ) {
-    const result = await this.aiTcmService.conductInquiry(
+    // 提取 customHeaders（过滤掉 host 等无关字段）
+    const customHeaders = { ...headers };
+    delete customHeaders['host'];
+    delete customHeaders['content-length'];
+    delete customHeaders['content-type'];
+
+    return this.service.conductInquiry(
       body.basicInfo,
       body.supplementaryInfo,
-      body.dialogHistory
+      body.dialogHistory,
+      customHeaders // 传给 Service
     );
-    return { code: 200, data: result };
   }
 
-  // 接口 B：生成方案
   @Post('plan')
   async plan(
-    @Body() body: { basicInfo: any, supplementaryInfo: string, inquiryTranscript: string }
+    @Body() body: any,
+    @Headers() headers: any,
   ) {
-    const result = await this.aiTcmService.generatePlan(
+    const customHeaders = { ...headers };
+    delete customHeaders['host'];
+    delete customHeaders['content-length'];
+    delete customHeaders['content-type'];
+
+    return this.service.generatePlan(
       body.basicInfo,
       body.supplementaryInfo,
-      body.inquiryTranscript
+      body.inquiryTranscript,
+      customHeaders
     );
-    return { code: 200, data: result };
   }
 }
