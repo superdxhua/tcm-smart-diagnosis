@@ -2030,7 +2030,7 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
         </View>
       )}
 
-            {/* 第四步：AI 智能问询（全新改版，移除旧版） */}
+                  {/* 第四步：AI 智能问询（全新改版，移除旧版） */}
       {currentStep === 4 && (
         <View className="bg-white rounded-xl p-6 mb-6 shadow-lg border-2 border-green-200">
           {/* 标题 */}
@@ -2046,7 +2046,7 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
           {/* 核心入口：经方 AI */}
           <View 
             className="p-8 bg-gradient-to-br from-green-50 via-teal-50 to-blue-50 rounded-2xl border-2 border-green-300 shadow-md cursor-pointer hover:shadow-xl transition-all active:scale-98"
-              onClick={() => {
+            onClick={() => {
               const params = {
                 patientId: selectedPatient?.id || '',
                 name: selectedPatient?.name || '',
@@ -2055,9 +2055,9 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
                 chiefComplaint: chiefComplaint || '',
                 pastHistory: pastHistory || '',
                 additionalInfo: additionalInfo || ''
-              }
-              const queryString = Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&')
-              Taro.navigateTo({ url: `/pages/ai-tcm/index?${queryString}` })
+              };
+              const queryString = Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
+              Taro.navigateTo({ url: `/pages/ai-tcm/index?${queryString}` });
             }}
           >
             <View className="flex flex-col items-center">
@@ -2099,53 +2099,7 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
         </View>
       )}
 
-      {/* 步骤导航按钮（保留原有逻辑） */}
-      {currentStep < 5 && !result && (
-        <View className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-          {/* 上一步按钮 */}
-          {currentStep > 1 && (
-            <View
-              className="flex-1 bg-gray-200 hover:bg-gray-300 rounded-xl py-4 sm:py-5 transition-colors cursor-pointer shadow-sm"
-              onClick={handlePrevStep}
-            >
-              <Text className="block text-base sm:text-lg font-bold text-gray-700 text-center">
-                ← 上一步
-              </Text>
-            </View>
-          )}
-
-          {/* 下一步按钮 */}
-          <View
-            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl py-4 sm:py-5 transition-all cursor-pointer shadow-md"
-            onClick={handleNextStep}
-            style={{
-              opacity:
-                (currentStep === 1 && !selectedPatient) ||
-                (currentStep === 2 && !chiefComplaint.trim())
-                  ? 0.5
-                  : 1
-            }}
-          >
-            <Text className="block text-base sm:text-lg font-bold text-white text-center">
-              下一步 →
-            </Text>
-          </View>
-        </View>
-      )}
-
-      {/* 错误提示（必须保留） */}
-      {error && (
-        <View className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4 sm:p-5 mb-6 border-2 border-red-300 shadow-md">
-          <View className="flex items-center gap-2">
-            <Text className="text-xl">⚠️</Text>
-            <Text className="block text-base text-red-700 font-medium text-center flex-1">
-              {error}
-            </Text>
-          </View>
-        </View>
-      )}
-
-       {/* 第五步：获取健康方案按钮 */}
+      {/* 第五步：获取健康方案按钮 */}
       {currentStep === 5 && !result && (
         <View
           className={`bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-xl py-6 sm:py-8 mb-6 shadow-lg transition-all ${loading ? 'opacity-50' : 'cursor-pointer'}`}
