@@ -2046,7 +2046,19 @@ ${additionalInfo ? '- 特别注意：已从上传的文档中提取了补充信�
           {/* 核心入口：经方 AI */}
           <View 
             className="p-8 bg-gradient-to-br from-green-50 via-teal-50 to-blue-50 rounded-2xl border-2 border-green-300 shadow-md cursor-pointer hover:shadow-xl transition-all active:scale-98"
-            onClick={() => Taro.navigateTo({ url: '/pages/ai-tcm/index' })}
+              onClick={() => {
+              const params = {
+                patientId: selectedPatient?.id || '',
+                name: selectedPatient?.name || '',
+                age: selectedPatient?.age || '',
+                gender: selectedPatient?.gender || '',
+                chiefComplaint: chiefComplaint || '',
+                pastHistory: pastHistory || '',
+                additionalInfo: additionalInfo || ''
+              }
+              const queryString = Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&')
+              Taro.navigateTo({ url: `/pages/ai-tcm/index?${queryString}` })
+            }}
           >
             <View className="flex flex-col items-center">
               {/* 图标 */}
