@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+import { LLMService } from '../llm/llm.service'; // 引入项目已有的 LLMService
 
 @Injectable()
 export class AiTcmService {
-  async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[]) {
+  constructor(private readonly llmService: LLMService) {} // 注入依赖
+
+  async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
 【核心指令：构建智能问诊决策树】
 请在问诊过程中，内部构建并维护一棵“方证对应”决策树，逻辑如下：
@@ -23,10 +25,16 @@ export class AiTcmService {
 当前对话历史：${JSON.stringify(dialogHistory)}
 请根据以上信息，提出下一个关键的问诊问题。`;
 
-    return await this.callCozeAPI(systemPrompt, userContent);
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userContent }
+    ];
+
+    // 直接调用已有的 LLMService，传入 customHeaders
+    return await this.llmService.chat(messages, customHeaders);
   }
 
-  async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string) {
+  async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string, customHeaders: any) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
 请根据以下信息进行辨证论治，输出标准的 JSON 格式。`;
 
@@ -36,42 +44,11 @@ export class AiTcmService {
 问诊记录：${inquiryTranscript}
 请输出 JSON 格式的诊疗方案，包含：diagnosis, differentiation, prescription, composition, advice。`;
 
-    return await this.callCozeAPI(systemPrompt, userContent);
-  }
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userContent }
+    ];
 
-  private async callCozeAPI(systemPrompt: string, userContent: string) {
-    const url = 'https://api.coze.cn/open_api/v2/chat';
-    const token = process.env.COZE_API_KEY;
-
-    const payload = {
-      model: 'qwen-max',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userContent }
-      ]
-    };
-
-    try {
-      const response = await axios.post(url, payload, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      console.log('Coze API response status:', response.status);
-
-      const messages = response.data?.data?.messages;
-
-      if (messages && messages.length > 0) {
-        return messages[0].content;
-      } else {
-        console.error('Invalid response structure:', JSON.stringify(response.data));
-        throw new Error('AI returned empty content');
-      }
-    } catch (error) {
-      console.error('Coze API call failed:', error);
-      throw new Error('AI service unavailable');
-    }
+    return await this.llmService.chat(messages, customHeaders);
   }
 }
