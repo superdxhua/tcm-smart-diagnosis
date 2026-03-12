@@ -25,10 +25,13 @@ export class AiTcmService {
 当前对话历史：${JSON.stringify(dialogHistory)}
 请根据以上信息，提出下一个关键的问诊问题。`;
 
-    // 将 messages 数组转换为字符串，适配 LLMService.chat 的参数类型
     const prompt = `${systemPrompt}\n\n${userContent}`;
 
-    return await this.llmService.chat(prompt, customHeaders);
+    // 修正调用：传入三个参数
+    // 1. prompt: 当前的问题
+    // 2. dialogHistory: 历史对话数组 (如果是第一次，传空数组 [])
+    // 3. customHeaders: 认证信息
+    return await this.llmService.chat(prompt, dialogHistory || [], customHeaders);
   }
 
   async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string, customHeaders: any) {
@@ -43,6 +46,7 @@ export class AiTcmService {
 
     const prompt = `${systemPrompt}\n\n${userContent}`;
 
-    return await this.llmService.chat(prompt, customHeaders);
+    // 修正调用：生成方案时，没有历史对话，传空数组
+    return await this.llmService.chat(prompt, [], customHeaders);
   }
 }
