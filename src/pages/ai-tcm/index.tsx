@@ -42,15 +42,13 @@ export default function AiTcmPage() {
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          // === 关键修改：使用 additional_messages ===
-          additional_messages: [
-            { role: 'system', content: '你是一位精通《伤寒论》的经方中医师。' },
-            { role: 'user', content: `患者信息：${JSON.stringify(info)}。${context}` }
-          ]
+          basicInfo: info,
+          supplementaryInfo: context,
+          dialogHistory: []
         },
         header: {
-          'content-type': 'application/json'
-          // 不需要传 Authorization，后端会自动读取环境变量
+          'content-type': 'application/json',
+          'Authorization': 'Bearer sat_t2xVdz8cqGjJnNsmlPw3gS5MLgvkUqsDC573Sv4M8NFEFEhbiQ8bvcobAlL5Gzxe'
         }
       })
       
@@ -82,11 +80,13 @@ export default function AiTcmPage() {
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          // === 关键修改：使用 additional_messages ===
-          additional_messages: newMessages
+          basicInfo: patientInfo,
+          supplementaryInfo: contextInfo,
+          dialogHistory: newMessages
         },
         header: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'Authorization': 'Bearer sat_t2xVdz8cqGjJnNsmlPw3gS5MLgvkUqsDC573Sv4M8NFEFEhbiQ8bvcobAlL5Gzxe'
         }
       })
 
