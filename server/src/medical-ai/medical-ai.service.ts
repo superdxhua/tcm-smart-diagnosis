@@ -38,12 +38,12 @@ export class MedicalAiService {
     return this.callCozeAPI(messages);
   }
 
-  async uploadAttachment(file: any): Promise<string> {
-    return "Upload function not implemented";
+  async uploadAttachment(file: any): Promise<any> {
+    return {};
   }
 
-  async analyzeAttachment(imageUrl: string): Promise<string> {
-    return "Analyze function not implemented";
+  async analyzeAttachment(imageUrl: string): Promise<any> {
+    return {};
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
