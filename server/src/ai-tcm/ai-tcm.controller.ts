@@ -8,9 +8,9 @@ export class AiTcmController {
   @Post('inquiry')
   async inquiry(
     @Body() body: any,
-    @Headers() headers: any, // 获取所有请求头
+    @Headers() headers: any,
   ) {
-    // 提取 customHeaders（过滤掉 host 等无关字段）
+    // 提取 customHeaders
     const customHeaders = { ...headers };
     delete customHeaders['host'];
     delete customHeaders['content-length'];
@@ -20,7 +20,7 @@ export class AiTcmController {
       body.basicInfo,
       body.supplementaryInfo,
       body.dialogHistory,
-      customHeaders // 传给 Service
+      customHeaders
     );
   }
 
