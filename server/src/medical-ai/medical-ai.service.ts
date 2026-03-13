@@ -10,22 +10,21 @@ export class MedicalAiService {
   }
 
   async chat(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 从环境变量读取 Token
+    // 1. 读取 SAT Token
     const token = process.env.COZE_API_KEY;
 
     if (!token) {
-      console.error('COZE_API_KEY not found in environment variables');
+      console.error('COZE_API_KEY not found');
       throw new Error('Server configuration error');
     }
 
-    // 2. 构建请求体 (严格按照 Coze V2 API 规范)
+    // 2. 构建请求体 (SAT Token 模式不需要 bot_id)
     const payload = {
-      bot_id: process.env.COZE_BOT_ID, // 从环境变量读取 Bot ID (可选，视您的配置而定)
       user_id: 'user_' + Date.now(),
-      additional_messages: messages // 使用 additional_messages 参数
+      additional_messages: messages
     };
 
-    // 3. 发送请求 (直接请求正确的 V2 地址)
+    // 3. 发送请求
     const apiUrl = 'https://api.coze.cn/open_api/v2/chat';
 
     try {
@@ -36,10 +35,9 @@ export class MedicalAiService {
         }
       });
 
-      // 4. 解析响应
-      console.log('=== [Direct API] Coze Response ===');
-      console.log(JSON.stringify(response.data, null, 2));
-
+      console.log('=== [Direct API] Response Status:', response.status);
+      
+      // 4. 解析结果
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -47,11 +45,11 @@ export class MedicalAiService {
         }
       }
       
-      console.error('Unhandled response format');
+      console.error('API Error Response:', JSON.stringify(response.data));
       throw new Error('Invalid response format');
 
     } catch (error) {
-      console.error('[Direct API] Coze API call failed:', error);
+      console.error('[Direct API] Call failed:', error.message);
       throw new Error('AI service unavailable');
     }
   }
