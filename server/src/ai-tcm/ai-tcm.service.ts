@@ -3,7 +3,6 @@ import { MedicalAiService } from '../medical-ai/medical-ai.service';
 
 @Injectable()
 export class AiTcmService {
-  // 注入已经封装好的 MedicalAiService
   constructor(private readonly medicalAiService: MedicalAiService) {}
 
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
@@ -31,10 +30,12 @@ export class AiTcmService {
       { role: 'user', content: userContent }
     ];
 
-    // 设置 customHeaders (关键！)
+    // === 关键：添加日志，确认格式 ===
+    console.log('【AiTcmService】传递给 MedicalAiService 的 messages:', JSON.stringify(messages, null, 2));
+    console.log('【AiTcmService】接收到的 customHeaders:', JSON.stringify(customHeaders, null, 2));
+
+    // 设置 Headers 并调用
     this.medicalAiService.setCustomHeaders(customHeaders);
-    
-    // 直接调用 MedicalAiService
     return await this.medicalAiService.chat(messages);
   }
 
