@@ -59,8 +59,9 @@ export class AiTcmService {
       throw new Error('Server configuration error');
     }
 
-    // === 关键修改：将 messages 改名为 additional_messages ===
+    // === 关键修复：补全 user_id ===
     const payload = {
+      user_id: 'user_' + Date.now(), // 必须提供 user_id
       additional_messages: messages
     };
 
