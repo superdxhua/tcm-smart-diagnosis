@@ -3,6 +3,7 @@ import axios from 'axios';
 
 @Injectable()
 export class AiTcmService {
+  // 使用 Coze V2 正确的地址
   private readonly COZE_API_URL = 'https://api.coze.cn/open_api/v2/chat';
 
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
@@ -30,7 +31,7 @@ export class AiTcmService {
       { role: 'user', content: userContent }
     ];
 
-    return await this.callCozeAPI(messages, customHeaders);
+    return await this.callCozeAPI(messages);
   }
 
   async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string, customHeaders: any) {
@@ -48,22 +49,20 @@ export class AiTcmService {
       { role: 'user', content: userContent }
     ];
 
-    return await this.callCozeAPI(messages, customHeaders);
+    return await this.callCozeAPI(messages);
   }
 
-  private async callCozeAPI(messages: any[], customHeaders: any) {
-    let token = '';
-    if (customHeaders && customHeaders['authorization']) {
-      token = customHeaders['authorization'].replace('Bearer ', '');
-    }
+  private async callCozeAPI(messages: any[]) {
+    // === 关键修改：直接从环境变量读取 Token ===
+    const token = process.env.COZE_API_KEY;
 
     if (!token) {
-      console.error('Token not found in headers');
-      throw new Error('Token not found');
+      console.error('COZE_API_KEY not found in environment variables');
+      throw new Error('Server configuration error');
     }
 
+    // === 关键修改：移除 model 参数，只保留 messages ===
     const payload = {
-      model: 'qwen-max',
       messages: messages
     };
 
@@ -75,11 +74,10 @@ export class AiTcmService {
         }
       });
 
-      // 打印完整的返回数据，帮助调试
       console.log('=== Coze API Raw Response ===');
       console.log(JSON.stringify(response.data, null, 2));
 
-      // 尝试解析数据
+      // 解析响应
       if (response.data && response.data.code === 0 && response.data.data) {
         const messages = response.data.data.messages;
         if (messages && messages.length > 0) {
@@ -87,12 +85,11 @@ export class AiTcmService {
         }
       }
       
-      // 如果上面的解析失败，尝试其他可能的格式
+      // 兼容 OpenAI 格式
       if (response.data && response.data.choices) {
          return response.data.choices[0].message.content;
       }
 
-      // 如果都失败了，抛出异常
       console.error('Unhandled response format');
       throw new Error('Invalid response format');
 
