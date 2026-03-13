@@ -3,7 +3,6 @@ import axios from 'axios';
 
 @Injectable()
 export class AiTcmService {
-  // 使用 Coze V2 正确的地址
   private readonly COZE_API_URL = 'https://api.coze.cn/open_api/v2/chat';
 
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
@@ -53,17 +52,16 @@ export class AiTcmService {
   }
 
   private async callCozeAPI(messages: any[]) {
-    // === 关键修改：直接从环境变量读取 Token ===
     const token = process.env.COZE_API_KEY;
 
     if (!token) {
-      console.error('COZE_API_KEY not found in environment variables');
+      console.error('COZE_API_KEY not found');
       throw new Error('Server configuration error');
     }
 
-    // === 关键修改：移除 model 参数，只保留 messages ===
+    // === 关键修改：将 messages 改名为 additional_messages ===
     const payload = {
-      messages: messages
+      additional_messages: messages
     };
 
     try {
@@ -77,19 +75,13 @@ export class AiTcmService {
       console.log('=== Coze API Raw Response ===');
       console.log(JSON.stringify(response.data, null, 2));
 
-      // 解析响应
       if (response.data && response.data.code === 0 && response.data.data) {
-        const messages = response.data.data.messages;
-        if (messages && messages.length > 0) {
-          return messages[0].content;
+        const msgs = response.data.data.messages;
+        if (msgs && msgs.length > 0) {
+          return msgs[0].content;
         }
       }
       
-      // 兼容 OpenAI 格式
-      if (response.data && response.data.choices) {
-         return response.data.choices[0].message.content;
-      }
-
       console.error('Unhandled response format');
       throw new Error('Invalid response format');
 
