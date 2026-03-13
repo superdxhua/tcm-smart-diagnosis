@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+import { MedicalAiService } from '../medical-ai/medical-ai.service';
 
 @Injectable()
 export class AiTcmService {
-  private readonly COZE_API_URL = 'https://api.coze.cn/open_api/v2/chat';
+  // 注入已经封装好的 MedicalAiService
+  constructor(private readonly medicalAiService: MedicalAiService) {}
 
   async conductInquiry(basicInfo: any, supplementaryInfo: string, dialogHistory: any[], customHeaders: any) {
     const systemPrompt = `你是一位精通《伤寒论》《金匮要略》的经方中医师。
@@ -30,7 +31,11 @@ export class AiTcmService {
       { role: 'user', content: userContent }
     ];
 
-    return await this.callCozeAPI(messages);
+    // 设置 customHeaders (关键！)
+    this.medicalAiService.setCustomHeaders(customHeaders);
+    
+    // 直接调用 MedicalAiService
+    return await this.medicalAiService.chat(messages);
   }
 
   async generatePlan(basicInfo: any, supplementaryInfo: string, inquiryTranscript: string, customHeaders: any) {
@@ -48,47 +53,7 @@ export class AiTcmService {
       { role: 'user', content: userContent }
     ];
 
-    return await this.callCozeAPI(messages);
-  }
-
-  private async callCozeAPI(messages: any[]) {
-    const token = process.env.COZE_API_KEY;
-
-    if (!token) {
-      console.error('COZE_API_KEY not found');
-      throw new Error('Server configuration error');
-    }
-
-    // === 关键修复：补全 user_id ===
-    const payload = {
-      user_id: 'user_' + Date.now(), // 必须提供 user_id
-      additional_messages: messages
-    };
-
-    try {
-      const response = await axios.post(this.COZE_API_URL, payload, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      console.log('=== Coze API Raw Response ===');
-      console.log(JSON.stringify(response.data, null, 2));
-
-      if (response.data && response.data.code === 0 && response.data.data) {
-        const msgs = response.data.data.messages;
-        if (msgs && msgs.length > 0) {
-          return msgs[0].content;
-        }
-      }
-      
-      console.error('Unhandled response format');
-      throw new Error('Invalid response format');
-
-    } catch (error) {
-      console.error('Coze API call failed:', error);
-      throw new Error('AI service unavailable');
-    }
+    this.medicalAiService.setCustomHeaders(customHeaders);
+    return await this.medicalAiService.chat(messages);
   }
 }
