@@ -43,16 +43,16 @@ export default function AiTcmPage() {
         method: 'POST',
         data: {
           // 彻底移除 bot_id
-          // 修正 Token 前缀为 cztei_
+          // 只需要 messages
           messages: [
             { role: 'system', content: '你是一位精通《伤寒论》的经方中医师。' },
             { role: 'user', content: `患者信息：${JSON.stringify(info)}。${context}` }
           ]
         },
         header: {
-          'content-type': 'application/json',
-          // 使用您刚才确认的 Token (cztei_ 开头)
-          'Authorization': 'Bearer cztei_hSTunaxZfPSE9KODEx6LVX2krJDXRwZzgORGvzHOhZC7MfeviVKT7pFWYIbH3sQ6L'
+          'content-type': 'application/json'
+          // === 关键：删除 Authorization ===
+          // 后端会自动读取 Render 环境变量里的 Token
         }
       })
       
@@ -84,14 +84,10 @@ export default function AiTcmPage() {
         url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
         method: 'POST',
         data: {
-          // 彻底移除 bot_id
-          messages: [
-             ...newMessages
-          ]
+          messages: newMessages
         },
         header: {
-          'content-type': 'application/json',
-          'Authorization': 'Bearer cztei_hSTunaxZfPSE9KODEx6LVX2krJDXRwZzgORGvzHOhZC7MfeviVKT7pFWYIbH3sQ6L'
+          'content-type': 'application/json'
         }
       })
 
