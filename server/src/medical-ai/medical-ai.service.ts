@@ -10,21 +10,54 @@ export class MedicalAiService {
   }
 
   async chat(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 读取 SAT Token
+    return this.callCozeAPI(messages);
+  }
+
+  async recommendPrescription(params: any): Promise<string> {
+    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
+    return this.callCozeAPI(messages);
+  }
+
+  async differentiateSyndrome(params: any): Promise<string> {
+    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
+    return this.callCozeAPI(messages);
+  }
+
+  async getMedicationGuidance(params: any): Promise<string> {
+    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
+    return this.callCozeAPI(messages);
+  }
+
+  async searchTCMInfo(params: any): Promise<string> {
+    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
+    return this.callCozeAPI(messages);
+  }
+
+  async generateHealthPlan(params: any): Promise<string> {
+    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
+    return this.callCozeAPI(messages);
+  }
+
+  async uploadAttachment(file: any): Promise<string> {
+    return "Upload function not implemented";
+  }
+
+  async analyzeAttachment(imageUrl: string): Promise<string> {
+    return "Analyze function not implemented";
+  }
+
+  private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
     const token = process.env.COZE_API_KEY;
 
     if (!token) {
-      console.error('COZE_API_KEY not found');
       throw new Error('Server configuration error');
     }
 
-    // 2. 构建请求体 (SAT Token 模式不需要 bot_id)
     const payload = {
       user_id: 'user_' + Date.now(),
       additional_messages: messages
     };
 
-    // 3. 发送请求
     const apiUrl = 'https://api.coze.cn/open_api/v2/chat';
 
     try {
@@ -35,9 +68,6 @@ export class MedicalAiService {
         }
       });
 
-      console.log('=== [Direct API] Response Status:', response.status);
-      
-      // 4. 解析结果
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -45,11 +75,9 @@ export class MedicalAiService {
         }
       }
       
-      console.error('API Error Response:', JSON.stringify(response.data));
       throw new Error('Invalid response format');
 
     } catch (error) {
-      console.error('[Direct API] Call failed:', error.message);
       throw new Error('AI service unavailable');
     }
   }
