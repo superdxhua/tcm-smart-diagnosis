@@ -47,27 +47,26 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // === 关键修复：优先读取扣子官方规范变量，兼容旧变量 ===
+    // 1. 读取 Workload Token
     const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
-    const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || process.env.COZE_API_BASE_URL;
 
-    if (!token || !baseUrl) {
-      console.error('Error: API Key or Base URL is missing');
+    if (!token) {
+      console.error('Error: Workload Token is missing');
       throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // === 扣子官方 Workload Token 模式 ===
-    // URL: https://integration.coze.cn/api/v3/chat
-    const apiUrl = `${baseUrl}/api/v3/chat`;
+    // 2. 构造正确的 URL (扣子纠正：去掉 /api)
+    // 正确地址：https://integration.coze.cn/v3/chat
+    const apiUrl = 'https://integration.coze.cn/v3/chat';
 
     const payload = {
       model: 'qwen-max', 
       messages: messages
     };
 
-    console.log(`[Workload Fix] Requesting URL: ${apiUrl}`);
-    console.log('[Workload Fix] Token exists:', !!token);
-    console.log('[Workload Fix] Payload:', JSON.stringify(payload));
+    console.log(`[Workload Final Fix] Requesting URL: ${apiUrl}`);
+    console.log('[Workload Final Fix] Token exists:', !!token);
+    console.log('[Workload Final Fix] Payload:', JSON.stringify(payload));
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -77,8 +76,8 @@ export class MedicalAiService {
         }
       });
 
-      console.log('✅ [Workload Fix] API Response Status:', response.status);
-      console.log('✅ [Workload Fix] Response Body:', JSON.stringify(response.data));
+      console.log('✅ [Workload Final Fix] API Response Status:', response.status);
+      console.log('✅ [Workload Final Fix] Response Body:', JSON.stringify(response.data));
 
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
@@ -91,7 +90,7 @@ export class MedicalAiService {
       throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
-      console.error('[Workload Fix] API Call Failed:', error.message);
+      console.error('[Workload Final Fix] API Call Failed:', error.message);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
