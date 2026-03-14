@@ -2,10 +2,9 @@ import { AiTcmModule } from './ai-tcm/ai-tcm.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config'; // 1. 引入 ConfigModule
 import * as dotenv from 'dotenv';
 
-// 仅在非生产环境加载本地 .env 文件
-// 生产环境（Vercel）的环境变量从 Vercel Dashboard 中读取
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config({ path: '/workspace/projects/.env', override: true });
 }
@@ -36,6 +35,12 @@ import { DebugModule } from './debug/debug.module';
 
 @Module({
   imports: [
+    // 2. 配置 ConfigModule 为全局模块，确保 process.env 可用
+    ConfigModule.forRoot({
+      isGlobal: true, 
+      ignoreEnvFile: process.env.NODE_ENV === 'production', // 生产环境忽略 .env 文件，直接读取系统环境变量
+    }),
+    
     TcmModule,
     AuthModule,
     UploadModule,
@@ -64,4 +69,4 @@ import { DebugModule } from './debug/debug.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {} 
+export class AppModule {}
