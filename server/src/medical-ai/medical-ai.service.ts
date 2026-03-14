@@ -47,15 +47,15 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 读取 Workload Token
+    // 1. 强制读取 Workload Token，不使用 SDK 默认值
     const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
 
     if (!token) {
-      console.error('Error: Workload Token is missing');
+      console.error('Error: COZE_WORKLOAD_IDENTITY_API_KEY is missing');
       throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // 2. 构造正确的 URL (扣子纠正：去掉 /api)
+    // 2. 使用扣子确认的正确路径 (不带 /api)
     // 正确地址：https://integration.coze.cn/v3/chat
     const apiUrl = 'https://integration.coze.cn/v3/chat';
 
@@ -64,9 +64,9 @@ export class MedicalAiService {
       messages: messages
     };
 
-    console.log(`[Workload Final Fix] Requesting URL: ${apiUrl}`);
-    console.log('[Workload Final Fix] Token exists:', !!token);
-    console.log('[Workload Final Fix] Payload:', JSON.stringify(payload));
+    console.log(`[Final Production Fix] Requesting URL: ${apiUrl}`);
+    console.log('[Final Production Fix] Token exists:', !!token);
+    console.log('[Final Production Fix] Payload:', JSON.stringify(payload));
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -76,8 +76,8 @@ export class MedicalAiService {
         }
       });
 
-      console.log('✅ [Workload Final Fix] API Response Status:', response.status);
-      console.log('✅ [Workload Final Fix] Response Body:', JSON.stringify(response.data));
+      console.log('✅ [Final Production Fix] API Response Status:', response.status);
+      console.log('✅ [Final Production Fix] Response Body:', JSON.stringify(response.data));
 
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
@@ -90,7 +90,7 @@ export class MedicalAiService {
       throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
-      console.error('[Workload Final Fix] API Call Failed:', error.message);
+      console.error('[Final Production Fix] API Call Failed:', error.message);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
