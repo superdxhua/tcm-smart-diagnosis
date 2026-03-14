@@ -55,18 +55,19 @@ export class MedicalAiService {
       throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // === 扣子方案 1：修正 URL，添加 /api 前缀 ===
-    // 注意：这里显式写了完整路径，不再依赖 baseUrl 的结尾是否有斜杠
-    const apiUrl = `https://api.coze.cn/api/v3/chat`; 
+    // === 扣子终极方案：使用 Workload Token 模式 ===
+    // 地址: https://integration.coze.cn/api/v3/chat
+    // 注意：这里 baseUrl 是 integration.coze.cn，我们要拼上 /api/v3/chat
+    const apiUrl = `${baseUrl}/api/v3/chat`;
 
     const payload = {
       model: 'qwen-max', 
       messages: messages
-      // 显式不传递 bot_id
+      // 不需要 bot_id
     };
 
-    console.log(`[Coze V3 Final Fix] Requesting URL: ${apiUrl}`);
-    console.log('[Coze V3 Final Fix] Payload:', JSON.stringify(payload));
+    console.log(`[Workload Fix] Requesting URL: ${apiUrl}`);
+    console.log('[Workload Fix] Payload:', JSON.stringify(payload));
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -76,10 +77,10 @@ export class MedicalAiService {
         }
       });
 
-      console.log('✅ [Coze V3 Final Fix] API Response Status:', response.status);
-      console.log('✅ [Coze V3 Final Fix] Response Body:', JSON.stringify(response.data));
+      console.log('✅ [Workload Fix] API Response Status:', response.status);
+      console.log('✅ [Workload Fix] Response Body:', JSON.stringify(response.data));
 
-      // V3 接口的返回格式解析
+      // 接口返回格式解析
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -91,7 +92,7 @@ export class MedicalAiService {
       throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
-      console.error('[Coze V3 Final Fix] API Call Failed:', error.message);
+      console.error('[Workload Fix] API Call Failed:', error.message);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
