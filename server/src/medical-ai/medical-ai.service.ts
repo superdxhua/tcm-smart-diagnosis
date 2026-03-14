@@ -1,5 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import axios from 'axios';
+// 引入扣子官方 SDK
+import { LLMClient, Config } from 'coze-coding-dev-sdk'; 
 
 @Injectable()
 export class MedicalAiService {
@@ -47,50 +48,44 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 强制读取 Workload Token，不使用 SDK 默认值
+    // 1. 读取 Token
     const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
 
     if (!token) {
-      console.error('Error: COZE_WORKLOAD_IDENTITY_API_KEY is missing');
+      console.error('Error: API Token is missing');
       throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // 2. 使用扣子确认的正确路径 (不带 /api)
-    // 正确地址：https://integration.coze.cn/v3/chat
-    const apiUrl = 'https://integration.coze.cn/v3/chat';
-
-    const payload = {
-      model: 'qwen-max', 
-      messages: messages
-    };
-
-    console.log(`[Final Production Fix] Requesting URL: ${apiUrl}`);
-    console.log('[Final Production Fix] Token exists:', !!token);
-    console.log('[Final Production Fix] Payload:', JSON.stringify(payload));
+    console.log('[SDK Fix] Preparing to call Coze SDK...');
+    console.log('[SDK Fix] Token exists:', !!token);
 
     try {
-      const response = await axios.post(apiUrl, payload, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      // 2. 配置 SDK
+      const config = new Config();
+      // 强制设置 Token
+      (config as any).apiKey = token; 
+      // 设置正确的 endpoint (Integration API)
+      (config as any).baseUrl = 'https://integration.coze.cn';
+
+      // 3. 创建客户端
+      const client = new LLMClient(config, this.customHeaders);
+
+      // 4. 调用模型
+      // 注意：这里我们显式指定模型，确保不依赖默认值
+      const response = await client.invoke(messages, {
+        model: 'qwen-max',
+        temperature: 0.7
       });
 
-      console.log('✅ [Final Production Fix] API Response Status:', response.status);
-      console.log('✅ [Final Production Fix] Response Body:', JSON.stringify(response.data));
-
-      if (response.data && response.data.code === 0 && response.data.data) {
-        const msgs = response.data.data.messages;
-        if (msgs && msgs.length > 0) {
-          return msgs[0].content;
-        }
-      }
+      console.log('✅ [SDK Fix] SDK Call Successful');
       
-      console.error('API Error Response:', JSON.stringify(response.data));
-      throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
+      // 5. 返回结果
+      return response.content;
 
     } catch (error) {
-      console.error('[Final Production Fix] API Call Failed:', error.message);
+      console.error('[SDK Fix] Call Failed:', error.message);
+      // 打印更详细的错误栈
+      console.error(error.stack);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
