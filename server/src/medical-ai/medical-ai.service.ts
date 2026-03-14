@@ -1,13 +1,42 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-// 引入扣子官方 SDK
-import { LLMClient, Config } from 'coze-coding-dev-sdk'; 
+import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { LLMClient, Config } from 'coze-coding-dev-sdk';
 
 @Injectable()
 export class MedicalAiService {
-  private customHeaders: Record<string, string> = {};
+  private readonly logger = new Logger(MedicalAiService.name);
+  private aiClient: any;
+  private readonly modelName: string;
 
-  setCustomHeaders(headers: Record<string, string>) {
-    this.customHeaders = headers;
+  constructor(private configService: ConfigService) {
+    this.initializeAiClient();
+  }
+
+  private initializeAiClient() {
+    // 1. 读取 Token
+    const workloadToken = this.configService.get<string>('COZE_WORKLOAD_IDENTITY_API_KEY') 
+                       || this.configService.get<string>('COZE_API_KEY');
+
+    if (!workloadToken) {
+      this.logger.error('Workload Token is missing');
+      throw new Error('Missing Token');
+    }
+
+    this.modelName = this.configService.get<string>('COZE_MODEL_NAME', 'qwen-max');
+
+    try {
+      // 2. 配置 SDK
+      const sdkConfig = new Config();
+      (sdkConfig as any).apiKey = workloadToken;
+
+      // 3. 初始化客户端 (使用 LLMClient)
+      this.aiClient = new LLMClient(sdkConfig, {});
+      
+      this.logger.log('✅ Coze Client initialized successfully.');
+    } catch (error) {
+      this.logger.error('Failed to initialize Coze Client:', error);
+      throw new Error('AI Client initialization failed');
+    }
   }
 
   async chat(messages: Array<{ role: string; content: string }>): Promise<string> {
@@ -48,44 +77,32 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 读取 Token
-    const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
-
-    if (!token) {
-      console.error('Error: API Token is missing');
-      throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (!this.aiClient) {
+      throw new Error('AI Client not initialized');
     }
 
-    console.log('[SDK Fix] Preparing to call Coze SDK...');
-    console.log('[SDK Fix] Token exists:', !!token);
-
     try {
-      // 2. 配置 SDK
-      const config = new Config();
-      // 强制设置 Token
-      (config as any).apiKey = token; 
-      // 设置正确的 endpoint (Integration API)
-      (config as any).baseUrl = 'https://integration.coze.cn';
+      this.logger.debug(`Calling Coze API with model: ${this.modelName}`);
 
-      // 3. 创建客户端
-      const client = new LLMClient(config, this.customHeaders);
-
-      // 4. 调用模型
-      // 注意：这里我们显式指定模型，确保不依赖默认值
-      const response = await client.invoke(messages, {
-        model: 'qwen-max',
-        temperature: 0.7
+      // === 核心修复：使用 chat.completions.create ===
+      // 这是 DeepSeek 推荐的 OpenAI 兼容写法，能正确处理 Workload Token
+      const response = await this.aiClient.chat.completions.create({
+        model: this.modelName, 
+        messages: messages,
       });
 
-      console.log('✅ [SDK Fix] SDK Call Successful');
+      this.logger.debug('✅ Coze API call successful');
+
+      // 解析标准 OpenAI 格式返回
+      if (response.choices && response.choices.length > 0) {
+        return response.choices[0].message.content;
+      }
       
-      // 5. 返回结果
-      return response.content;
+      this.logger.error('Unexpected response structure:', response);
+      throw new Error('Invalid AI response structure');
 
     } catch (error) {
-      console.error('[SDK Fix] Call Failed:', error.message);
-      // 打印更详细的错误栈
-      console.error(error.stack);
+      this.logger.error('Coze SDK call failed:', error);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
