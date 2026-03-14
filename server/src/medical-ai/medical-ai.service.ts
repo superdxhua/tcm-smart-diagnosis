@@ -55,18 +55,16 @@ export class MedicalAiService {
       throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // === 核心修复：使用 V3 接口！SAT Token 必须用 V3！
+    // === 扣子官方方案：V3 API ===
     const apiUrl = `${baseUrl}/v3/chat`;
 
-    // === 核心修复：V3 接口参数调整 ===
     const payload = {
-      user_id: 'user_' + Date.now(),
-      stream: false, 
-      additional_messages: messages
+      model: 'qwen-max', // <--- 修正为千问大模型
+      messages: messages
     };
 
-    console.log(`[V3 Fix] Requesting URL: ${apiUrl}`);
-    console.log('[V3 Fix] Payload:', JSON.stringify(payload));
+    console.log(`[Coze V3 Fix] Requesting URL: ${apiUrl}`);
+    console.log('[Coze V3 Fix] Payload:', JSON.stringify(payload));
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -76,22 +74,22 @@ export class MedicalAiService {
         }
       });
 
-      console.log('✅ [V3 Fix] API Response Status:', response.status);
+      console.log('✅ [Coze V3 Fix] API Response Status:', response.status);
+      console.log('✅ [Coze V3 Fix] Response Body:', JSON.stringify(response.data));
 
-      // V3 接口的返回格式可能略有不同，我们打印出来看看
-      console.log('✅ [V3 Fix] Response Body:', JSON.stringify(response.data));
-
+      // V3 接口的返回格式解析
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
           return msgs[0].content;
+        }
       }
       
       console.error('API Error Response:', JSON.stringify(response.data));
       throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
-      console.error('[V3 Fix] API Call Failed:', error.message);
+      console.error('[Coze V3 Fix] API Call Failed:', error.message);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
