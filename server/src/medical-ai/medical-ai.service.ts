@@ -1,11 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 
 @Injectable()
 export class MedicalAiService {
-  // 不再使用构造函数注入，直接读取全局 process.env
-  // 只有在 ConfigModule.forRoot({ isGlobal: true }) 配置下，process.env 才能读到 Render 的变量
-
   private customHeaders: Record<string, string> = {};
 
   setCustomHeaders(headers: Record<string, string>) {
@@ -50,33 +47,25 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 直接读取 process.env
     const token = process.env.COZE_API_KEY;
     const baseUrl = process.env.COZE_API_BASE_URL;
 
-    // 2. 打印日志，确认是否读取成功
-    console.log('=== [Final Fix] Reading Env Vars ===');
-    console.log('COZE_API_KEY exists:', !!token);
-    console.log('COZE_API_BASE_URL:', baseUrl);
-
-    // 3. 校验变量是否存在
-    if (!token) {
-      console.error('Error: COZE_API_KEY is missing!');
-      throw new Error('Server configuration error: Missing API Key');
-    }
-    if (!baseUrl) {
-      console.error('Error: COZE_API_BASE_URL is missing!');
-      throw new Error('Server configuration error: Missing Base URL');
+    if (!token || !baseUrl) {
+      console.error('Error: COZE_API_KEY or BASE_URL is missing');
+      throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // 4. 拼接正确的完整 URL
     const apiUrl = `${baseUrl}/open_api/v2/chat`;
-    console.log(`[Final Fix] Requesting URL: ${apiUrl}`);
 
+    // === 核心修复：使用 additional_messages 和 stream: false ===
     const payload = {
       user_id: 'user_' + Date.now(),
+      stream: false, 
       additional_messages: messages
     };
+
+    console.log(`[Final Fix] Requesting URL: ${apiUrl}`);
+    console.log('[Final Fix] Payload:', JSON.stringify(payload));
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -86,6 +75,8 @@ export class MedicalAiService {
         }
       });
 
+      console.log('✅ [Final Fix] API Response Status:', response.status);
+
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -94,11 +85,11 @@ export class MedicalAiService {
       }
       
       console.error('API Error Response:', JSON.stringify(response.data));
-      throw new Error('Invalid response format');
+      throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
       console.error('[Final Fix] API Call Failed:', error.message);
-      throw new Error('AI service unavailable');
+      throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
 }
