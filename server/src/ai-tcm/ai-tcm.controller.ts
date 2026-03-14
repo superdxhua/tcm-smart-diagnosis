@@ -1,14 +1,24 @@
  import { Controller, Post, Body } from '@nestjs/common';
+import { AiTcmService } from './ai-tcm.service';
 
 @Controller('ai-tcm')
 export class AiTcmController {
-  constructor() {
-    console.log('✅ [AiTcmController] 空壳版已实例化！');
+  constructor(private readonly service: AiTcmService) {
+    console.log('✅ [AiTcmController] 已成功实例化！');
   }
 
   @Post('inquiry')
   async inquiry(@Body() body: any) {
-    console.log('[AiTcmController] 收到请求，直接返回成功');
-    return { message: '路由通了！', data: 'DeepSeek 方案生效' };
+    console.log('[AiTcmController] 收到请求，准备调用 Service');
+    
+    // 调用 Service 获取 AI 回复
+    const result = await this.service.conductInquiry(
+      body.basicInfo || {},
+      body.supplementaryInfo || '',
+      body.dialogHistory || [],
+      {}
+    );
+    
+    return result;
   }
 }
