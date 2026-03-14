@@ -1,29 +1,24 @@
-import { Controller, Post, Body, Req } from '@nestjs/common'; // 引入 Req
+import { Controller, Post, Body, Req } from '@nestjs/common';
 import { AiTcmService } from './ai-tcm.service';
-import { HeaderUtils } from 'coze-coding-dev-sdk'; // 引入扣子的工具类
 
 @Controller('ai-tcm')
 export class AiTcmController {
-  constructor(private readonly service: AiTcmService) {}
+  constructor(private readonly service: AiTcmService) {
+    // DeepSeek 建议：添加启动日志，验证控制器是否被加载
+    console.log('✅ [AiTcmController] 已成功实例化！路由 /ai-tcm 已注册。');
+  }
 
   @Post('inquiry')
   async inquiry(
-    @Req() req: any, // 获取完整请求对象
+    @Req() req: any,
     @Body() body: any,
   ) {
-    // === 关键修复：使用扣子编程推荐的方式提取 Headers ===
-    const rawCustomHeaders = HeaderUtils.extractForwardHeaders(req.headers);
-    const customHeaders = Object.fromEntries(
-      Object.entries(rawCustomHeaders).filter(([key]) => key.toLowerCase() !== 'authorization')
-    );
-    
-    console.log('【AiTcmController】提取到的 customHeaders:', Object.keys(customHeaders).join(', '));
-
+    console.log('[AiTcmController] 收到 inquiry 请求');
     return this.service.conductInquiry(
       body.basicInfo,
       body.supplementaryInfo,
       body.dialogHistory,
-      customHeaders
+      {}
     );
   }
 
@@ -32,16 +27,11 @@ export class AiTcmController {
     @Req() req: any,
     @Body() body: any,
   ) {
-    const rawCustomHeaders = HeaderUtils.extractForwardHeaders(req.headers);
-    const customHeaders = Object.fromEntries(
-      Object.entries(rawCustomHeaders).filter(([key]) => key.toLowerCase() !== 'authorization')
-    );
-
     return this.service.generatePlan(
       body.basicInfo,
       body.supplementaryInfo,
       body.inquiryTranscript,
-      customHeaders
+      {}
     );
   }
 }
