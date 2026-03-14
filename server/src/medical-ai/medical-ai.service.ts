@@ -47,26 +47,26 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    const token = process.env.COZE_API_KEY;
-    const baseUrl = process.env.COZE_API_BASE_URL;
+    // === 关键修复：优先读取扣子官方规范变量，兼容旧变量 ===
+    const token = process.env.COZE_WORKLOAD_IDENTITY_API_KEY || process.env.COZE_API_KEY;
+    const baseUrl = process.env.COZE_INTEGRATION_BASE_URL || process.env.COZE_API_BASE_URL;
 
     if (!token || !baseUrl) {
-      console.error('Error: COZE_API_KEY or BASE_URL is missing');
+      console.error('Error: API Key or Base URL is missing');
       throw new HttpException('Server configuration error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // === 扣子终极方案：使用 Workload Token 模式 ===
-    // 地址: https://integration.coze.cn/api/v3/chat
-    // 注意：这里 baseUrl 是 integration.coze.cn，我们要拼上 /api/v3/chat
+    // === 扣子官方 Workload Token 模式 ===
+    // URL: https://integration.coze.cn/api/v3/chat
     const apiUrl = `${baseUrl}/api/v3/chat`;
 
     const payload = {
       model: 'qwen-max', 
       messages: messages
-      // 不需要 bot_id
     };
 
     console.log(`[Workload Fix] Requesting URL: ${apiUrl}`);
+    console.log('[Workload Fix] Token exists:', !!token);
     console.log('[Workload Fix] Payload:', JSON.stringify(payload));
 
     try {
@@ -80,7 +80,6 @@ export class MedicalAiService {
       console.log('✅ [Workload Fix] API Response Status:', response.status);
       console.log('✅ [Workload Fix] Response Body:', JSON.stringify(response.data));
 
-      // 接口返回格式解析
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
