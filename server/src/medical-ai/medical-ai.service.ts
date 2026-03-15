@@ -89,7 +89,8 @@ export class MedicalAiService {
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
     const token = await this.getAccessToken();
 
-    const apiUrl = 'https://integration.coze.cn/api/v3/chat';
+    // === 最终修复：去掉 /api 前缀 ===
+    const apiUrl = 'https://integration.coze.cn/v3/chat';
 
     const payload = {
       model: 'qwen-max', 
@@ -97,7 +98,7 @@ export class MedicalAiService {
       stream: false
     };
 
-    this.logger.debug(`[Final Fix] Calling API: ${apiUrl}`);
+    this.logger.debug(`[Real Production Fix] Calling API: ${apiUrl}`);
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -107,9 +108,8 @@ export class MedicalAiService {
         }
       });
 
-      this.logger.debug('✅ [Final Fix] API Call Successful');
+      this.logger.debug('✅ [Real Production Fix] API Call Successful');
 
-      // 解析扣子格式返回
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -117,7 +117,6 @@ export class MedicalAiService {
         }
       }
       
-      // 解析 OpenAI 兼容格式返回 (注意这里是 response.data.choices)
       if (response.data && response.data.choices && response.data.choices.length > 0) {
         return response.data.choices[0].message.content;
       }
@@ -126,7 +125,7 @@ export class MedicalAiService {
       throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
-      this.logger.error('[Final Fix] API Call Failed:', error.message);
+      this.logger.error('[Real Production Fix] API Call Failed:', error.message);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
