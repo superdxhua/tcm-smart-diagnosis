@@ -1,152 +1,177 @@
-import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import axios from 'axios';
+import { View, Text, Input, Button, ScrollView } from '@tarojs/components'
+import { useState, useEffect } from 'react'
+import Taro from '@tarojs/taro'
+import './index.scss'
 
-@Injectable()
-export class MedicalAiService {
-  private readonly logger = new Logger(MedicalAiService.name);
-  private readonly apiKey = process.env.DASHSCOPE_API_KEY;
+export default function AiTcmPage() {
+  const [messages, setMessages] = useState<Array<{role: string, content: string}>>([])
+  const [inputValue, setInputValue] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [patientInfo, setPatientInfo] = useState<any>({})
+  const [contextInfo, setContextInfo] = useState('')
+  
+  // === 问诊轮次计数器 ===
+  const [turnCount, setTurnCount] = useState(0)
+  // === 设定最大问诊轮次为 6 ===
+  const MAX_TURNS = 6
+  // === 问诊是否结束的标志 ===
+  const [isFinished, setIsFinished] = useState(false)
 
-  constructor() {
-    if (!this.apiKey) {
-      this.logger.error('❌ 阿里云 API Key 未配置！');
-    } else {
-      this.logger.log('✅ 阿里云 API Key 已加载');
-    }
-  }
-
-  setCustomHeaders(headers: Record<string, string>) {}
-
-  // === 通用调用入口 ===
-  async chat(messages: Array<{ role: string; content: string }>): Promise<string> {
-    return this.callAI(messages);
-  }
-
-  // === 问诊阶段：引导式提问 ===
-  async conductInquiry(
-    basicInfo: any, 
-    supplementaryInfo: string, 
-    dialogHistory: any[]
-  ): Promise<string> {
+  useEffect(() => {
+    const instance = Taro.getCurrentInstance()
+    const params = instance.router?.params
     
-    // 1. 构造系统提示词（千问建议的严格逻辑）
-    const systemPrompt = {
-      role: 'system',
-      content: `你是一位精通《伤寒论》《金匮要略》的经方中医师。
-你的任务是根据患者当前已知信息，提出**一个最能帮助辨证的关键问题**。
-
-【核心规则】
-1. 必须先辨证，再提问。
-2. 每次只问一个关键问题，禁止一次性问多个。
-3. 提问要简洁、聚焦，便于患者回答。
-4. 聚焦于：寒热、虚实、病位、舌脉。
-5. 若信息已足够辨证，请直接说“信息已足够，准备开方”。`
-    };
-
-    // 2. 构造用户消息（当前患者信息）
-    const userMessage = {
-      role: 'user',
-      content: `患者基本信息：${JSON.stringify(basicInfo)}
-补充信息：${supplementaryInfo}
-当前对话历史：${JSON.stringify(dialogHistory)}
-请提出下一个关键的问诊问题。`
-    };
-
-    // 3. 合并历史
-    const messages = [systemPrompt, ...dialogHistory, userMessage];
-
-    return this.callAI(messages);
-  }
-
-  // === 生成方案阶段：结构化输出 ===
-  async generateHealthPlan(
-    basicInfo: any, 
-    supplementaryInfo: string, 
-    inquiryTranscript: string
-  ): Promise<string> {
-    
-    const systemPrompt = {
-      role: 'system',
-      content: `你是一位严格遵循《伤寒论》《金匮要略》的经方医师。
-请根据患者信息，进行**六经八纲辨证**，并给出**唯一推荐经方**。
-
-【输出规则】
-1. 必须先辨证，再处方。
-2. 推荐方剂必须出自《伤寒论》或《金匮要略》。
-3. 若疑似急重症，**不得开方**，应建议“立即面诊”。
-4. 输出必须是严格的 JSON 格式，不可包含其他文字。
-
-【JSON Schema】
-{
-  "syndrome_diagnosis": "证型，如 '少阳病'",
-  "recommended_formula": "方剂，如 '小柴胡汤'",
-  "classical_reference": "经典出处，如 '《伤寒论》第96条'",
-  "cautions": "注意事项"
-}`
-    };
-
-    const userMessage = {
-      role: 'user',
-      content: `患者信息：${JSON.stringify(basicInfo)}
-症状记录：${inquiryTranscript}
-请给出诊疗方案。`
-    };
-
-    return this.callAI([systemPrompt, userMessage]);
-  }
-
-  // === 底层 API 调用 ===
-  private async callAI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    const url = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
-
-    this.logger.log(`🚀 调用阿里云，当前对话轮数: ${messages.length}`);
-
-    try {
-      const response = await axios.post(url, {
-        model: 'qwen-max',
-        messages: messages,
-        // 开启 JSON 模式（如果阿里云支持，可以强制输出 JSON）
-        // response_format: { type: "json_object" } 
-      }, {
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      this.logger.log('✅ 阿里云调用成功！');
-      
-      if (response.data && response.data.choices && response.data.choices.length > 0) {
-        return response.data.choices[0].message.content;
+    if (params) {
+      const info = {
+        id: params.patientId || '',
+        name: params.name || '',
+        age: params.age || '',
+        gender: params.gender || ''
       }
       
-      throw new Error('AI 响应格式异常');
-    } catch (error) {
-      this.logger.error('❌ 阿里云调用失败:', error.response?.data || error.message);
-      throw new HttpException('AI 服务暂时不可用', HttpStatus.SERVICE_UNAVAILABLE);
+      setPatientInfo(info)
+
+      const context = `主诉：${params.chiefComplaint || '无'}。既往史：${params.pastHistory || '无'}。`
+      setContextInfo(context)
+
+      // 初始化系统提示（人设）
+      const systemPrompt = { 
+        role: 'system', 
+        content: '你是一位精通《伤寒论》《金匮要略》的经方中医师。规则：1. 每次只问一个关键问题。2. 不要废话。3. 等待用户回答后再问下一个。'
+      }
+      
+      // 第一轮提问
+      startInquiry(info, context, [systemPrompt])
+    }
+  }, [])
+
+  const startInquiry = async (info: any, context: string, history: any[]) => {
+    setLoading(true)
+    setMessages(prev => [...prev, { role: 'assistant', content: 'AI 专家正在思考...' }])
+
+    try {
+      const userMessage = {
+        role: 'user',
+        content: `患者基础信息：${JSON.stringify(info)}\n补充信息：${context}\n请开始问诊。`
+      }
+      const messagesToSend = [...history, userMessage]
+
+      const res = await Taro.request({
+        url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
+        method: 'POST',
+        data: {
+          basicInfo: info,
+          supplementaryInfo: context,
+          dialogHistory: messagesToSend
+        },
+        header: { 'content-type': 'application/json' }
+      })
+
+      if (res.statusCode === 200 && res.data) {
+        const aiContent = typeof res.data === 'string' ? res.data : (res.data as any).data
+        
+        setMessages(prev => {
+          const newMsgs = [...prev]
+          newMsgs[newMsgs.length - 1] = { role: 'assistant', content: aiContent }
+          return newMsgs
+        })
+        
+        setTurnCount(1)
+      } else {
+        throw new Error('AI 服务异常')
+      }
+    } catch (e: any) {
+      setMessages(prev => [...prev, { role: 'assistant', content: `连接失败：${e.message}` }])
+    } finally {
+      setLoading(false)
     }
   }
-  
-  // === 其他保留方法（防止报错）===
-  async recommendPrescription(params: any): Promise<string> {
-    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
-    return this.callAI(messages);
-  }
-  
-  async differentiateSyndrome(params: any): Promise<string> {
-    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
-    return this.callAI(messages);
+
+  const handleSend = async () => {
+    if (!inputValue.trim() || loading) return
+    
+    const userMsg = { role: 'user', content: inputValue }
+    setMessages(prev => [...prev, userMsg])
+    setInputValue('')
+    setLoading(true)
+    
+    const newTurnCount = turnCount + 1
+    setTurnCount(newTurnCount)
+
+    // === 检查是否达到第 6 轮 ===
+    if (newTurnCount >= MAX_TURNS) {
+      setMessages(prev => [...prev, { role: 'assistant', content: '问诊已结束，正在为您生成健康方案...' }])
+      
+      // 这里可以调用生成方案接口
+      // await generatePlan()
+      
+      setIsFinished(true)
+      setLoading(false)
+      return
+    }
+
+    try {
+      const systemPrompt = { 
+        role: 'system', 
+        content: '你是一位精通《伤寒论》《金匮要略》的经方中医师。规则：1. 每次只问一个关键问题。2. 不要废话。3. 等待用户回答后再问下一个。'
+      }
+      
+      const historyToSend = [systemPrompt, ...messages.slice(1), userMsg]
+
+      const res = await Taro.request({
+        url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
+        method: 'POST',
+        data: {
+          basicInfo: patientInfo,
+          supplementaryInfo: contextInfo,
+          dialogHistory: historyToSend
+        },
+        header: { 'content-type': 'application/json' }
+      })
+
+      if (res.statusCode === 200 && res.data) {
+        const aiContent = typeof res.data === 'string' ? res.data : (res.data as any).data
+        setMessages(prev => [...prev, { role: 'assistant', content: aiContent }])
+      }
+    } catch (e) {
+      Taro.showToast({ title: '发送失败', icon: 'none' })
+    } finally {
+      setLoading(false)
+    }
   }
 
-  async getMedicationGuidance(params: any): Promise<string> {
-    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
-    return this.callAI(messages);
-  }
+  return (
+    <View className='container'>
+      <View className='header'>
+        <Text>问诊进度：{turnCount} / {MAX_TURNS}</Text>
+      </View>
+      
+      <ScrollView className='message-list' scrollY>
+        {messages.map((msg, i) => (
+          <View key={i} className={msg.role === 'user' ? 'user-msg' : 'ai-msg'}>
+            <Text>{msg.content}</Text>
+          </View>
+        ))}
+      </ScrollView>
 
-  async searchTCMInfo(params: any): Promise<string> {
-    const messages = params.messages || [{ role: 'user', content: JSON.stringify(params) }];
-    return this.callAI(messages);
-  }
-  
-  async uploadAttachment(file: any): Promise<any> { return {}; }
-  async analyzeAttachment(imageUrl: string): Promise<any> { return {}; }
+      <View className='input-box'>
+        {isFinished ? (
+          <View className='finished-tip'>
+            <Text>问诊已结束，请查看上方方案</Text>
+            {/* 这里可以放“重新问诊”按钮 */}
+          </View>
+        ) : (
+          <>
+            <Input 
+              className='input' 
+              value={inputValue} 
+              onInput={e => setInputValue(e.detail.value)} 
+              placeholder='请输入您的回答...' 
+            />
+            <Button className='btn' onClick={handleSend} loading={loading}>发送</Button>
+          </>
+        )}
+      </View>
+    </View>
+  )
 }
