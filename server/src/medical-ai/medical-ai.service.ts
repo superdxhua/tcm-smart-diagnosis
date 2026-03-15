@@ -89,18 +89,15 @@ export class MedicalAiService {
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
     const token = await this.getAccessToken();
 
-    // === 1. 使用扣子编程专用域名 ===
     const apiUrl = 'https://integration.coze.cn/api/v3/chat';
 
     const payload = {
-      // === 2. 核心修复：改回千问大模型 ===
       model: 'qwen-max', 
       messages: messages,
       stream: false
     };
 
     this.logger.debug(`[Final Fix] Calling API: ${apiUrl}`);
-    this.logger.debug(`[Final Fix] Model: qwen-max`);
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -112,6 +109,7 @@ export class MedicalAiService {
 
       this.logger.debug('✅ [Final Fix] API Call Successful');
 
+      // 解析扣子格式返回
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -119,8 +117,9 @@ export class MedicalAiService {
         }
       }
       
+      // 解析 OpenAI 兼容格式返回 (注意这里是 response.data.choices)
       if (response.data && response.data.choices && response.data.choices.length > 0) {
-        return response.choices[0].message.content;
+        return response.data.choices[0].message.content;
       }
 
       this.logger.error('Unexpected response:', response.data);
