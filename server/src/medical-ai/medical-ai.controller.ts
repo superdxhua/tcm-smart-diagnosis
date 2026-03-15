@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Req } from '@nestjs/common';
 import { MedicalAiService } from './medical-ai.service';
-import { HeaderUtils } from 'coze-coding-dev-sdk'; 
+import { HeaderUtils } from 'coze-coding-dev-sdk';
 
 @Controller('tcm')
 export class TcmController {
@@ -8,18 +8,24 @@ export class TcmController {
 
   @Post('analyze')
   async analyze(@Body() body: any, @Req() req: any) {
-    // ... 保持不变 ...
+    const rawCustomHeaders = HeaderUtils.extractForwardHeaders(req.headers);
+    const customHeaders = Object.fromEntries(
+      Object.entries(rawCustomHeaders).filter(([key]) => key.toLowerCase() !== 'authorization')
+    );
+    
+    // 调用 chat 方法
+    const result = await this.medicalAiService.chat(body.messages || []);
+    return { success: true, data: result };
   }
-  
+
   @Post('plan')
   async plan(@Body() body: any, @Req() req: any) {
-    // 提取 Headers (保留原有逻辑)
     const rawCustomHeaders = HeaderUtils.extractForwardHeaders(req.headers);
     const customHeaders = Object.fromEntries(
       Object.entries(rawCustomHeaders).filter(([key]) => key.toLowerCase() !== 'authorization')
     );
 
-    // 修改这里：传入三个参数
+    // 关键修复：拆分成三个参数传递
     const result = await this.medicalAiService.generateHealthPlan(
       body.basicInfo || {},
       body.supplementaryInfo || '',
