@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MedicalAiController } from './medical-ai.controller';
-import { TcmController } from './tcm.controller';
 import { MedicalAiService } from './medical-ai.service';
+import { TcmController } from './tcm.controller';
 
 @Module({
-  controllers: [MedicalAiController, TcmController],
+  imports: [],
+  controllers: [TcmController],
   providers: [MedicalAiService],
   exports: [MedicalAiService],
 })
