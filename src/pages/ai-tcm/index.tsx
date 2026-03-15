@@ -1,3 +1,36 @@
+import { View, Text, Input, Button, ScrollView } from '@tarojs/components'
+import { useState, useEffect } from 'react'
+import Taro from '@tarojs/taro'
+import './index.scss'
+
+export default function AiTcmPage() {
+  const [messages, setMessages] = useState<Array<{role: string, content: string}>>([])
+  const [inputValue, setInputValue] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [patientInfo, setPatientInfo] = useState<any>({})
+  const [contextInfo, setContextInfo] = useState('')
+
+  useEffect(() => {
+    const instance = Taro.getCurrentInstance()
+    const params = instance.router?.params
+    
+    if (params) {
+      const info = {
+        id: params.patientId || '',
+        name: params.name || '',
+        age: params.age || '',
+        gender: params.gender || ''
+      }
+      
+      setPatientInfo(info)
+
+      const context = `主诉：${params.chiefComplaint || '无'}。既往史：${params.pastHistory || '无'}。`
+      setContextInfo(context)
+
+      startInquiry(info, context)
+    }
+  }, [])
+
   const startInquiry = async (info: any, context: string) => {
     setLoading(true)
     setMessages([{ role: 'assistant', content: 'AI 专家正在分析您的信息...' }])
@@ -12,18 +45,18 @@
           dialogHistory: []
         },
         header: {
-          'content-type': 'application/json',
-          // 如果有token，在这里加上
-          // 'Authorization': 'Bearer ...'
+          'content-type': 'application/json'
         }
       })
       
       console.log('API 原始返回:', res)
 
-      // === 关键修复：适配阿里云/通义千问的返回格式 ===
+      // === 终极修复：兼容阿里云返回的纯文本格式 ===
       if (res.statusCode === 200 && res.data) {
-        // 阿里云直接返回文本字符串，不需要复杂的解析
-        const aiContent = res.data as string; 
+        // 阿里云直接返回字符串，不用解析复杂的 JSON
+        const aiContent = typeof res.data === 'string' 
+          ? res.data 
+          : (res.data as any).data || JSON.stringify(res.data)
         
         setMessages([{ role: 'assistant', content: aiContent }])
       } else {
@@ -37,3 +70,62 @@
       setLoading(false)
     }
   }
+
+  const handleSend = async () => {
+    if (!inputValue.trim()) return
+    
+    const newMessages = [...messages, { role: 'user', content: inputValue }]
+    setMessages(newMessages)
+    setInputValue('')
+    setLoading(true)
+
+    try {
+      const res = await Taro.request({
+        url: 'https://api.zhongyihskhealth.com/api/ai-tcm/inquiry',
+        method: 'POST',
+        data: {
+          basicInfo: patientInfo,
+          supplementaryInfo: contextInfo,
+          dialogHistory: newMessages
+        },
+        header: {
+          'content-type': 'application/json'
+        }
+      })
+
+      if (res.statusCode === 200 && res.data) {
+        const aiContent = typeof res.data === 'string' 
+          ? res.data 
+          : (res.data as any).data || JSON.stringify(res.data)
+        
+        setMessages([...newMessages, { role: 'assistant', content: aiContent }])
+      }
+    } catch (e) {
+      Taro.showToast({ title: '发送失败', icon: 'none' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <View className='container'>
+      <ScrollView className='message-list' scrollY>
+        {messages.map((msg, i) => (
+          <View key={i} className={msg.role === 'user' ? 'user-msg' : 'ai-msg'}>
+            <Text>{msg.content}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      <View className='input-box'>
+        <Input 
+          className='input' 
+          value={inputValue} 
+          onInput={e => setInputValue(e.detail.value)} 
+          placeholder='请输入您的回答...' 
+        />
+        <Button className='btn' onClick={handleSend} loading={loading}>发送</Button>
+      </View>
+    </View>
+  )
+}
