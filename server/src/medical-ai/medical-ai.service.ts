@@ -16,7 +16,6 @@ export class MedicalAiService {
     }
   }
 
-  // 补回 setCustomHeaders 方法
   setCustomHeaders(headers: Record<string, string>) {}
 
   async chat(messages: Array<{ role: string; content: string }>): Promise<string> {
@@ -90,15 +89,18 @@ export class MedicalAiService {
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
     const token = await this.getAccessToken();
 
-    const apiUrl = 'https://api.coze.cn/api/v3/chat';
+    // === 1. 使用扣子编程专用域名 ===
+    const apiUrl = 'https://integration.coze.cn/api/v3/chat';
 
     const payload = {
-      model: 'qwen-max',
+      // === 2. 核心修复：改回千问大模型 ===
+      model: 'qwen-max', 
       messages: messages,
       stream: false
     };
 
-    this.logger.debug(`[OAuth Fix] Calling API: ${apiUrl}`);
+    this.logger.debug(`[Final Fix] Calling API: ${apiUrl}`);
+    this.logger.debug(`[Final Fix] Model: qwen-max`);
 
     try {
       const response = await axios.post(apiUrl, payload, {
@@ -108,7 +110,7 @@ export class MedicalAiService {
         }
       });
 
-      this.logger.debug('✅ [OAuth Fix] API Call Successful');
+      this.logger.debug('✅ [Final Fix] API Call Successful');
 
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
@@ -118,14 +120,14 @@ export class MedicalAiService {
       }
       
       if (response.data && response.data.choices && response.data.choices.length > 0) {
-        return response.data.choices[0].message.content;
+        return response.choices[0].message.content;
       }
 
       this.logger.error('Unexpected response:', response.data);
       throw new HttpException('Invalid AI response', HttpStatus.BAD_GATEWAY);
 
     } catch (error) {
-      this.logger.error('[OAuth Fix] API Call Failed:', error.message);
+      this.logger.error('[Final Fix] API Call Failed:', error.message);
       throw new HttpException('AI service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
