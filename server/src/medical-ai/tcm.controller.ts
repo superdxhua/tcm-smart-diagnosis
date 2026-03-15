@@ -1,3 +1,4 @@
+// Update test for Gitee sync (2024-03-15)
 import { Controller, Post, Body, Req } from '@nestjs/common';
 import { MedicalAiService } from './medical-ai.service';
 import { HeaderUtils } from 'coze-coding-dev-sdk';
@@ -24,7 +25,7 @@ export class TcmController {
       Object.entries(rawCustomHeaders).filter(([key]) => key.toLowerCase() !== 'authorization')
     );
 
-    // 关键修复：拆分成三个参数传递
+    // 修复：拆分成三个参数传递
     const result = await this.medicalAiService.generateHealthPlan(
       body.basicInfo || {},
       body.supplementaryInfo || '',
