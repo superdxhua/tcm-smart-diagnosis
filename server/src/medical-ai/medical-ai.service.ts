@@ -7,7 +7,6 @@ export class MedicalAiService {
   private cachedToken: string | null = null;
   private tokenExpiresAt: number = 0;
 
-  // 从环境变量读取 OAuth 凭证
   private readonly clientId = process.env.COZE_WORKLOAD_IDENTITY_CLIENT_ID;
   private readonly clientSecret = process.env.COZE_WORKLOAD_IDENTITY_CLIENT_SECRET;
 
@@ -16,6 +15,9 @@ export class MedicalAiService {
       this.logger.error('❌ OAuth Credentials (CLIENT_ID/SECRET) are missing!');
     }
   }
+
+  // 补回 setCustomHeaders 方法
+  setCustomHeaders(headers: Record<string, string>) {}
 
   async chat(messages: Array<{ role: string; content: string }>): Promise<string> {
     return this.callCozeAPI(messages);
@@ -54,9 +56,7 @@ export class MedicalAiService {
     return {};
   }
 
-  // === 核心：手动实现 OAuth 获取 Token ===
   private async getAccessToken(): Promise<string> {
-    // 1. 检查缓存（有效期内直接返回）
     if (this.cachedToken && Date.now() < this.tokenExpiresAt) {
       return this.cachedToken;
     }
@@ -64,7 +64,6 @@ export class MedicalAiService {
     this.logger.log('🔄 Requesting new Access Token via OAuth...');
 
     try {
-      // 2. 请求 Coze OAuth 接口
       const response = await axios.post(
         'https://api.coze.cn/.well-known/token',
         `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`,
@@ -73,12 +72,10 @@ export class MedicalAiService {
         }
       );
 
-      // 3. 解析并缓存 Token
       const token = response.data.access_token;
-      const expiresIn = response.data.expires_in || 3600; // 默认1小时
+      const expiresIn = response.data.expires_in || 3600;
 
       this.cachedToken = token;
-      // 提前 5 分钟过期，确保安全
       this.tokenExpiresAt = Date.now() + (expiresIn - 300) * 1000;
 
       this.logger.log('✅ Successfully obtained Access Token');
@@ -91,10 +88,8 @@ export class MedicalAiService {
   }
 
   private async callCozeAPI(messages: Array<{ role: string; content: string }>): Promise<string> {
-    // 1. 获取 JWT Token
     const token = await this.getAccessToken();
 
-    // 2. 调用模型 API (使用正确的 V3 地址)
     const apiUrl = 'https://api.coze.cn/api/v3/chat';
 
     const payload = {
@@ -115,7 +110,6 @@ export class MedicalAiService {
 
       this.logger.debug('✅ [OAuth Fix] API Call Successful');
 
-      // 解析返回
       if (response.data && response.data.code === 0 && response.data.data) {
         const msgs = response.data.data.messages;
         if (msgs && msgs.length > 0) {
@@ -123,7 +117,6 @@ export class MedicalAiService {
         }
       }
       
-      // 兼容 OpenAI 格式
       if (response.data && response.data.choices && response.data.choices.length > 0) {
         return response.data.choices[0].message.content;
       }
